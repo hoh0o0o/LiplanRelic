@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    
+    <link rel="stylesheet" href="./limemo.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+    />
+    <style>
+      #line-parent-template {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="l">
+      <div class="div"></div>
+      <div class="div1" id="div1">
+        <div class="oval"></div>
+        <div class="child"></div>
+        <div class="item"></div>
+      </div>
+      <section class="line-parent" id="line-parent-template">
+        <div class="frame-child"></div>
+        <div class="frame-wrapper">
+          <div class="frame-parent">
+            <div class="frame-container">
+              <div class="frame-group">
+                <div class="wrapper">
+                  <img class="icon" loading="lazy" alt="" src="./limemo1.svg" />
+                </div>
+                <div class="hsay-29">@hsay_29</div>
+              </div>
+            </div>
+            <div class="sekainoowari-parent">
+              <h2 class="sekainoowari"></h2>
+              <div class="frame-div">
+                <div class="parent">
+                  <div class="div2"></div>
+                  <div class="iconsolideye-parent">
+                    <img
+                      class="iconsolideye"
+                      loading="lazy"
+                      alt=""
+                      src="./limemo2.svg"
+                    />
+                    <b class="empty-sequence">153</b>
+                  </div>
+                </div>
+                <div class="container">
+                  <img
+                    class="icon1"
+                    loading="lazy"
+                    alt=""
+                    src="./limemo3.png"
+                  />
+                </div>
+              </div>
+              <div class="chat-icon-parent">
+                <div class="chat-icon">
+                  <img
+                    class="iconoutlinechat"
+                    loading="lazy"
+                    alt=""
+                    src="./limemo-memo.svg"
+                  />
+                </div>
+                <b class="b"></b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="l-inner">
+        <div class="frame-child1"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+        authDomain: "liplan-836a1.firebaseapp.com",
+        projectId: "liplan-836a1",
+        storageBucket: "liplan-836a1.appspot.com",
+        messagingSenderId: "545673347741",
+        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+        measurementId: "G-TKF08JYKTT"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      async function fetchMatchingProjects(docName) {
+        const docRef = doc(db, "otoyo", docName);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const artist = data.artist;
+          const date = data.Date;
+
+          const q = query(collection(db, "otoyo"), where("publicity", "==", true), where("artist", "==", artist), where("Date", "==", date));
+          const querySnapshot = await getDocs(q);
+          const docData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+          return docData;
+        } else {
+          console.log("No such document!");
+          return [];
+        }
+      }
+
+      async function updateTargetDoc(targetDocName, musicName, mc, setlistMemo) {
+        const targetDocRef = doc(db, "otoyo", targetDocName);
+        await updateDoc(targetDocRef, {
+          MusicName: musicName,
+          MC: mc,
+          setlistMemo: setlistMemo
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        const docName = getQueryParam('docName');
+
+        if (docName) {
+          const matchingProjects = await fetchMatchingProjects(docName);
+          const template = document.getElementById("line-parent-template");
+          const lInner = document.querySelector('.l-inner');
+
+          matchingProjects.forEach((project, index) => {
+            const clone = template.cloneNode(true);
+            clone.style.display = 'flex';
+            clone.querySelector('.sekainoowari').textContent = `#${project.artist}`;
+            clone.querySelector('.div2').textContent = project.title;
+            clone.querySelector('.b').textContent = project.message || 'メモなしでーす';
+            clone.addEventListener('click', async () => {
+              alert(`ドキュメント名: ${project.id}`);
+              await updateTargetDoc(docName, project.MusicName, project.MC, project.setlistMemo);
+            });
+            lInner.appendChild(clone);
+          });
+        }
+
+        var div1 = document.getElementById("div1");
+        if (div1) {
+          div1.addEventListener("click", function () {
+            window.location.href = `./setlist.html?docName=${docName}`;
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

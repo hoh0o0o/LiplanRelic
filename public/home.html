@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  
+  <link rel="stylesheet" href="./home.css" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+  />
+  <style>
+    #inner2-template {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="div">
+    <section class="project-editor">
+      <div class="rectangle-parent">
+        <div class="frame-child"></div>
+        <div class="profile-content">
+          <a class="hoh0o">@_.hoh0o</a>
+        </div>
+        <div class="profile-actions-wrapper">
+          <div class="profile-actions">
+            <div class="profile-details">
+              <div class="div1">
+                <img class="icon" loading="lazy" alt="" src="./home-2.svg" />
+              </div>
+              <div class="live-memory-actions">
+                <a class="a">ライメモ公開</a>
+                <div class="wrapper">
+                  <b class="b">
+                    <span class="txt">
+                      <div id="releaseCount" class="limemoopen"></div>
+                      <span class="span"> </span>
+                    </span>
+                  </b>
+                </div>
+              </div>
+              <div class="memory-labels">
+                <b class="view">ライメモview</b>
+                <div class="empty-button-wrapper">
+                  <b class="empty-button">
+                    <span class="empty-button-txt-container">
+                      <div id="viewCount" class="limemo"></div>
+                      <span class="span1"> </span>
+                    </span>
+                  </b>
+                </div>
+              </div>
+            </div>
+            <div class="rectangle-group" id="groupContainer">
+              <div class="frame-item"></div>
+              <b class="b1">プロフィール編集</b>
+            </div>
+            <div class="rectangle-container">
+              <div class="frame-inner"></div>
+              <b class="b2">自分のライメモを見る</b>
+            </div>
+          </div>
+        </div>
+        <div class="frame-parent">
+          <div class="frame-wrapper">
+            <div class="live-details-parent">
+              <div class="live-details">
+                <img
+                  class="live-details-child"
+                  loading="lazy"
+                  alt=""
+                  src="./home-line.svg"
+                />
+                <h2 class="next-live">Next Live</h2>
+              </div>
+              <h2 class="live-memory" id="liveMemoryText">Live Memory</h2>
+            </div>
+          </div>
+          <div class="line-div"></div>
+        </div>
+      </div>
+    </section>
+    <div class="child"></div>
+    
+    <section class="artist-divider">
+      <div class="artist-divider-inner" id="frameContainer">
+        <div class="frame-div">
+          <div class="rectangle-div"></div>
+          <b class="sekai-no-owari-container">
+            <p class="p" id="liveDate"></p>
+            <p class="sekai-no-owari" id="artistName"></p>
+            <p class="p1" id="liveTitle"></p>
+          </b>
+          <div class="frame-container">
+            <div class="group-div">
+              <div class="frame-child1"></div>
+              <img
+                class="rectangle-icon"
+                loading="lazy"
+                alt=""
+                src="./noimage.png"
+                id="thumbnailImage"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="inner">
+      <div class="live-location-content-parent">
+        <div class="live-location-content">
+          <div class="rectangle-parent1">
+            <div class="frame-child2"></div>
+            <h1 class="live-list">Live LIst</h1>
+            <img
+              class="group-icon"
+              loading="lazy"
+              alt=""
+              src="./homeicon.png"
+              id="NewCreateIcon"
+            />
+          </div>
+          
+        </div>
+      </div>
+    </section>
+    
+    <section class="inner2" id="inner2-template">
+      <div class="live-list1">
+        <b class="time"></b>
+      </div>
+      <img class="item" alt="" src="./noimage.png" />
+      <div class="artist-name">
+        <h2 class="h2"></h2>
+      </div>
+      <div class="artist">
+        <div class="second-artist-details">
+          <h1 class="vaundy"><p></p></h1>
+          <div class="second-artist-details-child"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="frame-section">
+      <div class="frame-child3"></div>
+    </section>
+  </div>
+
+  <script>
+    var groupContainer = document.getElementById("groupContainer");
+    if (groupContainer) {
+      groupContainer.addEventListener("click", function (e) {
+        // Please sync "プロフィール編集" to the project
+      });
+    }
+    
+    var liveMemoryText = document.getElementById("liveMemoryText");
+    if (liveMemoryText) {
+      liveMemoryText.addEventListener("click", function (e) {
+        window.location.href = "./livememory.html";
+      });
+    }
+
+    var NewCreateIcon = document.getElementById("NewCreateIcon");
+    if (NewCreateIcon) {
+      NewCreateIcon.addEventListener("click", function (e) {
+        window.location.href = "./newcreate.html";
+      });
+    }
+
+    var frameContainer = document.getElementById("frameContainer");
+    if (frameContainer) {
+      frameContainer.addEventListener("click", function (e) {
+        // Please sync "/NLiveリスト" to the project
+      });
+    }
+  </script>
+
+  <!--firebaseから持ってくるためのjs部分-->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+      authDomain: "liplan-836a1.firebaseapp.com",
+      projectId: "liplan-836a1",
+      storageBucket: "liplan-836a1.appspot.com",
+      messagingSenderId: "545673347741",
+      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+      measurementId: "G-TKF08JYKTT"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}/${month}/${day}`;
+    }
+
+    async function fetchDataAndDisplay() {
+      const docRef = doc(db, "memory", "SEKAOWA");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const artistElement0 = document.getElementById('artistName');
+        artistElement0.textContent = data.artist || 'アーティスト名：入力なし';
+
+        const artistElement1 = document.getElementById('liveDate');
+        artistElement1.textContent = data.date ? formatDate(data.date) : '日付：入力なし';
+
+        const artistElement2 = document.getElementById('liveTitle');
+        artistElement2.textContent = data.title || 'タイトル：入力なし';
+      } else {
+        console.log("No such document!");
+      }
+    }
+
+    async function fetchInformationData() {
+      const infoDocRef = doc(db, "otoyo", "information");
+      const infoDocSnap = await getDoc(infoDocRef);
+
+      if (infoDocSnap.exists()) {
+        const data = infoDocSnap.data();
+        const releaseCount = document.getElementById('releaseCount');
+        releaseCount.textContent = data.l_release || '不明';
+
+        const viewCount = document.getElementById('viewCount');
+        viewCount.textContent = data.l_view || '不明';
+      } else {
+        console.log("No such document!");
+      }
+    }
+
+    async function fetchClosestEvent() {
+      const querySnapshot = await getDocs(collection(db, "otoyo"));
+      const today = new Date().setHours(0, 0, 0, 0);
+      let closestEvent = null;
+      let minDiff = Infinity;
+      let closestEventDocId = null;
+
+      querySnapshot.forEach((doc) => {
+        if (doc.id !== 'information') {
+          const data = doc.data();
+          const eventDate = new Date(data.Date).setHours(0, 0, 0, 0);
+          const diff = eventDate - today;
+
+          if (diff >= 0 && diff < minDiff) { // 今日以降のイベントを取得
+            minDiff = diff;
+            closestEvent = { id: doc.id, data };
+            closestEventDocId = doc.id;
+          }
+        }
+      });
+
+      if (closestEvent) {
+        document.getElementById('artistName').textContent = closestEvent.data.artist || '不明';
+        document.getElementById('liveDate').textContent = closestEvent.data.Date ? formatDate(closestEvent.data.Date) : '不明';
+        document.getElementById('liveTitle').textContent = closestEvent.data.title || '不明';
+
+        const storageRef = ref(storage, `otoyo/${closestEvent.id}/thumbnail.png`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            const thumbnailImage = document.getElementById('thumbnailImage');
+            thumbnailImage.src = url;
+          })
+          .catch((error) => {
+            console.error("Error fetching image: ", error);
+          });
+
+        document.getElementById('frameContainer').addEventListener('click', function() {
+          window.location.href = `./plan.html?docName=${closestEventDocId}`;
+        });
+      }
+    }
+
+    async function fetchAndAlertUpcomingEvents() {
+      const querySnapshot = await getDocs(collection(db, "otoyo"));
+      const today = new Date().setHours(0, 0, 0, 0);
+      const documentNames = [];
+      const innerTemplate = document.getElementById('inner2-template');
+      const templateParent = innerTemplate.parentElement;
+
+      for (const doc of querySnapshot.docs) {
+        if (doc.id !== 'information') {
+          const data = doc.data();
+          const eventDate = new Date(data.Date).setHours(0, 0, 0, 0);
+          if (eventDate >= today) {
+            documentNames.push(doc.id);
+
+            // 複製処理
+            const clone = innerTemplate.cloneNode(true);
+            clone.style.display = 'block';
+            clone.querySelector('.time').textContent = data.Date ? formatDate(data.Date) : '不明';
+            clone.querySelector('.h2').textContent = data.venue || '不明';
+            clone.querySelector('.vaundy p').textContent = data.artist || '不明';
+
+            const itemImage = clone.querySelector('.item');
+            try {
+              const storageRef = ref(storage, `otoyo/${doc.id}/thumbnail.png`);
+              const url = await getDownloadURL(storageRef);
+              itemImage.src = url;
+            } catch (error) {
+              console.error("Error fetching image: ", error);
+            }
+
+            clone.addEventListener('click', function() {
+              window.location.href = `./plan.html?docName=${doc.id}`;
+            });
+
+            templateParent.insertBefore(clone, templateParent.querySelector('.frame-section'));
+          }
+        }
+      }
+
+      //alert(`今日以降のイベントのドキュメント名: ${documentNames.join(', ')}`);
+    }
+
+    window.onload = async function() {
+      await fetchDataAndDisplay();
+      await fetchInformationData();
+      await fetchClosestEvent();
+      await fetchAndAlertUpcomingEvents();
+    };
+  </script>
+</body>
+</html>
