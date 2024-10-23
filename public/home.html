@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, width=device-width" />
   
+  <link rel="stylesheet" href="./global.css" />
   <link rel="stylesheet" href="./home.css" />
   <link
     rel="stylesheet"
@@ -19,35 +20,30 @@
   <div class="div">
     <section class="project-editor">
       <div class="rectangle-parent">
-        <div class="frame-child"></div>
-        <div class="profile-content">
-          <a class="hoh0o">@_.hoh0o</a>
-        </div>
+        <a class="hoh0o">@_.hoh0o</a>
         <div class="profile-actions-wrapper">
           <div class="profile-actions">
             <div class="profile-details">
               <div class="div1">
-                <img class="icon" loading="lazy" alt="" src="./home-2.svg" />
+                <img
+                  loading="lazy"
+                  alt=""
+                  src="./livememory_icon.svg"
+                />
               </div>
               <div class="live-memory-actions">
                 <a class="a">ライメモ公開</a>
                 <div class="wrapper">
                   <b class="b">
-                    <span class="txt">
-                      <div id="releaseCount" class="limemoopen"></div>
-                      <span class="span"> </span>
-                    </span>
-                  </b>
+                    <span id="releaseCount">***</span>
+                </b>
                 </div>
               </div>
               <div class="memory-labels">
                 <b class="view">ライメモview</b>
                 <div class="empty-button-wrapper">
                   <b class="empty-button">
-                    <span class="empty-button-txt-container">
-                      <div id="viewCount" class="limemo"></div>
-                      <span class="span1"> </span>
-                    </span>
+                      <span id="viewCount">***</span>
                   </b>
                 </div>
               </div>
@@ -57,32 +53,17 @@
               <b class="b1">プロフィール編集</b>
             </div>
             <div class="rectangle-container">
-              <div class="frame-inner"></div>
-              <b class="b2">自分のライメモを見る</b>
+            <b class="b2">自分のライメモを見る</b>
             </div>
           </div>
         </div>
         <div class="frame-parent">
-          <div class="frame-wrapper">
-            <div class="live-details-parent">
-              <div class="live-details">
-                <img
-                  class="live-details-child"
-                  loading="lazy"
-                  alt=""
-                  src="./home-line.svg"
-                />
-                <h2 class="next-live">Next Live</h2>
-              </div>
-              <h2 class="live-memory" id="liveMemoryText">Live Memory</h2>
-            </div>
-          </div>
-          <div class="line-div"></div>
+          <h2 class="next-live" id="NextLiveText">Next Live</h2>
+          <h2 class="live-memory" id="liveMemoryText">Live Memory</h2>
         </div>
       </div>
     </section>
-    <div class="child"></div>
-    
+    <!--ここまでプロフィール-->
     <section class="artist-divider">
       <div class="artist-divider-inner" id="frameContainer">
         <div class="frame-div">
@@ -113,17 +94,17 @@
           <div class="rectangle-parent1">
             <div class="frame-child2"></div>
             <h1 class="live-list">Live LIst</h1>
-            <img
+          </div>
+          
+        </div>
+      </div>
+      <img
               class="group-icon"
               loading="lazy"
               alt=""
               src="./homeicon.png"
               id="NewCreateIcon"
             />
-          </div>
-          
-        </div>
-      </div>
     </section>
     
     <section class="inner2" id="inner2-template">
