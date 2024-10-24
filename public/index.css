@@ -1,34 +1,51 @@
-.line {
-  height: 5px;
-  width: 135px;
+body {
+  background-color: #00045A;
+  overflow: hidden;
+}
+.first {
+  white-space: nowrap;
   position: relative;
-  border-radius: 100px;
-  background-color: var(--fill-black);
 }
-.home-indicator {
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 21px 20px 8px;
-}
-.icon {
-  width: 100%;
-  height: 100%;
+.pink {
   position: absolute;
-  margin: 0 !important;
-  top: 0;
-  bottom: 0;
-  left: -1px;
-  max-height: 100%;
-  object-fit: cover;
-  z-index: 1;
+  width: 150px;
+  transform: rotate(-60deg);
+  left: calc(-120px + 20vw);
+  top: 30vh;
 }
-.first,
-.liplan {
-  width: 100%;
+.purple {
+  position: absolute;
+  width: 150px;
+  left: calc(-90px + 30vw);
+}
+.purple2 {
+  position: absolute;
+  width: 150px;
+  transform: rotate(55deg);
+  left: calc(-70px + 85vw);
+  top: 35vh;
+}
+.blue {
+  position: absolute;
+  width: 150px;
+  left: calc(-100px + 75vw);
+  top: 10vh;
+}
+.domearea {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.dome {
+  width: 370px;
+}
+.title {
+  display: flex;
+  justify-content: center;
 }
 .liplan {
   width: 100%;
@@ -47,17 +64,4 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
-}
-.first {
-  position: relative;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: var(--color-white);
-  overflow-y: auto;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding: 779px 0 0;
-  box-sizing: border-box;
-  line-height: normal;
-  letter-spacing: normal;
 }
