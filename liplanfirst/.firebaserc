@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "liplan-main",
+    "staging": "liplan-836a1"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
