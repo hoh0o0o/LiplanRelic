@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="./global.css" />
+  <link rel="stylesheet" href="./login.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" />
+</head>
+<body>
+  <div class="login-form">
+    <h2 class="youkoso">ようこそ Liplan へ</h2>
+    <form action="/login" method="POST">
+      <div class="form-group">
+        <label for="personal-id">個人ID:</label>
+        <input type="text" id="personal-id" name="personal-id" required />
+      </div>
+      <div class="form-group">
+        <label for="password">パスワード:</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit" class="login-btn">ログイン</button>
+    </form>
+    <div class="register-prompt">
+      <p>初めてご利用の方はこちら</p>
+    </div>
+  </div>
+  <img class="pink" alt="" src="./1pinku.png" />
+  <img class="purple" alt="" src="./1murasaki.png" />
+  <img class="blue" alt="" src="./1mizuiro.png" />
+  <div class="domearea">
+    <img class="dome" alt="" src="./1dome.png" />
+  </div>
+</body>
+</html>
