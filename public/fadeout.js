@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
       body.style.opacity = 0;
 
       setTimeout(function() {
-          window.location.href = "./home.html";
+          window.location.href = "./login.html";
       }, 1000); //1秒で遷移しな！
   }
 
