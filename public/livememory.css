@@ -172,17 +172,11 @@
 .p1 {
   margin: 0;
 }
-.p{
-  margin-left: -33px;
-}
-.p1 {
-  margin-left: -30px;
-}
 .b4 {
-  width: 204.5px;
-  height: 80.6px;
+  margin-left: 5%;
   z-index: 2;
   font-size: 25px;
+  text-align: left;
 }
 .frame-parent1,
 .red-hot-chili {
@@ -310,11 +304,10 @@
 }
 .frame-child3 {
   height: 1px;
-  width: 345px;
+  width: 90vw;
   position: absolute;
-  margin: 0 !important;
+  margin: 0 auto;
   top: 11.5px;
-  left: calc(50% - 172px);
   border-top: 1px solid #aaa;
   box-sizing: border-box;
 }
@@ -341,7 +334,6 @@
   position: relative;
 }
 .memory-inner {
-  width: 375px;
   margin-top: 30px;
   padding: 0 1px 30px 0;
   box-sizing: border-box;
