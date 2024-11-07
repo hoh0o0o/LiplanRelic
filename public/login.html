@@ -1,74 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, width=device-width" />
-  <link rel="stylesheet" href="./global.css" />
-  <link rel="stylesheet" href="./home.css" />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
-  />
-</head>
-<body>
-  <div class="login-form">
-    <h2 class="youkoso">ようこそ Liplanへ</h2>
-    <button id="googleSignInButton" class="login-btn">
-      Googleアカウントでログイン
-    </button>
-  </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./login.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="login-form">
+      <h2 class="youkoso">ようこそ Liplanへ</h2>
+      <button id="googleSignInButton" class="login-btn">
+        Googleアカウントでログイン
+      </button>
+    </div>
 
-  <img class="pink" alt="" src="./1pinku.png" />
-  <img class="purple" alt="" src="./1murasaki.png" />
-  <img class="blue" alt="" src="./1mizuiro.png" />
-  <div class="domearea">
-    <img class="dome" alt="" src="./1dome.png" />
-  </div>
+    <img class="pink" alt="" src="./1pinku.png" />
+    <img class="purple" alt="" src="./1murasaki.png" />
+    <img class="blue" alt="" src="./1mizuiro.png" />
+    <div class="domearea">
+      <img class="dome" alt="" src="./1dome.png" />
+    </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, setPersistence, browserLocalPersistence, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getAuth,
+        setPersistence,
+        browserLocalPersistence,
+        signInWithPopup,
+        GoogleAuthProvider,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-      authDomain: "liplan-836a1.firebaseapp.com",
-      projectId: "liplan-836a1",
-      storageBucket: "liplan-836a1.appspot.com",
-      messagingSenderId: "545673347741",
-      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-      measurementId: "G-TKF08JYKTT"
-    };
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+        authDomain: "liplan-836a1.firebaseapp.com",
+        projectId: "liplan-836a1",
+        storageBucket: "liplan-836a1.appspot.com",
+        messagingSenderId: "545673347741",
+        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+        measurementId: "G-TKF08JYKTT",
+      };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
 
-    // Set authentication persistence
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        document.getElementById("googleSignInButton").addEventListener("click", () => {
-          signInWithPopup(auth, provider)
-            .then((result) => {
-              console.log("User signed in:", result.user);
-              // Redirect to the main page
-              window.location.href = "./livememory.html";
-            })
-            .catch((error) => {
-              console.error("Error during sign-in:", error);
+      // Set authentication persistence
+      setPersistence(auth, browserLocalPersistence)
+        .then(() => {
+          document
+            .getElementById("googleSignInButton")
+            .addEventListener("click", () => {
+              signInWithPopup(auth, provider)
+                .then((result) => {
+                  console.log("User signed in:", result.user);
+                  // Redirect to the main page
+                  window.location.href = "./livememory.html";
+                })
+                .catch((error) => {
+                  console.error("Error during sign-in:", error);
+                });
             });
-        });
 
-        // Check if user is already logged in
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            // Redirect to the main page if the user is already logged in
-            window.location.href = "./livememory.html";
-          }
+          // Check if user is already logged in
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // Redirect to the main page if the user is already logged in
+              window.location.href = "./livememory.html";
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error setting persistence:", error);
         });
-      })
-      .catch((error) => {
-        console.error("Error setting persistence:", error);
-      });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
