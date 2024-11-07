@@ -16,7 +16,7 @@
 }
 .rectangle-parent {
   height: 186px;
-	width: 100vw;
+  width: 100vw;
   background-color: var(--color-midnightblue-100);
   flex-direction: column;
   padding: 47px 0 29px;
@@ -122,7 +122,7 @@
 }
 .next-live {
   margin: 0;
-  border-bottom: 4px solid #F87676;
+  border-bottom: 4px solid #f87676;
   position: absolute;
   left: 15vw;
   font-size: inherit;
@@ -131,7 +131,7 @@
 }
 .live-memory {
   margin: 0;
-  color:#b2b2b2;
+  color: #b2b2b2;
   font-size: inherit;
   letter-spacing: -0.17px;
   position: fixed;
@@ -169,12 +169,12 @@
   z-index: 1;
 }
 .item {
-  width: 179px;
+  width: 150px;
   height: 82px;
   position: absolute;
   margin: 0 !important;
-  margin-top:60px;
-  margin-left:20px;
+  margin-top: 60px;
+  margin-left: 20px;
   bottom: 10px;
   left: 17px;
   flex-shrink: 0;
@@ -277,8 +277,8 @@
   max-width: 100%;
 }
 .artist-divider {
-	z-index: 0;
-	margin-top: 200px;
+  z-index: 0;
+  margin-top: 200px;
   align-self: stretch;
   display: flex;
   flex-direction: row;
@@ -313,7 +313,7 @@
   z-index: 1;
 }
 .group-icon {
-	position: fixed;
+  position: fixed;
   height: 89.6px;
   top: 75vh;
   z-index: 10;
@@ -363,29 +363,20 @@
 .vaundy {
   margin: 0;
   bottom: 30px;
-  width: 201.4px;
-  height: 28px;
   position: relative;
-  font-size: inherit;
   letter-spacing: -0.17px;
   line-height: 28px;
   font-weight: 700;
   font-family: inherit;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-shrink: 0;
+  font-size: var(--font-size-13xl);
   color: black;
   z-index: 1;
 }
 .second-artist-details-child {
-  align-self: stretch;
-  left:10px;
-  height: 1px;
-  position: relative;
   border-top: 1px solid #aaa;
-  box-sizing: border-box;
   width: 90vw;
+  margin-left: 3vw;
+  margin-top: -30px;
 }
 .second-artist-details {
   position: relative;
@@ -398,22 +389,11 @@
   gap: 0px;
   flex-shrink: 0;
 }
-.artist,
 .live-location-content-parent,
 .second-artist-details {
   display: flex;
   box-sizing: border-box;
   max-width: 100%;
-}
-.artist {
-  align-self: stretch;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 0 var(--padding-8xs) 0 var(--padding-4xs);
-  text-align: center;
-  font-size: var(--font-size-13xl);
-  color: var(--color-black);
 }
 .live-location-content-parent {
   height: 95px;
@@ -446,27 +426,15 @@
 .h2 {
   margin: 0;
   bottom: 15px;
-  flex: 1;
   position: relative;
   font-size: 20px;
   letter-spacing: -0.17px;
-
-  flex-shrink: 0;
   z-index: 2;
+  padding-top: 35px;
 }
 .artist-name {
   position: relative;
-  width: 216px;
-  height: 30px;
-  flex-shrink: 0;
-  bottom: -45px;
-  margin-left: 203px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 0 7px 10px;
-  box-sizing: border-box;
+  margin-left: 45vw;
 }
 .frame-child3 {
   align-self: stretch;
@@ -508,7 +476,7 @@
   margin-top: 38px;
   margin-right: -35px;
 }
-.limemoopen{
+.limemoopen {
   margin-top: 40px;
   margin-right: -10px;
 }
@@ -529,6 +497,6 @@
   color: black;
   font-family: var(--font-inter);
 }
-.div{
+.div {
   overflow-x: hidden;
 }
