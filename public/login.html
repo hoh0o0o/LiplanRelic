@@ -35,19 +35,25 @@
         GoogleAuthProvider,
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
-        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-        authDomain: "liplan-836a1.firebaseapp.com",
-        projectId: "liplan-836a1",
-        storageBucket: "liplan-836a1.appspot.com",
-        messagingSenderId: "545673347741",
-        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-        measurementId: "G-TKF08JYKTT",
-      };
+      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+      authDomain: "liplan-836a1.firebaseapp.com",
+      projectId: "liplan-836a1",
+      storageBucket: "liplan-836a1.appspot.com",
+      messagingSenderId: "545673347741",
+      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+      measurementId: "G-TKF08JYKTT"
+    };
 
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
+      const db = getFirestore(app);
       const provider = new GoogleAuthProvider();
 
       // Set authentication persistence
@@ -57,10 +63,12 @@
             .getElementById("googleSignInButton")
             .addEventListener("click", () => {
               signInWithPopup(auth, provider)
-                .then((result) => {
-                  console.log("User signed in:", result.user);
-                  // Redirect to the main page
-                  window.location.href = "./livememory.html";
+                .then(async (result) => {
+                  const user = result.user;
+                  const userUID = user.uid;
+
+                  alert("2 : " + userUID);
+                  window.location.href = "./home.html?" + userUID;
                 })
                 .catch((error) => {
                   console.error("Error during sign-in:", error);
@@ -70,8 +78,8 @@
           // Check if user is already logged in
           onAuthStateChanged(auth, (user) => {
             if (user) {
-              // Redirect to the main page if the user is already logged in
-              window.location.href = "./livememory.html";
+              const userUID = user.uid;
+              window.location.href = "./home.html?" + userUID;
             }
           });
         })
