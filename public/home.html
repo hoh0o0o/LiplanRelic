@@ -20,7 +20,7 @@
     <div class="div">
       <section class="project-editor">
         <div class="rectangle-parent">
-          <a class="hoh0o">@_.hoh0o</a>
+          <a class="hoh0o" id="userInfo">@_.hoh0o</a>
           <div class="profile-actions-wrapper">
             <div class="profile-actions">
               <div class="profile-details">
@@ -158,6 +158,7 @@
         getDocs,
         doc,
         getDoc,
+        setDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getStorage,
@@ -329,6 +330,12 @@
       }
 
       window.onload = async function () {
+        const currentURL = location.href;
+        const userUID = currentURL.split("?")[1];
+        alert(userUID);
+        await setDoc(doc(db, userUID, "information"),{
+          userUID : userUID
+        });
         await fetchDataAndDisplay();
         await fetchInformationData();
         await fetchClosestEvent();
