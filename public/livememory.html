@@ -96,8 +96,8 @@
             alt=""
             id="vaundyImage"
           />
-          <h1 class="vaundy" id="vaundyName">不明</h1>
-          <h2 class="h2" id="vaundyVenue">不明</h2>
+          <h1 class="vaundy" id="vaundyName">***</h1>
+          <h2 class="h2" id="vaundyVenue">***</h2>
         </div>
       </div>
       <div class="memory-inner">
@@ -122,7 +122,8 @@
     var NextLiveText = document.getElementById("NextLiveText");
     if (NextLiveText) {
       NextLiveText.addEventListener("click", function (e) {
-        window.location.href = "./home.html";
+        const UID = location.href.split("?")[1];
+        window.location.href = "./home.html?" + UID;
       });
     }
   </script>
@@ -131,16 +132,20 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import {
       getFirestore,
       collection,
       getDocs,
       doc,
-      getDoc,
+      getDoc
     } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
     import {
       getStorage,
       ref,
-      getDownloadURL,
+      getDownloadURL
     } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
     const firebaseConfig = {
@@ -156,7 +161,19 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
+    const auth = getAuth(app);
     let closestEventDocId = null;
+    let userUID;
+
+    onAuthStateChanged(auth, (user) => {
+      if(user){
+        userUID = user.uid;
+        fetchInformationData();
+        fetchClosestPastEvent();
+      }else{
+        window.location.href = "./login.html";
+      }
+    });
 
     function formatDate(dateString) {
       const date = new Date(dateString);
@@ -166,7 +183,7 @@
       return `${year}/${month}/${day}`;
     }
 
-    async function fetchInformationData() {
+    async function fetchInformationData(docName) {
       const infoDocRef = doc(db, "otoyo", "information");
       const infoDocSnap = await getDoc(infoDocRef);
 
@@ -216,7 +233,7 @@
             });
 
             parentClone.addEventListener('click', function() {
-              window.location.href = `./plan.html?docName=${doc.id}`;
+              window.location.href = `./plan.html?docName=${doc.id}?` + userUID;
             });
 
             parentContainer.after(parentClone);
@@ -234,10 +251,7 @@
         const livevenue = document.getElementById("liveVenue");
         livevenue.textContent = closestEvent.data.venue || "不明";
 
-        const storageRef = ref(
-          storage,
-          `otoyo/${closestEventDocId}/thumbnail.png`
-        );
+        const storageRef = ref(storage,`otoyo/${closestEventDocId}/thumbnail.png`);
         getDownloadURL(storageRef)
           .then((url) => {
             const groupIcon = document.getElementById("RHCImage");
@@ -249,16 +263,11 @@
 
         const closestEventContainer = document.getElementById("closestEventContainer");
         closestEventContainer.addEventListener("click", function () {
-          window.location.href = `./plan.html?docName=${closestEventDocId}`;
+          window.location.href = `./plan.html?docName=${closestEventDocId}?` + userUID;
         });
 
       }
     }
-
-    window.onload = async function () {
-      await fetchInformationData();
-      await fetchClosestPastEvent();
-    };
   </script>
 </body>
 </html>

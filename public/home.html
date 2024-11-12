@@ -130,7 +130,9 @@
       var liveMemoryText = document.getElementById("liveMemoryText");
       if (liveMemoryText) {
         liveMemoryText.addEventListener("click", function (e) {
-          window.location.href = "./livememory.html";
+          const currentURL = location.href;
+          const UID = currentURL.split("?")[1];
+          window.location.href = "./livememory.html?" + UID;
         });
       }
 
@@ -152,6 +154,10 @@
     <!--firebaseから持ってくるためのjs部分-->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged
+      }from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
       import {
         getFirestore,
         collection,
@@ -177,8 +183,22 @@
       };
 
       const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
       const db = getFirestore(app);
       const storage = getStorage(app);
+      let userUID;
+
+      onAuthStateChanged(auth, (user) => {
+        if(user){
+          userUID = user.uid;
+          fetchDataAndDisplay(userUID);
+          fetchInformationData(userUID);
+          fetchClosestEvent(userUID);
+          fetchAndAlertUpcomingEvents(userUID);
+        }else{
+          window.location.href = "./login.html";
+        }
+      });
 
       function formatDate(dateString) {
         const date = new Date(dateString);
@@ -188,45 +208,37 @@
         return `${year}/${month}/${day}`;
       }
 
-      async function fetchDataAndDisplay() {
-        const docRef = doc(db, "memory", "SEKAOWA");
+
+      async function fetchDataAndDisplay(userUID) {
+        const docRef = doc(db, userUID);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
           const artistElement0 = document.getElementById("artistName");
-          artistElement0.textContent =
-            data.artist || "アーティスト名：入力なし";
+          artistElement0.textContent = data.artist || "アーティスト名：***";
 
           const artistElement1 = document.getElementById("liveDate");
-          artistElement1.textContent = data.date
-            ? formatDate(data.date)
-            : "日付：入力なし";
+          artistElement1.textContent = data.date ? formatDate(data.date) : "日付：***";
 
           const artistElement2 = document.getElementById("liveTitle");
-          artistElement2.textContent = data.title || "タイトル：入力なし";
-        } else {
-          console.log("No such document!");
+          artistElement2.textContent = data.title || "タイトル：***";
         }
       }
 
-      async function fetchInformationData() {
-        const infoDocRef = doc(db, "otoyo", "information");
-        const infoDocSnap = await getDoc(infoDocRef);
+      async function fetchInformationData(userUID) {
+        const infoDocSnap = await getDoc(doc(db, userUID, "information"));
 
         if (infoDocSnap.exists()) {
           const data = infoDocSnap.data();
-          const releaseCount = document.getElementById("releaseCount");
-          releaseCount.textContent = data.l_release || "不明";
-
-          const viewCount = document.getElementById("viewCount");
-          viewCount.textContent = data.l_view || "不明";
+          document.getElementById("releaseCount").textContent = data.l_release;
+          document.getElementById("viewCount").textContent = data.l_view;
         } else {
           console.log("No such document!");
         }
       }
 
-      async function fetchClosestEvent() {
-        const querySnapshot = await getDocs(collection(db, "otoyo"));
+      async function fetchClosestEvent(userUID) {
+        const querySnapshot = await getDocs(collection(db, userUID));
         const today = new Date().setHours(0, 0, 0, 0);
         let closestEvent = null;
         let minDiff = Infinity;
@@ -248,21 +260,12 @@
         });
 
         if (closestEvent) {
-          document.getElementById("artistName").textContent =
-            closestEvent.data.artist || "不明";
-          document.getElementById("liveDate").textContent = closestEvent.data
-            .Date
-            ? formatDate(closestEvent.data.Date)
-            : "不明";
-          document.getElementById("liveTitle").textContent =
-            closestEvent.data.title || "不明";
+          document.getElementById("artistName").textContent = closestEvent.data.artist || "***";
+          document.getElementById("liveDate").textContent = closestEvent.data.Date ? formatDate(closestEvent.data.Date) : "***";
+          document.getElementById("liveTitle").textContent = closestEvent.data.title || "***";
 
-          const storageRef = ref(
-            storage,
-            `otoyo/${closestEvent.id}/thumbnail.png`
-          );
-          getDownloadURL(storageRef)
-            .then((url) => {
+          const storageRef = ref(storage, `${userUID}/${closestEvent.id}/thumbnail.png`);
+          getDownloadURL(storageRef).then((url) => {
               const thumbnailImage = document.getElementById("thumbnailImage");
               thumbnailImage.src = url;
             })
@@ -270,16 +273,14 @@
               console.error("Error fetching image: ", error);
             });
 
-          document
-            .getElementById("frameContainer")
-            .addEventListener("click", function () {
+          document.getElementById("frameContainer").addEventListener("click", function () {
               window.location.href = `./plan.html?docName=${closestEventDocId}`;
-            });
+          });
         }
       }
 
-      async function fetchAndAlertUpcomingEvents() {
-        const querySnapshot = await getDocs(collection(db, "otoyo"));
+      async function fetchAndAlertUpcomingEvents(userUID) {
+        const querySnapshot = await getDocs(collection(db, userUID));
         const today = new Date().setHours(0, 0, 0, 0);
         const documentNames = [];
         const innerTemplate = document.getElementById("inner2-template");
@@ -292,7 +293,6 @@
             if (eventDate >= today) {
               documentNames.push(doc.id);
 
-              // 複製処理
               const clone = innerTemplate.cloneNode(true);
               clone.style.display = "block";
               clone.querySelector(".time").textContent = data.Date
@@ -304,10 +304,7 @@
 
               const itemImage = clone.querySelector(".item");
               try {
-                const storageRef = ref(
-                  storage,
-                  `otoyo/${doc.id}/thumbnail.png`
-                );
+                const storageRef = ref(storage, `${userUID}/${doc.id}/thumbnail.png`);
                 const url = await getDownloadURL(storageRef);
                 itemImage.src = url;
               } catch (error) {
@@ -325,21 +322,20 @@
             }
           }
         }
-
-        //alert(`今日以降のイベントのドキュメント名: ${documentNames.join(', ')}`);
       }
 
       window.onload = async function () {
-        const currentURL = location.href;
-        const userUID = currentURL.split("?")[1];
-        alert(userUID);
-        await setDoc(doc(db, userUID, "information"),{
-          userUID : userUID
-        });
-        await fetchDataAndDisplay();
-        await fetchInformationData();
-        await fetchClosestEvent();
-        await fetchAndAlertUpcomingEvents();
+        onAuthStateChanged(auth, (user) => {
+        if(user){
+          userUID = user.uid;
+          setDoc(doc(db, userUID, "information"),{
+            userUID: userUID,
+            test: "temp"
+          },{merge: true});
+        }else{
+          window.location.href = "./login.html";
+        }
+      });
       };
     </script>
   </body>
