@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Maps Search</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBepJ9Yzi3sHNAl6PG2KPyjfcB8B6WhLhA&libraries=places"></script>
+    <link rel="stylesheet" href="map.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+    />
+  </head>
+
+  <body onload="initMap()">
+    <button class="back-button" onclick="goBack()">&#8592;</button>
+    <h2 class="title">目的地を検索</h2>
+    <div class="search-container">
+      <input id="search-input" type="text" placeholder="場所を入力" />
+    </div>
+    <div id="map"></div>
+    <div id="overlay" class="hidden" onclick="resetOverlay(event)">
+      <div
+        id="selected-place-container"
+        class="hidden"
+        onclick="event.stopPropagation()"
+      >
+        <span id="selected-place-name"></span>
+        <button onclick="addPlace()">追加</button>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    let map;
+    let marker;
+    let selectedPlace = null;
+
+    function initMap() {
+      // マップの初期表示を設定
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 34.226, lng: 135.1675 }, // 和歌山を初期位置に設定
+        zoom: 13,
+        mapTypeControl: false, // 地図タイプの選択ボタンを非表示
+        zoomControl: false, // 拡大縮小ボタンを非表示
+        streetViewControl: false, // ストリートビューのボタンも非表示
+        fullscreenControl: false, // 全画面ボタンを非表示
+      });
+
+      const input = document.getElementById("search-input");
+      const autocomplete = new google.maps.places.Autocomplete(input);
+
+      autocomplete.addListener("place_changed", function () {
+        selectedPlace = autocomplete.getPlace();
+
+        if (!selectedPlace.geometry || !selectedPlace.geometry.location) {
+          alert("場所が見つかりませんでした。");
+          selectedPlace = null;
+          return;
+        }
+
+        // 選択した場所の位置にマップを移動
+        map.setCenter(selectedPlace.geometry.location);
+        map.setZoom(15);
+
+        // 既存のマーカーがあれば削除
+        if (marker) {
+          marker.setMap(null);
+        }
+
+        // 新しいマーカーを追��
+        marker = new google.maps.Marker({
+          position: selectedPlace.geometry.location,
+          map: map,
+          title: selectedPlace.name,
+        });
+
+        // オーバーレイを表示
+        document.getElementById("selected-place-name").textContent =
+          selectedPlace.name;
+        document.getElementById("overlay").classList.remove("hidden");
+        document.getElementById("overlay").classList.remove("fade-in");
+        document.getElementById("overlay").offsetWidth; // トリガーリフロー
+        document.getElementById("overlay").classList.add("fade-in");
+        document
+          .getElementById("selected-place-container")
+          .classList.remove("hidden");
+        document
+          .getElementById("selected-place-container")
+          .classList.remove("fade-in");
+        document.getElementById("selected-place-container").offsetWidth; // トリガーリフロー
+        document
+          .getElementById("selected-place-container")
+          .classList.add("fade-in");
+      });
+    }
+
+    function addPlace() {
+      if (
+        !selectedPlace ||
+        !selectedPlace.geometry ||
+        !selectedPlace.geometry.location
+      ) {
+        alert("場所を選択してください。");
+        return;
+      }
+
+      const name = selectedPlace.name;
+      const imageUrl =
+        selectedPlace.photos && selectedPlace.photos[0]
+          ? selectedPlace.photos[0].getUrl({ maxWidth: 400, maxHeight: 300 })
+          : "./noimage.png"; // 画像がない場合のデフォルト
+
+      // 選択された名称と画像をplan.htmlに渡す
+      window.opener.receivePlaceData(name, imageUrl);
+      window.close();
+    }
+
+    function resetOverlay(event) {
+      if (event.target.id === "overlay") {
+        document.getElementById("overlay").classList.add("fade-out");
+        document
+          .getElementById("selected-place-container")
+          .classList.add("fade-out");
+        setTimeout(() => {
+          document.getElementById("overlay").classList.add("hidden");
+          document
+            .getElementById("selected-place-container")
+            .classList.add("hidden");
+          document.getElementById("overlay").classList.remove("fade-out");
+          document
+            .getElementById("selected-place-container")
+            .classList.remove("fade-out");
+          document.getElementById("overlay").style.display = "none";
+          document.getElementById("selected-place-container").style.display =
+            "none";
+        }, 500); // フェードアウトアニメーションの時間に合わせる
+      }
+    }
+
+    function goBack() {
+      window.location.href = "plan.html";
+      setTimeout(() => {
+        window.location.reload(true); // ページをリロードしてデータベースからの情報を反映
+      }, 100); // 少し遅延を入れてリロード
+    }
+  </script>
+</html>

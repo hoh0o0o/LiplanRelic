@@ -25,8 +25,14 @@
           <div class="frame-wrapper">
             <div class="frame-group">
               <div class="container">
-                <img class="icon" loading="lazy" alt="" src="./noimage.png" id="noImage" />
-                <input type="file" id="imageInput" style="display:none;">
+                <img
+                  class="icon"
+                  loading="lazy"
+                  alt=""
+                  src="./noimage.png"
+                  id="noImage"
+                />
+                <input type="file" id="imageInput" style="display: none" />
               </div>
               <div class="glyphssmallmap-wrapper">
                 <img
@@ -49,13 +55,14 @@
             </div>
           </div>
           <div class="group">
-              <b class="b1" id="list">リスト</b>
-              <b class="b2">予定</b>
-              <b class="b3" id="ticket">チケット</b>
-              <b class="b4" id="setlist">セットリスト</b>
+            <b class="b1" id="list">リスト</b>
+            <b class="b2">予定</b>
+            <b class="b3" id="ticket">チケット</b>
+            <b class="b4" id="setlist">セットリスト</b>
           </div>
         </div>
       </section>
+    </div>
       <section class="frame-section">
         <div class="frame-parent1">
           <div class="frame-parent2">
@@ -68,7 +75,11 @@
                   <div class="parent1">
                     <div class="div2">
                       <div class="show-time-label">
-                        <input class="b8" placeholder="予定を入力" type="text" />
+                        <input
+                          class="b8"
+                          placeholder="予定を入力"
+                          type="text"
+                        />
                       </div>
                       <!--<b class="b9">&gt;</b>-->
                     </div>
@@ -79,7 +90,7 @@
             </div>
           </div>
         </div>
-        <div class="frame-wrapper3">
+        <!--<div class="frame-wrapper3">
           <div class="frame-parent5">
             <div class="frame-wrapper4" id="plusmark">
               <button class="rectangle-parent" id="saveButton">
@@ -95,13 +106,43 @@
             </div>
           </div>
         </div>
+        -->
+      </section>
+      <section>
+        <div class="osusume">
+          <h2 class="osusumetitle">選択した目的地</h2>
+          <div>
+            <div class="osusumespot">
+              <img
+                class="osusumegazou"
+                id="place-image"
+                src="./noimage.png"
+                alt="選択した場所の画像"
+              />
+              <div id="place-name">場所名</div>
+            </div>
+          <button class="rectangle-parent" id="saveButton">
+            <div class="rectangle-div"></div>
+            <b class="b11">目的地追加</b>
+          </button>
+        </div>
       </section>
     </div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-      import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-      import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -110,7 +151,7 @@
         storageBucket: "liplan-836a1.appspot.com",
         messagingSenderId: "545673347741",
         appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-        measurementId: "G-TKF08JYKTT"
+        measurementId: "G-TKF08JYKTT",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -122,55 +163,70 @@
         return urlParams.get(param);
       }
 
+      // map.htmlから呼び出される関数
+      function receivePlaceData(name, imageUrl) {
+        document.getElementById("place-name").textContent = name;
+        document.getElementById("place-image").src = imageUrl;
+      }
+
       async function loadImage(docName) {
         const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
         try {
           const downloadURL = await getDownloadURL(storageRef);
-          document.getElementById('noImage').src = downloadURL;
+          document.getElementById("noImage").src = downloadURL;
         } catch (error) {
-          console.error('画像の取得に失敗しました:', error);
+          console.error("画像の取得に失敗しました:", error);
         }
       }
 
       async function saveData(docName) {
-        const hours = Array.from(document.querySelectorAll(".b6")).map(input => input.value).join("**/kugiri\\**");
-        const plans = Array.from(document.querySelectorAll(".b8")).map(input => input.value).join("**/kugiri\\**");
-        const memos = Array.from(document.querySelectorAll(".input")).map(input => input.value).join("**/kugiri\\**");
+        const hours = Array.from(document.querySelectorAll(".b6"))
+          .map((input) => input.value)
+          .join("**/kugiri\\**");
+        const plans = Array.from(document.querySelectorAll(".b8"))
+          .map((input) => input.value)
+          .join("**/kugiri\\**");
+        const memos = Array.from(document.querySelectorAll(".input"))
+          .map((input) => input.value)
+          .join("**/kugiri\\**");
 
         try {
           const docRef = doc(db, "otoyo", docName);
           await updateDoc(docRef, {
             hour: hours,
             plan: plans,
-            memo: memos
+            memo: memos,
           });
-          console.log('データが保存されました');
+          console.log("データが保存されました");
         } catch (e) {
           console.error("Error updating document: ", e);
-          alert('エラーが発生しました');
+          alert("エラーが発生しました");
         }
       }
 
-      document.addEventListener('DOMContentLoaded', async () => {
-        const docName = getQueryParam('docName');
+      document.addEventListener("DOMContentLoaded", async () => {
+        const docName = getQueryParam("docName");
         if (docName) {
           try {
             const docRef = doc(db, "otoyo", docName);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               const data = docSnap.data();
-              console.log('Document data:', data);
+              console.log("Document data:", data);
 
               // データを対応する要素に反映
-              document.getElementById('artist').textContent = data.artist || '不明';
-              document.getElementById('date').textContent = data.Date || '不明';
-              document.getElementById('title').textContent = data.title || '不明';
-              document.getElementById('venue').textContent = data.venue || '不明';
+              document.getElementById("artist").textContent =
+                data.artist || "不明";
+              document.getElementById("date").textContent = data.Date || "不明";
+              document.getElementById("title").textContent =
+                data.title || "不明";
+              document.getElementById("venue").textContent =
+                data.venue || "不明";
 
               // hour, plan, memoフィールドの抽出と分割、個数を計測
-              const hourArray = (data.hour).split('**/kugiri\\**');
-              const planArray = (data.plan).split('**/kugiri\\**');
-              const memoArray = (data.memo).split('**/kugiri\\**');
+              const hourArray = data.hour.split("**/kugiri\\**");
+              const planArray = data.plan.split("**/kugiri\\**");
+              const memoArray = data.memo.split("**/kugiri\\**");
 
               const entryCount = hourArray.length;
 
@@ -207,28 +263,28 @@
         var list = document.getElementById("list");
         if (list) {
           list.addEventListener("click", function (e) {
-            handleNavigation(e, './list.html');
+            handleNavigation(e, "./list.html");
           });
         }
 
         var ticket = document.getElementById("ticket");
         if (ticket) {
           ticket.addEventListener("click", function (e) {
-            handleNavigation(e, './ticket.html');
+            handleNavigation(e, "./ticket.html");
           });
         }
 
         var setlist = document.getElementById("setlist");
         if (setlist) {
           setlist.addEventListener("click", function (e) {
-            handleNavigation(e, './setlist.html');
+            handleNavigation(e, "./setlist.html");
           });
         }
 
         var toHome = document.getElementById("toHome");
         if (toHome) {
           toHome.addEventListener("click", function (e) {
-            handleNavigation(e, './home.html');
+            handleNavigation(e, "./home.html");
           });
         }
 
@@ -248,14 +304,21 @@
           });
         }
 
-        var noImage = document.getElementById('noImage');
-        var imageInput = document.getElementById('imageInput');
+        var noImage = document.getElementById("noImage");
+        var imageInput = document.getElementById("imageInput");
 
-        noImage.addEventListener('click', function () {
+        noImage.addEventListener("click", function () {
           imageInput.click();
         });
 
-        imageInput.addEventListener('change', async function (event) {
+        var saveButton = document.getElementById("saveButton");
+        if (saveButton) {
+          saveButton.addEventListener("click", function (e) {
+            handleNavigation(e, "./map.html");
+          });
+        }
+
+        imageInput.addEventListener("change", async function (event) {
           const file = event.target.files[0];
           if (file) {
             const reader = new FileReader();
@@ -268,15 +331,14 @@
             const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
             try {
               await uploadBytes(storageRef, file);
-              console.log('画像がアップロードされました');
+              console.log("画像がアップロードされました");
 
               // アップロードされた画像のURLを取得して表示
               const downloadURL = await getDownloadURL(storageRef);
               noImage.src = downloadURL;
-              console.log('ダウンロードURL:', downloadURL);
-
+              console.log("ダウンロードURL:", downloadURL);
             } catch (error) {
-              console.error('画像のアップロードに失敗しました:', error);
+              console.error("画像のアップロードに失敗しました:", error);
             }
           }
         });

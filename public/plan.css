@@ -1,6 +1,8 @@
 body {
   margin: 0;
   line-height: normal;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 :root {
@@ -249,7 +251,7 @@ html {
   cursor: pointer;
 }
 .b4 {
-  width :30%;
+  width: 30%;
   line-height: 11px;
   display: inline-block;
   min-width: 45px;
@@ -467,6 +469,7 @@ input[type="time"]::-webkit-date-and-time-value {
   position: relative;
   background-color: rgba(127, 102, 160, 0.6);
   font-size: var(--font-size-xs);
+  margin-bottom: 12px;
 }
 .frame-parent2 {
   align-self: stretch;
@@ -508,21 +511,6 @@ input[type="time"]::-webkit-date-and-time-value {
   text-align: left;
   min-width: 40px;
   z-index: 3;
-}
-.frame-wrapper4,
-.rectangle-parent {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.rectangle-parent {
-  cursor: pointer;
-  border: 0;
-  padding: var(--padding-lg) 47px var(--padding-lg) 53px;
-  background-color: var(--color-darksalmon);
-  align-self: stretch;
-  border-radius: var(--br-61xl);
-  flex-direction: row;
 }
 .frame-wrapper4 {
   margin-top: -100px;
@@ -594,17 +582,51 @@ input[type="time"]::-webkit-date-and-time-value {
   width: 100%;
   position: relative;
   background-color: var(--color-white);
-  overflow-y: auto;
   align-items: flex-start;
-  padding: 0 0 140px;
   box-sizing: border-box;
   gap: 8px;
   line-height: normal;
   letter-spacing: normal;
 }
-.p{
+.p {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/*おすすめ*/
+.osusume {
+  background-color: #ebebeb;
+  padding: 10px;
+  font-family: var(--font-inter);
+  display: flex;
+  flex-direction: column; /* 垂直方向に要素を配置 */
+  align-items: center; /* 横方向に中央配置 */
+}
+.osusumetitle {
+  margin: 10px;
+}
+.osusumespot {
+  display: flex;
+  flex-direction: column; /* 垂直方向に要素を配置 */
+  align-items: center; /* 横方向に中央配置 */
+  justify-content: center; /* 縦方向に中央配置 */
+  text-align: center; /* テキストも中央揃えに */
+  margin: 0 auto; /* 外側の中央配置も適用 */
+  padding-bottom: 15px;
+}
+.osusumegazou {
+  width: 100px; /* 任意のサイズ */
+  height: 100px; /* 幅と高さを同じにする */
+  border-radius: 50%; /* 画像を丸くする */
+  object-fit: cover; /* 画像の縦横比を保ちながら丸くする */
+}
+.rectangle-parent {
+  cursor: pointer;
+  border: 0;
+  padding: 5px 30px;
+  background-color: var(--color-darksalmon);
+  border-radius: var(--br-61xl);
+  margin-bottom: 10px;
 }
