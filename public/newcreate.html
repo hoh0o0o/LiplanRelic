@@ -190,7 +190,17 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      doc,
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -203,13 +213,28 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
+    let userUID;
+
+    // ユーザーUIDを非同期で取得し、Promiseで管理
+    const getUserUID = new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userUID = user.uid;
+          resolve(userUID);
+        } else {
+          window.location.href = "./login.html";  // 認証されていない場合はログインページへ
+          reject("User not logged in");
+        }
+      });
+    });
 
     // 日付を今日の日付に設定する関数
     function setDateToday() {
       const today = new Date();
       const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0'); // 月は0始まりなので+1
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
       const dd = String(today.getDate()).padStart(2, '0');
       const formattedToday = `${yyyy}-${mm}-${dd}`;
       document.getElementById('date-input').value = formattedToday;
@@ -219,35 +244,38 @@
       setDateToday();
     });
 
+    // 作成ボタンのクリックイベント
     document.getElementById('sendFirebase').addEventListener('click', async () => {
-      const prefectures = document.getElementById('area-select').value;
-      const venue = document.getElementById('venue-select').value;
-      const date = document.getElementById('date-input').value;
-      const title = document.getElementById('title-input').value;
-      const artist = document.getElementById('artist-input').value;
-
-      // 入力チェック
-      if (!prefectures || !venue || !date || !title || !artist) {
-        alert("全ての項目を入力してください");
-        return; // 入力されていない場合は処理を中断
-      }
-
       try {
-        const querySnapshot = await getDocs(collection(db, "otoyo"));
+        // userUIDの取得完了を待つ
+        const uid = await getUserUID;
+        const prefectures = document.getElementById('area-select').value;
+        const venue = document.getElementById('venue-select').value;
+        const date = document.getElementById('date-input').value;
+        const title = document.getElementById('title-input').value;
+        const artist = document.getElementById('artist-input').value;
+
+        // 入力チェック
+        if (!prefectures || !venue || !date || !title || !artist) {
+          alert("全ての項目を入力してください");
+          return;
+        }
+
+        const querySnapshot = await getDocs(collection(db, uid));
         let maxDocNumber = 0;
 
         querySnapshot.forEach(doc => {
           const docId = doc.id;
-          const docNumber = parseInt(docId.replace('otoyo', ''));
+          const docNumber = parseInt(docId.replace(uid, ''));
           if (!isNaN(docNumber) && docNumber > maxDocNumber) {
             maxDocNumber = docNumber;
           }
         });
 
         const newDocNumber = maxDocNumber + 1;
-        const docName = `otoyo${newDocNumber}`;
+        const docName = `${newDocNumber}`;
 
-        await setDoc(doc(db, "otoyo", docName), {
+        await setDoc(doc(db, uid, docName), {
           prefectures: prefectures,
           venue: venue,
           Date: date,
@@ -264,9 +292,11 @@
       }
     });
 
+    // home.htmlへの遷移にuserUIDを含める
     document.querySelectorAll('#backtoHome').forEach(element => {
-      element.addEventListener('click', () => {
-        window.location.href = './home.html';
+      element.addEventListener('click', async () => {
+        const uid = await getUserUID; // userUIDの取得完了を待つ
+        window.location.href = `./home.html?${uid}`;
       });
     });
   </script>

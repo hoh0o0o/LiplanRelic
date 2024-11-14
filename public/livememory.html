@@ -184,7 +184,7 @@
     }
 
     async function fetchInformationData(docName) {
-      const infoDocRef = doc(db, "otoyo", "information");
+      const infoDocRef = doc(db, userUID, "information");
       const infoDocSnap = await getDoc(infoDocRef);
 
       if (infoDocSnap.exists()) {
@@ -200,7 +200,7 @@
     }
 
     async function fetchClosestPastEvent() {
-      const querySnapshot = await getDocs(collection(db, "otoyo"));
+      const querySnapshot = await getDocs(collection(db, userUID));
       const today = new Date().setHours(0, 0, 0, 0);
       let closestEvent = null;
       let minDiff = Infinity;
@@ -227,7 +227,7 @@
             parentClone.querySelector("#vaundyVenue").textContent = data.venue || "不明";
             parentClone.querySelector("#vaundyName").textContent = data.artist || "不明";
 
-            const imageRef = ref(storage, `otoyo/${doc.id}/thumbnail.png`);
+            const imageRef = ref(storage, `${userUID}/${doc.id}/thumbnail.png`);
             getDownloadURL(imageRef).then((url) => {
               parentClone.querySelector("#vaundyImage").src = url;
             });
@@ -251,7 +251,7 @@
         const livevenue = document.getElementById("liveVenue");
         livevenue.textContent = closestEvent.data.venue || "不明";
 
-        const storageRef = ref(storage,`otoyo/${closestEventDocId}/thumbnail.png`);
+        const storageRef = ref(storage,`${userUID}/${closestEventDocId}/thumbnail.png`);
         getDownloadURL(storageRef)
           .then((url) => {
             const groupIcon = document.getElementById("RHCImage");
