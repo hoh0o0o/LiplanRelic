@@ -190,8 +190,26 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      updateDoc,
+      collection, 
+      query,
+      where,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -206,14 +224,19 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
+    const auth = getAuth(app);
+    let userUID;
 
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
+    onAuthStateChanged(auth, (user) => {
+      if(user){
+        userUID = user.uid;
+      }else{
+        window.location.href = "./login.html";
+      }
+    });
 
     async function loadImage(docName) {
-      const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
+      const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
       try {
         const downloadURL = await getDownloadURL(storageRef);
         document.getElementById('noImage').src = downloadURL;
@@ -231,7 +254,7 @@
       const b1Data = Array.from(b1s).map(b1 => b1.value).join('**/kugiri\\**');
 
       try {
-        const docRef = doc(db, "otoyo", docName);
+        const docRef = doc(db, userUID, docName);
         await updateDoc(docRef, {
           MusicName: inputData,
           MC: mcData,
@@ -246,7 +269,7 @@
 
     async function loadData(docName) {
       try {
-        const docRef = doc(db, "otoyo", docName);
+        const docRef = doc(db, userUID, docName);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
@@ -322,20 +345,20 @@
     }
 
     async function countMatchingProjects(artist, date) {
-      const q = query(collection(db, "otoyo"), where("publicity", "==", true), where("artist", "==", artist), where("Date", "==", date));
+      const q = query(collection(db, userUID), where("publicity", "==", true), where("artist", "==", artist), where("Date", "==", date));
       try {
         const querySnapshot = await getDocs(q);
         const docNames = querySnapshot.docs.map(doc => doc.id);
         //alert(`一致するプロジェクトの名前: ${docNames.join(', ')}`);
-        const docName = getQueryParam('docName');
-        window.location.href = `./limemo.html?docName=${docName}`;
+        const docName = location.href.split("?")[1];
+        window.location.href = `./limemo.html?${docName}`;
       } catch (error) {
         console.error("Error getting documents: ", error);
       }
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const docName = getQueryParam('docName');
+      const docName = location.href.split("?")[1];
       if (docName) {
         await loadData(docName);
         await loadImage(docName);
@@ -352,7 +375,7 @@
       if (list) {
         list.addEventListener("click", async function (e) {
           await saveData(docName);
-          window.location.href = `./list.html?docName=${docName}`;
+          window.location.href = `./list.html?${docName}`;
         });
       }
 
@@ -360,7 +383,7 @@
       if (plan) {
         plan.addEventListener("click", async function (e) {
           await saveData(docName);
-          window.location.href = `./plan.html?docName=${docName}`;
+          window.location.href = `./plan.html?${docName}`;
         });
       }
 
@@ -368,14 +391,14 @@
       if (ticket) {
         ticket.addEventListener("click", async function (e) {
           await saveData(docName);
-          window.location.href = `./ticket.html?docName=${docName}`;
+          window.location.href = `./ticket.html?${docName}`;
         });
       }
 
       var toHome = document.getElementById("toHome");
       if (toHome) {
         toHome.addEventListener("click", function (e) {
-          window.location.href = `./home.html?docName=${docName}`;
+          window.location.href = `./home.html?${docName}`;
         });
       }
 
@@ -414,7 +437,8 @@
           reader.readAsDataURL(file);
 
           // Firebase Storageに画像をアップロード
-          const storageRef = ref(storage, `otoyo/${getQueryParam('docName')}/thumbnail.png`);
+          const docName = location.href.split("?")[1];
+          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
           try {
             await uploadBytes(storageRef, file);
             console.log('画像がアップロードされました');
@@ -451,7 +475,7 @@
       var div1 = document.querySelector(".div1");
       if (div1) {
         div1.addEventListener("click", async function (e) {
-          const docRef = doc(db, "otoyo", docName);
+          const docRef = doc(db, userUID, docName);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
@@ -473,7 +497,7 @@
       submitButton.addEventListener("click", async function () {
         const message = document.getElementById("messageInput").value;
         try {
-          const docRef = doc(db, "otoyo", docName);
+          const docRef = doc(db, userUID, docName);
           await updateDoc(docRef, {
             message: message,
             publicity: true
