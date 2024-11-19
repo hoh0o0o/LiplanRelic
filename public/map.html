@@ -10,26 +10,29 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
     />
   </head>
-
   <body onload="initMap()">
-    <button class="back-button" onclick="goBack()">&#8592;</button>
-    <h2 class="title">目的地を検索</h2>
+    <div class="header">
+      <h2 class="title">目的地を検索</h2>
+      <button class="back-button" onclick="goBack()">
+        <img src="chevron-left.svg" class="icon" alt="戻る" />
+      </button>
+    </div>
     <div class="search-container">
+      <img src="search.svg" class="search-icon icon" alt="検索" />
       <input id="search-input" type="text" placeholder="場所を入力" />
     </div>
     <div id="map"></div>
     <div id="overlay" class="hidden" onclick="resetOverlay(event)">
       <div
         id="selected-place-container"
-        class="hidden"
+        class="selected-place-container hidden"
         onclick="event.stopPropagation()"
       >
-        <span id="selected-place-name"></span>
-        <button onclick="addPlace()">追加</button>
+        <span id="selected-place-name" class="selected-place-name"></span>
+        <button class="add-button" onclick="addPlace()">追加</button>
       </div>
     </div>
   </body>
-
   <script>
     let map;
     let marker;
@@ -67,7 +70,7 @@
           marker.setMap(null);
         }
 
-        // 新しいマーカーを追��
+        // 新しいマーカーを追加
         marker = new google.maps.Marker({
           position: selectedPlace.geometry.location,
           map: map,

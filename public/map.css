@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
 }
 
 .title {
@@ -20,6 +21,16 @@ body {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  position: relative; /* 相対位置を設定 */
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
 }
 
 #search-input {
@@ -28,6 +39,7 @@ body {
   font-size: 18px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  padding-left: 40px; /* アイコンのスペースを確保 */
 }
 
 #selected-place-container {
@@ -62,6 +74,17 @@ button {
   border-radius: 5px;
   background-color: #4285f4;
   color: white;
+}
+
+button.add-button {
+  background-color: #7f66a0; /* 背景と同じ紫色に設定 */
+  border-radius: 20px; /* 角を丸く設定 */
+}
+
+.selected-place-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* マップ表示エリア */
@@ -132,17 +155,40 @@ button {
 
 .back-button {
   position: absolute;
-  top: 10px;
+  top: 50%;
   left: 5%;
+  transform: translateY(-50%); /* 縦中央揃え */
   padding: 10px;
   font-size: 24px;
+  font-weight: bold; /* 矢印を太く設定 */
   cursor: pointer;
   border: none;
-  border-radius: 5px;
-  background-color: #4285f4;
+  border-radius: 50%; /* 正円に設定 */
+  background-color: #d3d3d3; /* 背景を薄い灰色に設定 */
+  color: #4f4f4f; /* 矢印の色を濃い灰色に設定 */
+  width: 40px; /* 正円の幅 */
+  height: 40px; /* 正円の高さ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  background-color: #7f66a0;
   color: white;
-  max-width: 600px;
-  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  padding: 5px 0; /* 高さを狭く設定 */
+  position: relative; /* 相対位置を設定 */
+}
+
+.selected-place-name {
+  color: #4f4f4f; /* 色を濃い灰色に設定 */
+}
+
+.icon {
+  filter: invert(33%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(50%)
+    contrast(100%);
 }
 
 /* レスポンシブ対応 */
@@ -185,9 +231,16 @@ button {
     width: 95%;
   }
 
+  .search-icon {
+    left: 5px; /* アイコンの位置を調整 */
+    width: 16px; /* アイコンのサイズを調整 */
+    height: 16px; /* アイコンのサイズを調整 */
+  }
+
   #search-input {
     font-size: 16px;
     padding: 10px;
+    padding-left: 30px; /* アイコンのスペースを調整 */
   }
 
   button {
@@ -197,5 +250,9 @@ button {
 
   #selected-place-name {
     font-size: 16px;
+  }
+
+  .back-button {
+    left: 10px; /* 画面左に隙間を確保 */
   }
 }
