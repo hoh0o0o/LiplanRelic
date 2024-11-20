@@ -168,8 +168,22 @@
   </section> 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import {
+      getAuth,
+       onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
   
     const firebaseConfig = {
       apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -184,28 +198,62 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
+    const auth = getAuth(app);
 
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
+    onAuthStateChanged(auth, (user) => {
+      if(!user){
+        window.location.href = "./login.html";
+      }
+    }); 
+
+    const noImage = document.getElementById("noImage");
+    const imageInput = document.getElementById("imageInput");
+
+    noImage.addEventListener("click", () => {
+      imageInput.click();
+    });
+
+    imageInput.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if(file){
+        onAuthStateChanged(auth, async (user) => {
+          const userUID = user.uid;
+          await uploadImage(userUID, docName, file);
+        });
+      }
+    });
+
+    async function uploadImage(userUID, docName, file){
+      const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+      try{
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+        document.getElementById("noimage").src = downloadURL;
+        alert("画像アップロード成功!");
+      }catch(error){
+        alert("画像アップロードに失敗しました");
+      }
     }
 
     async function saveTodoList() {
-      const docName = getQueryParam('docName');
+      const docName = location.href.split("?")[1];
       const container = document.getElementById("container1");
       const destinations = container.querySelectorAll(".destination");
       const todoList = Array.from(destinations).map(destination => destination.textContent).join('**/kugiri\\**');
 
-      try {
-        const docRef = doc(db, "otoyo", docName);
-        await updateDoc(docRef, {
-          todoList: todoList
-        });
-        console.log('todoListが保存されました');
-      } catch (e) {
-        console.error("Error updating document: ", e);
-        alert('エラーが発生しました');
-      }
+      onAuthStateChanged(auth, (user) => {
+        const userUID = user.uid;
+        try {
+          const docRef = doc(db, userUID, docName);
+          updateDoc(docRef, {
+            todoList: todoList
+          });
+          console.log('todoListが保存されました');
+        } catch (e) {
+          console.error("Error updating document: ", e);
+          alert('エラーが発生しました');
+        }
+      });
     }
   
     function moveText() {
@@ -269,9 +317,9 @@
       document.getElementById("moveButton").disabled = this.value.trim() === "";
     });
 
-    async function loadTodoList(docName) {
+    async function loadTodoList(userUID, docName) {
       try {
-        const docRef = doc(db, "otoyo", docName);
+        const docRef = doc(db, userUID, docName);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
@@ -359,27 +407,30 @@
     // 完了ボタンのクリックイベントを追加
     document.querySelector(".submit-button").addEventListener("click", async function () {
       const messageInput = document.getElementById("messageInput").value;
-      const docName = getQueryParam('docName');
-      
-      try {
-        const docRef = doc(db, "otoyo", docName);
-        await updateDoc(docRef, {
-          ListMemo: messageInput,
-          publicity_l: true  // publicity_lフィールドをtrueに更新
-        });
-        console.log('ListMemoが保存され、publicity_lがtrueに設定されました');
-        popup.style.display = "none"; // ポップアップを閉じる
-      } catch (e) {
-        console.error("Error updating document: ", e);
-        alert('エラーが発生しました');
-      }
+      const docName = location.href.split("?")[1];
+
+      onAuthStateChanged(auth, (user) => {
+        const userUID = user.uid;
+        try {
+          const docRef = doc(db, userUID, docName);
+          updateDoc(docRef, {
+            ListMemo: messageInput,
+            publicity_l: true  // publicity_lフィールドをtrueに更新
+          });
+          console.log('ListMemoが保存され、publicity_lがtrueに設定されました');
+          popup.style.display = "none"; // ポップアップを閉じる
+        } catch (e) {
+          console.error("Error updating document: ", e);
+          alert('エラーが発生しました');
+        }
+      });  
     });
 
     window.addEventListener('load', adjustListHeight);
     window.addEventListener('resize', adjustListHeight);
 
-    async function loadImage(docName) {
-      const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
+    async function loadImage(userUID, docName) {
+      const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
       try {
         const downloadURL = await getDownloadURL(storageRef);
         document.getElementById('noImage').src = downloadURL;
@@ -387,77 +438,147 @@
         console.error('サムネイルの取得に失敗しました:', error);
       }
     }
+
+    async function loadData(userUID, docName){
+      const docRef = doc(db, userUID, docName);
+      try{
+        const docSnap = await getDoc(docRef);
+        if(docSnap){
+          const data = docSnap.data();
+
+          document.getElementById("artist").textContent = data.artist || "不明";
+          document.getElementById("date").textContent = data.Date || "不明";
+          document.getElementById("title").textContent = data.title || "不明";
+          document.getElementById("venue").textContent = data.venue || "不明";
+
+          const hourArray = (data.hour || "").split("**/kugiri\\**");
+          const planArray = (data.plan || "").split("**/kugiri\\**");
+          const memoArray = (data.memo || "").split("**/kugiri\\**");
+
+          const div1 = document.querySelector(".div");
+          hourArray.forEach((hour, index) => {
+              const newDiv1 = index === 0 ? div1 : div1.cloneNode(true);
+              if (index > 0) div1.parentNode.appendChild(newDiv1);
+
+              newDiv1.querySelector(".b6").value = hour;
+              newDiv1.querySelector(".b8").value = planArray[index] || "";
+              newDiv1.querySelector(".input").value = memoArray[index] || "";
+            });
+        }else{
+          alert("No such document.");
+        }
+      }catch(error){
+        alert("Error loading document.");
+      }
+    }
+
+    async function saveData(userUID, docName){
+      const hours = Array.from(document.querySelectorAll(".b6")).map(
+          (input) => input.value
+        );
+        const plans = Array.from(document.querySelectorAll(".b8")).map(
+          (input) => input.value
+        );
+        const memos = Array.from(document.querySelectorAll(".input")).map(
+          (input) => input.value
+        );
+
+        const docRef = doc(db, userUID, docName);
+        await updateDoc(docRef, {
+          hour: hours.join("**/kugiri\\**"),
+          plan: plans.join("**/kugiri\\**"),
+          memo: memos.join("**/kugiri\\**")
+        });
+        alert("データが保存されました");
+    }
   
     document.addEventListener('DOMContentLoaded', async () => {
-      const docName = getQueryParam('docName');
+      const docName = location.href.split("?")[1];
+      onAuthStateChanged(auth, async(user) => {
+        const userUID = user.uid;
+        await loadImage(userUID, docName);
+        await loadData(userUID, docName);
+        await loadTodoList(userUID, docName);
+      });
+      
+      /*
       if (docName) {
-        await loadTodoList(docName);
+        onAuthStateChanged(auth, (user) => {
+          const userUID = user.uid;
+          loadTodoList(userUID, docName);
 
-        try {
-          const docRef = doc(db, "otoyo", docName);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            console.log('Document data:', data);
-  
-            // データを対応する要素に反映
-            document.getElementById('artist').textContent = data.artist || '不明';
-            document.getElementById('date').textContent = data.Date || '不明';
-            document.getElementById('title').textContent = data.title || '不明';
-            document.getElementById('venue').textContent = data.venue || '不明';
-          } else {
-            console.log("No such document!");
+          try {
+            const docRef = doc(db, userUID, docName);
+            const docSnap = getDoc(docRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              console.log('Document data:', data);
+    
+              // データを対応する要素に反映
+              document.getElementById('artist').textContent = data.artist || '不明';
+              document.getElementById('date').textContent = data.Date || '不明';
+              document.getElementById('title').textContent = data.title || '不明';
+              document.getElementById('venue').textContent = data.venue || '不明';
+            } else {
+              console.log("No such document!");
+            }
+          } catch (e) {
+            console.error("Error getting document: ", e);
           }
-        } catch (e) {
-          console.error("Error getting document: ", e);
-        }
-      }
-  
-      await loadImage(docName);
-  
-      var container = document.getElementById("container");
-      if (container) {
-        container.addEventListener("click", function (e) {
-          // Please sync "企画書用に編集1" to the project
-        });
-      }
-  
-      var plan = document.getElementById("plan");
-      if (plan) {
-        plan.addEventListener("click", function (e) {
-          window.location.href = `./plan.html?docName=${docName}`;
-        });
-      }
-  
-      var ticket = document.getElementById("ticket");
-      if (ticket) {
-        ticket.addEventListener("click", function (e) {
-          window.location.href = `./ticket.html?docName=${docName}`;
-        });
-      }
-  
-      var setlist = document.getElementById("setlist");
-      if (setlist) {
-        setlist.addEventListener("click", function (e) {
-          window.location.href = `./setlist.html?docName=${docName}`;
         });
       }
 
-      var toHome = document.getElementById("toHome");
-      if (toHome) {
-        toHome.addEventListener("click", function (e) {
-          window.location.href = `./home.html`;
+      onAuthStateChanged(auth, (user) => {
+        const userUID = user.uid;
+        loadImage(userUID, docName);
+      })*/
+  
+    var container = document.getElementById("container");
+    if (container) {
+      container.addEventListener("click", function (e) {
+        // Please sync "企画書用に編集1" to the project
+      });
+    }
+  
+    var plan = document.getElementById("plan");
+    if (plan) {
+      plan.addEventListener("click", function (e) {
+        window.location.href = `./plan.html?${docName}`;
+      });
+    }
+  
+    var ticket = document.getElementById("ticket");
+    if (ticket) {
+      ticket.addEventListener("click", function (e) {
+        window.location.href = `./ticket.html?${docName}`;
+      });
+    }
+  
+    var setlist = document.getElementById("setlist");
+    if (setlist) {
+      setlist.addEventListener("click", function (e) {
+        window.location.href = `./setlist.html?${docName}`;
+      });
+    }
+
+    var toHome = document.getElementById("toHome");
+    if(toHome){
+      toHome.addEventListener("click", function(e){
+        onAuthStateChanged(auth, (user) => {
+          const userUID = user.uid;
+          window.location.href = `home.html?${userUID}`;
         });
-      }
+      });
+    }
 
       // sharing-labelをクリックするとlistLimemo.htmlに遷移
-      const sharingLabel = document.querySelector(".sharing-label");
-      if (sharingLabel) {
-        sharingLabel.addEventListener("click", function (e) {
-          const docName = getQueryParam('docName');
-          window.location.href = `./listLimemo.html?docName=${docName}`;
-        });
-      }
+    const sharingLabel = document.querySelector(".sharing-label");
+    if (sharingLabel) {
+      sharingLabel.addEventListener("click", function (e) {
+        const docName = location.href.split("?")[1];
+        window.location.href = `./listLimemo.html?${docName}`;
+      });
+    }
     });
 
     document.getElementById('noImage').addEventListener('click', function() {
@@ -465,23 +586,27 @@
     });
 
     document.getElementById('imageInput').addEventListener('change', async function(event) {
-      const docName = getQueryParam('docName');
-      const file = event.target.files[0];
-      if (file) {
-        // Firebase Storageに画像をアップロード
-        const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
-        try {
-          await uploadBytes(storageRef, file);
-          console.log('画像がアップロードされました');
+      onAuthStateChanged(auth, (user) => {
+        const userUID = user.uid;
+        const docName = location.href.split("?")[1];
+        const file = event.target.files[0];
 
-          // アップロードされた画像のURLを取得して表示
-          const downloadURL = await getDownloadURL(storageRef);
-          document.getElementById('noImage').src = downloadURL;
-          console.log('ダウンロードURL:', downloadURL);
-        } catch (error) {
-          console.error('画像のアップロードに失敗しました:', error);
+        if (file) {
+          // Firebase Storageに画像をアップロード
+          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+          try {
+            uploadBytes(storageRef, file);
+            console.log('画像がアップロードされました');
+
+            // アップロードされた画像のURLを取得して表示
+            const downloadURL = getDownloadURL(storageRef);
+            document.getElementById('noImage').src = downloadURL;
+            console.log('ダウンロードURL:', downloadURL);
+          } catch (error) {
+            console.error('画像のアップロードに失敗しました:', error);
+          }
         }
-      }
+      });
     });
   </script>
 </body>

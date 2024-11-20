@@ -160,13 +160,17 @@
         getFirestore,
         doc,
         getDoc,
-        updateDoc,
+        updateDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
       import {
         getStorage,
         ref,
         uploadBytes,
-        getDownloadURL,
+        getDownloadURL
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
@@ -182,15 +186,20 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
       const storage = getStorage(app);
+      const auth = getAuth(app);
+      let userUID;
 
-      function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-      }
+      onAuthStateChanged(auth, (user) => {
+        if(user){
+          userUID = user.uid;
+        }else{
+          window.location.href = "./login.html";
+        }
+      });
 
       async function loadImage(docName) {
-        const thumbnailRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
-        const ticketImageRef = ref(storage, `otoyo/${docName}/ticketImage.png`);
+        const thumbnailRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+        const ticketImageRef = ref(storage, `${userUID}/${docName}/ticketImage.png`);
         try {
           const thumbnailURL = await getDownloadURL(thumbnailRef);
           document.getElementById("thumbnailImage").src = thumbnailURL;
@@ -211,7 +220,7 @@
         const ticketDetail = document.getElementById("textareaField").value;
 
         try {
-          const docRef = doc(db, "otoyo", docName);
+          const docRef = doc(db, userUID, docName);
           await updateDoc(docRef, {
             ticket: ticketDetail,
           });
@@ -224,9 +233,11 @@
 
       document.addEventListener("DOMContentLoaded", async () => {
         const docName = getQueryParam("docName");
+      document.addEventListener('DOMContentLoaded', async () => {
+        const docName = location.href.split("?")[1];
         if (docName) {
           try {
-            const docRef = doc(db, "otoyo", docName);
+            const docRef = doc(db, userUID, docName);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               const data = docSnap.data();
@@ -257,7 +268,7 @@
         async function handleNavigation(e, url) {
           e.preventDefault();
           await saveData(docName);
-          window.location.href = `${url}?docName=${docName}`;
+          window.location.href = `${url}?${docName}`;
         }
 
         var list = document.getElementById("list");
@@ -285,7 +296,7 @@
         if (toHome) {
           toHome.addEventListener("click", async function (e) {
             await saveData(docName);
-            window.location.href = `./home.html?docName=${docName}`;
+            window.location.href = `./home.html?${userUID}`;
           });
         }
 
@@ -314,7 +325,7 @@
             reader.readAsDataURL(file);
 
             // Firebase Storageに画像をアップロード
-            const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
+            const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
             try {
               await uploadBytes(storageRef, file);
               console.log("画像がアップロードされました");
@@ -349,7 +360,7 @@
             reader.readAsDataURL(file);
 
             // Firebase Storageに画像をアップロード
-            const storageRef = ref(storage, `otoyo/${docName}/ticketImage.png`);
+            const storageRef = ref(storage, `${userUID}/${docName}/ticketImage.png`);
             try {
               await uploadBytes(storageRef, file);
               console.log("画像がアップロードされました");
