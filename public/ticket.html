@@ -25,8 +25,14 @@
           <div class="frame-wrapper">
             <div class="frame-group">
               <div class="container">
-                <img class="icon" loading="lazy" alt="" src="./noimage.png" id="thumbnailImage" />
-                <input type="file" id="imageInput" style="display:none;">
+                <img
+                  class="icon"
+                  loading="lazy"
+                  alt=""
+                  src="./noimage.png"
+                  id="thumbnailImage"
+                />
+                <input type="file" id="imageInput" style="display: none" />
               </div>
               <div class="glyphssmallmap-wrapper">
                 <img
@@ -78,19 +84,37 @@
               </b>
             </div>
             <div class="rectangle-parent">
-              <div class="frame-inner"></div>
-              <textarea class="ticket-detail" id="textareaField" 
-              placeholder="(例) 1ゲート
+              <textarea
+                class="ticket-detail"
+                id="textareaField"
+                placeholder="(例) 1ゲート
         Aブロック 1列 1番席
               
-        整理番号　123番　　など"></textarea>
+        整理番号　123番　　など"
+              ></textarea>
             </div>
-            <img id="storedImage" class="ticketImage" src="#" alt="Uploaded Image" style="display:none;">
+            <img
+              id="storedImage"
+              class="ticketImage"
+              src="#"
+              alt="Uploaded Image"
+              style="display: none"
+            />
           </div>
           <div class="frame-wrapper1">
             <label for="form-image">画像を追加</label>
-            <input type="file" class="storeImage" id="form-image" style="display:none;">
-            <img class="group-icon" alt="" src="./ticket-3.svg" id="storeImageTrigger"/>
+            <input
+              type="file"
+              class="storeImage"
+              id="form-image"
+              style="display: none"
+            />
+            <img
+              class="group-icon"
+              alt=""
+              src="./ticket-3.svg"
+              id="storeImageTrigger"
+            />
           </div>
         </div>
       </section>
@@ -112,30 +136,38 @@
             </div>
           </div>
           <div class="tour-name">
-            <div class="parent1">
-              <b class="b9">
-                <span class="txt">
-                  <span>発券開始日時 </span>
-                  <span class="span1">を記入しておこう！</span>
-                  <div class="date-time">
+            <b class="b9">
+              <span class="txt">
+                <span>発券開始日時 </span>
+                <span class="span1">を記入しておこう！</span>
+                <div class="date-time">
                   <input
                     type="datetime-local"
                     id="date-time"
-                    value="2024-07-01T19:30"/>
-                  </div>
-                </span>
-              </b>
-            </div>
+                    value="2024-07-01T19:30"
+                  />
+                </div>
+              </span>
+            </b>
           </div>
         </div>
       </section>
-      <section class="section1"></section>
     </div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-      import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-      import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -144,7 +176,7 @@
         storageBucket: "liplan-836a1.appspot.com",
         messagingSenderId: "545673347741",
         appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-        measurementId: "G-TKF08JYKTT"
+        measurementId: "G-TKF08JYKTT",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -161,53 +193,57 @@
         const ticketImageRef = ref(storage, `otoyo/${docName}/ticketImage.png`);
         try {
           const thumbnailURL = await getDownloadURL(thumbnailRef);
-          document.getElementById('thumbnailImage').src = thumbnailURL;
+          document.getElementById("thumbnailImage").src = thumbnailURL;
         } catch (error) {
-          console.error('サムネイルの取得に失敗しました:', error);
+          console.error("サムネイルの取得に失敗しました:", error);
         }
 
         try {
           const ticketImageURL = await getDownloadURL(ticketImageRef);
-          document.getElementById('storedImage').src = ticketImageURL;
-          document.getElementById('storedImage').style.display = 'block';
+          document.getElementById("storedImage").src = ticketImageURL;
+          document.getElementById("storedImage").style.display = "block";
         } catch (error) {
-          console.error('チケット画像の取得に失敗しました:', error);
+          console.error("チケット画像の取得に失敗しました:", error);
         }
       }
 
       async function saveData(docName) {
-        const ticketDetail = document.getElementById('textareaField').value;
+        const ticketDetail = document.getElementById("textareaField").value;
 
         try {
           const docRef = doc(db, "otoyo", docName);
           await updateDoc(docRef, {
-            ticket: ticketDetail
+            ticket: ticketDetail,
           });
-          console.log('データが保存されました');
+          console.log("データが保存されました");
         } catch (e) {
           console.error("Error updating document: ", e);
-          alert('エラーが発生しました');
+          alert("エラーが発生しました");
         }
       }
 
-      document.addEventListener('DOMContentLoaded', async () => {
-        const docName = getQueryParam('docName');
+      document.addEventListener("DOMContentLoaded", async () => {
+        const docName = getQueryParam("docName");
         if (docName) {
           try {
             const docRef = doc(db, "otoyo", docName);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               const data = docSnap.data();
-              console.log('Document data:', data);
+              console.log("Document data:", data);
 
               // データを対応する要素に反映
-              document.getElementById('artist').textContent = data.artist || '不明';
-              document.getElementById('date').textContent = data.Date || '不明';
-              document.getElementById('title').textContent = data.title || '不明';
-              document.getElementById('venue').textContent = data.venue || '不明';
+              document.getElementById("artist").textContent =
+                data.artist || "不明";
+              document.getElementById("date").textContent = data.Date || "不明";
+              document.getElementById("title").textContent =
+                data.title || "不明";
+              document.getElementById("venue").textContent =
+                data.venue || "不明";
 
               // チケット詳細を反映
-              document.getElementById('textareaField').value = data.ticket || '';
+              document.getElementById("textareaField").value =
+                data.ticket || "";
             } else {
               console.log("No such document!");
             }
@@ -227,21 +263,21 @@
         var list = document.getElementById("list");
         if (list) {
           list.addEventListener("click", function (e) {
-            handleNavigation(e, './list.html');
+            handleNavigation(e, "./list.html");
           });
         }
 
         var plan = document.getElementById("plan");
         if (plan) {
           plan.addEventListener("click", function (e) {
-            handleNavigation(e, './plan.html');
+            handleNavigation(e, "./plan.html");
           });
         }
 
         var setlist = document.getElementById("setlist");
         if (setlist) {
           setlist.addEventListener("click", function (e) {
-            handleNavigation(e, './setlist.html');
+            handleNavigation(e, "./setlist.html");
           });
         }
 
@@ -261,14 +297,14 @@
         }
 
         // 写真追加部分
-        var thumbnailImage = document.getElementById('thumbnailImage');
-        var imageInput = document.getElementById('imageInput');
-        
-        thumbnailImage.addEventListener('click', function () {
+        var thumbnailImage = document.getElementById("thumbnailImage");
+        var imageInput = document.getElementById("imageInput");
+
+        thumbnailImage.addEventListener("click", function () {
           imageInput.click();
         });
 
-        imageInput.addEventListener('change', async function (event) {
+        imageInput.addEventListener("change", async function (event) {
           const file = event.target.files[0];
           if (file) {
             const reader = new FileReader();
@@ -281,34 +317,34 @@
             const storageRef = ref(storage, `otoyo/${docName}/thumbnail.png`);
             try {
               await uploadBytes(storageRef, file);
-              console.log('画像がアップロードされました');
+              console.log("画像がアップロードされました");
 
               // アップロードされた画像のURLを取得して表示
               const downloadURL = await getDownloadURL(storageRef);
               thumbnailImage.src = downloadURL;
-              console.log('ダウンロードURL:', downloadURL);
-
+              console.log("ダウンロードURL:", downloadURL);
             } catch (error) {
-              console.error('画像のアップロードに失敗しました:', error);
+              console.error("画像のアップロードに失敗しました:", error);
             }
           }
         });
 
         // storeImageクラスを持つ要素の変更イベント
-        var storeImageInput = document.querySelector('.storeImage');
-        var storeImageTrigger = document.getElementById('storeImageTrigger');
-        
-        storeImageTrigger.addEventListener('click', function () {
+        var storeImageInput = document.querySelector(".storeImage");
+        var storeImageTrigger = document.getElementById("storeImageTrigger");
+
+        storeImageTrigger.addEventListener("click", function () {
           storeImageInput.click();
         });
 
-        storeImageInput.addEventListener('change', async function (event) {
+        storeImageInput.addEventListener("change", async function (event) {
           const file = event.target.files[0];
           if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
-              document.getElementById('storedImage').src = e.target.result;
-              document.getElementById('storedImage').style.display = 'block';
+              document.getElementById("storedImage").src = e.target.result;
+              document.getElementById("storedImage").style.display = "block";
+              document.querySelector(".frame-wrapper1").classList.add("hidden");
             };
             reader.readAsDataURL(file);
 
@@ -316,9 +352,9 @@
             const storageRef = ref(storage, `otoyo/${docName}/ticketImage.png`);
             try {
               await uploadBytes(storageRef, file);
-              console.log('画像がアップロードされました');
+              console.log("画像がアップロードされました");
             } catch (error) {
-              console.error('画像のアップロードに失敗しました:', error);
+              console.error("画像のアップロードに失敗しました:", error);
             }
           }
         });
