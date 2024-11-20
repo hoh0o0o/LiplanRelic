@@ -160,17 +160,17 @@
         getFirestore,
         doc,
         getDoc,
-        updateDoc
+        updateDoc,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getAuth,
-        onAuthStateChanged
+        onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
       import {
         getStorage,
         ref,
         uploadBytes,
-        getDownloadURL
+        getDownloadURL,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
@@ -190,16 +190,22 @@
       let userUID;
 
       onAuthStateChanged(auth, (user) => {
-        if(user){
+        if (user) {
           userUID = user.uid;
-        }else{
+        } else {
           window.location.href = "./login.html";
         }
       });
 
       async function loadImage(docName) {
-        const thumbnailRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-        const ticketImageRef = ref(storage, `${userUID}/${docName}/ticketImage.png`);
+        const thumbnailRef = ref(
+          storage,
+          `${userUID}/${docName}/thumbnail.png`
+        );
+        const ticketImageRef = ref(
+          storage,
+          `${userUID}/${docName}/ticketImage.png`
+        );
         try {
           const thumbnailURL = await getDownloadURL(thumbnailRef);
           document.getElementById("thumbnailImage").src = thumbnailURL;
@@ -232,8 +238,6 @@
       }
 
       document.addEventListener("DOMContentLoaded", async () => {
-        const docName = getQueryParam("docName");
-      document.addEventListener('DOMContentLoaded', async () => {
         const docName = location.href.split("?")[1];
         if (docName) {
           try {
@@ -325,7 +329,10 @@
             reader.readAsDataURL(file);
 
             // Firebase Storageに画像をアップロード
-            const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+            const storageRef = ref(
+              storage,
+              `${userUID}/${docName}/thumbnail.png`
+            );
             try {
               await uploadBytes(storageRef, file);
               console.log("画像がアップロードされました");
@@ -360,7 +367,10 @@
             reader.readAsDataURL(file);
 
             // Firebase Storageに画像をアップロード
-            const storageRef = ref(storage, `${userUID}/${docName}/ticketImage.png`);
+            const storageRef = ref(
+              storage,
+              `${userUID}/${docName}/ticketImage.png`
+            );
             try {
               await uploadBytes(storageRef, file);
               console.log("画像がアップロードされました");
