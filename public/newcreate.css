@@ -1,39 +1,5 @@
-.icon {
-  top: 0;
-  right: 0;
-  bottom: 4px;
-  left: 2px;
-  max-width: 100%;
-  overflow: hidden;
-  max-height: 100%;
-}
-.background,
-.icon,
-.icon1,
-.oval {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-.icon1 {
-  top: 0;
-  right: 2px;
-  bottom: 0;
-  left: 0;
-  max-width: 100%;
-  overflow: hidden;
-  max-height: 100%;
-  z-index: 1;
-}
-.background,
 .oval {
   right: 0;
-}
-.background {
-  margin: 0 !important;
-  top: 0;
-  bottom: 0;
-  left: 0;
 }
 .oval {
   top: calc(50% - 15px);
@@ -275,7 +241,7 @@
   z-index: 2;
 }
 
-.calendar-choose, 
+.calendar-choose,
 .input,
 .areaselect,
 .venueselect {
@@ -496,7 +462,7 @@
 .create-button-container {
   cursor: pointer;
   border: 0;
-  padding: var(--padding-lg) 47px var(--padding-lg) 53px;
+  padding: 15px 40px;
   background-color: var(--color-darksalmon);
   border-radius: var(--br-61xl);
   display: flex;
@@ -532,8 +498,9 @@
   padding: 15.8px 0 0;
 }
 .create-button-container-parent {
-  flex-direction: row;
-  justify-content: flex-start;
+  display: flex;
+  justify-content: center; /* 中央配置 */
+  width: 100%; /* 横幅全体 */
   gap: var(--gap-xl);
 }
 .create-button-container-parent,
@@ -564,3 +531,154 @@
   color: var(--color-black);
   font-family: var(--font-inter);
 }
+
+/* ...existing code... */
+
+.search-container {
+  margin-top: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+#selected-place-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: slideUp 0.5s ease-in-out;
+}
+
+#selected-place-container.fade-in {
+  display: flex;
+}
+
+#selected-place-container.fade-out {
+  animation: fadeOut 0.5s ease-in-out;
+  display: none;
+}
+
+#selected-place-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px 14px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #4285f4;
+  color: white;
+}
+
+button.add-button {
+  background-color: #7f66a0;
+  border-radius: 20px;
+}
+
+selected-place-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#map {
+  width: 100%;
+  height: 450px;
+  margin-top: 20px;
+  max-width: 600px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #e5e5e5; /* Ensure the map container has a background color */
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+#overlay.fade-in {
+  display: flex;
+}
+
+#overlay.fade-out {
+  animation: fadeOut 0.5s ease-in-out;
+  display: none;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ...existing code... */
+
+.background-circle {
+  position: relative;
+}
+
+.background-circle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.05); /* もっと薄い灰色 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1; /* 背景として表示するためにz-indexを設定 */
+}
+/* ...existing code... */

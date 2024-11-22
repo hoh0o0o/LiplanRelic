@@ -1,304 +1,270 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
 
-  <link rel="stylesheet" href="./global2.css" />
-  <link rel="stylesheet" href="./newcreate.css" />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
-  />
-</head>
-<body>
-  <div class="lnlive">
-    <main class="background">
-      <img class="icon" alt="" src="./newcreate-1.svg" />
-
-      <img class="icon1" alt="" src="./newcreate-1.svg" />
-    </main>
-    <header class="content">
-      <div class="header">
-        <div class="header1">
-          <div class="div">
-            <div class="oval" id="backtoHome"></div>
-            <div class="close-icon" id="backtoHome"></div>
-            <div class="close-icon1" id="backtoHome"></div>
-          </div>
-          <div class="new-label">
-            <a class="a">新規作成</a>
+    <link rel="stylesheet" href="./global2.css" />
+    <link rel="stylesheet" href="./newcreate.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+    />
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBepJ9Yzi3sHNAl6PG2KPyjfcB8B6WhLhA&libraries=places"></script>
+  </head>
+  <body>
+    <div class="lnlive">
+      <header class="content">
+        <div class="header">
+          <div class="header1">
+            <div class="div background-circle">
+              <div class="oval" id="backtoHome"></div>
+              <div class="close-icon" id="backtoHome"></div>
+              <div class="close-icon1" id="backtoHome"></div>
+            </div>
+            <div class="new-label">
+              <a class="a">新規作成</a>
+            </div>
           </div>
         </div>
+        <img
+          class="divider-icon"
+          loading="lazy"
+          alt=""
+          src="./newcreate_divider.svg"
+        />
+      </header>
+      <div class="wrapper">
+        <b class="b">
+          <span>新しいライブを</span>
+          <span class="span">記録</span>
+          <span>しよう</span>
+        </b>
       </div>
-      <img class="divider-icon" loading="lazy" alt="" src="./newcreate_divider.svg" />
-    </header>
-    <div class="wrapper">
-      <b class="b">
-        <span>新しいライブを</span>
-        <span class="span">記録</span>
-        <span>しよう</span>
-      </b>
-    </div>
-    <div class="lnlive-inner">
-      <div class="frame-parent">
-        <div class="date-selector-wrapper">
-          <div class="date-selector">
-            <div class="parent">
-              <b class="b1">地域*</b>
-              <div class="selection">
-                <b class="b2">
-                  <select name="area" id="area-select" class="areaselect">
-                    <option value="">--未選択--</option>
-                    <option value="北海道">北海道</option>
-                    <option value="青森県">青森県</option>
-                    <option value="岩手県">岩手県</option>
-                    <option value="宮城県">宮城県</option>
-                    <option value="秋田県">秋田県</option>
-                    <option value="山形県">山形県</option>
-                    <option value="福島県">福島県</option>
-                    <option value="茨城県">茨城県</option>
-                    <option value="栃木県">栃木県</option>
-                    <option value="群馬県">群馬県</option>
-                    <option value="埼玉県">埼玉県</option>
-                    <option value="千葉県">千葉県</option>
-                    <option value="東京都">東京都</option>
-                    <option value="神奈川県">神奈川県</option>
-                    <option value="新潟県">新潟県</option>
-                    <option value="富山県">富山県</option>
-                    <option value="石川県">石川県</option>
-                    <option value="福井県">福井県</option>
-                    <option value="山梨県">山梨県</option>
-                    <option value="長野県">長野県</option>
-                    <option value="岐阜県">岐阜県</option>
-                    <option value="静岡県">静岡県</option>
-                    <option value="愛知県">愛知県</option>
-                    <option value="三重県">三重県</option>
-                    <option value="滋賀県">滋賀県</option>
-                    <option value="京都府">京都府</option>
-                    <option value="大阪府">大阪府</option>
-                    <option value="兵庫県">兵庫県</option>
-                    <option value="奈良県">奈良県</option>
-                    <option value="和歌山県">和歌山県</option>
-                    <option value="鳥取県">鳥取県</option>
-                    <option value="島根県">島根県</option>
-                    <option value="岡山県">岡山県</option>
-                    <option value="広島県">広島県</option>
-                    <option value="山口県">山口県</option>
-                    <option value="徳島県">徳島県</option>
-                    <option value="香川県">香川県</option>
-                    <option value="愛媛県">愛媛県</option>
-                    <option value="高知県">高知県</option>
-                    <option value="福岡県">福岡県</option>
-                    <option value="佐賀県">佐賀県</option>
-                    <option value="長崎県">長崎県</option>
-                    <option value="熊本県">熊本県</option>
-                    <option value="大分県">大分県</option>
-                    <option value="宮崎県">宮崎県</option>
-                    <option value="鹿児島県">鹿児島県</option>
-                    <option value="沖縄県">沖縄県</option>
-                  </select>
-                </b>
-              </div>
-            </div>
-            <div class="selection1">
-              <b class="b3">会場*</b>
-              <b class="b4">
-                <select name="venue" id="venue-select" class="venueselect">
-                  <option value="">--未選択--</option>
-                  <option value="大阪城ホール">大阪城ホール</option>
-                  <option value="京セラドーム大阪">京セラドーム大阪</option>
-                  <option value="幕張メッセ">幕張メッセ</option>
-                  <option value="代々木国立競技場">代々木国立競技場</option>
-                </select>
+      <div class="frame">
+        <div class="div1">
+          <div class="live-name-field">
+            <b class="b6">会場名*</b>
+          </div>
+          <div class="live-name-input">
+            <b class="b7"></b>
+            <input
+              class="input2"
+              id="search-input"
+              type="text"
+              placeholder="会場名を入力"
+            />
+            <img class="icon5" alt="" src="./newcreate-4.svg" />
+          </div>
+          <div class="child"></div>
+        </div>
+      </div>
+      <div class="artist-label">
+        <div class="create-label-parent">
+          <div class="create-label">
+            <b class="b5">日程*</b>
+          </div>
+          <div class="frame-group">
+            <div class="calendar-choose">
+              <b class="b11">
+                <input class="input" type="date" id="date-input" />
               </b>
             </div>
+            <div class="frame-child"></div>
           </div>
         </div>
-        <div class="date-input">
-          <div class="calendar-input"></div>
-          <div class="date-input-child"></div>
-        </div>
       </div>
-    </div>
-    <div class="artist-label">
-      <div class="create-label-parent">
-        <div class="create-label">
-          <b class="b5">日程*</b>
-        </div>
-        <div class="frame-group">
-          <div class="calendar-choose">
-            <b class="b11">
-              <input class="input" type="date" id="date-input">
-            </b>
+      <div class="frame">
+        <div class="div1">
+          <div class="live-name-field">
+            <b class="b6">公演名*</b>
           </div>
-          <div class="frame-child"></div>
-        </div>
-      </div>
-    </div>
-    <div class="frame">
-      <div class="div1">
-        <div class="live-name-field">
-          <b class="b6">公演名*</b>
-        </div>
-        <div class="live-name-input">
-          <b class="b7"></b>
-          <input class="input2" placeholder="公演名を入力" type="text" id="title-input"/>
-          <img class="icon5" alt="" src="./newcreate-4.svg" />
-        </div>
-        <div class="child"></div>
-      </div>
-    </div>
-    <div class="frame-div">
-      <div class="div2">
-        <div class="wrapper1">
-          <b class="b8">アーティスト*</b>
-        </div>
-        <div class="artist-name-input">
-          <b class="b9"></b>
-          <input class="input3" placeholder="フェスの場合はフェスと入力" type="text" id="artist-input"/>
-          <img class="icon6" alt="" src="./newcreate-4.svg" />
-        </div>
-        <div class="item"></div>
-      </div>
-    </div>
-    <div class="live-record">
-      <div class="create-button-container-parent">
-        <button class="create-button-container" id="sendFirebase">
-          <div class="create-button-container-child"></div>
-          <b class="b10">作成</b>
-        </button>
-        <div class="frame-wrapper">
-          <div class="frame-container">
-            <img
-              class="frame-item"
-              loading="lazy"
-              alt=""
-              src="./newcreate_group-3@2x.png"
+          <div class="live-name-input">
+            <b class="b7"></b>
+            <input
+              class="input2"
+              placeholder="公演名を入力"
+              type="text"
+              id="title-input"
             />
-            <img
-              class="frame-inner"
-              loading="lazy"
-              alt=""
-              src="./newcreate_group-4@2x.png"
-            />
+            <img class="icon5" alt="" src="./newcreate-4.svg" />
           </div>
+          <div class="child"></div>
+        </div>
+      </div>
+      <div class="frame-div">
+        <div class="div2">
+          <div class="wrapper1">
+            <b class="b8">アーティスト*</b>
+          </div>
+          <div class="artist-name-input">
+            <b class="b9"></b>
+            <input
+              class="input3"
+              placeholder="フェスの場合はフェスと入力"
+              type="text"
+              id="artist-input"
+            />
+            <img class="icon6" alt="" src="./newcreate-4.svg" />
+          </div>
+          <div class="item"></div>
+        </div>
+      </div>
+      <div class="live-record">
+        <div class="create-button-container-parent">
+          <button class="create-button-container" id="sendFirebase">
+            <div class="create-button-container-child"></div>
+            <b class="b10">作成</b>
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      doc,
-      setDoc
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import {
-      getAuth,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-      authDomain: "liplan-836a1.firebaseapp.com",
-      projectId: "liplan-836a1",
-      storageBucket: "liplan-836a1.appspot.com",
-      messagingSenderId: "545673347741",
-      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-      measurementId: "G-TKF08JYKTT"
-    };
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+        authDomain: "liplan-836a1.firebaseapp.com",
+        projectId: "liplan-836a1",
+        storageBucket: "liplan-836a1.appspot.com",
+        messagingSenderId: "545673347741",
+        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+        measurementId: "G-TKF08JYKTT",
+      };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    let userUID;
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      let userUID;
 
-    // ユーザーUIDを非同期で取得し、Promiseで管理
-    const getUserUID = new Promise((resolve, reject) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          userUID = user.uid;
-          resolve(userUID);
-        } else {
-          window.location.href = "./login.html";  // 認証されていない場合はログインページへ
-          reject("User not logged in");
-        }
+      // ユーザーUIDを非同期で取得し、Promiseで管理
+      const getUserUID = new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            userUID = user.uid;
+            resolve(userUID);
+          } else {
+            window.location.href = "./login.html"; // 認証されていない場合はログインページへ
+            reject("User not logged in");
+          }
+        });
       });
-    });
 
-    // 日付を今日の日付に設定する関数
-    function setDateToday() {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const formattedToday = `${yyyy}-${mm}-${dd}`;
-      document.getElementById('date-input').value = formattedToday;
-    }
+      // 日付を今日の日付に設定する関数
+      function setDateToday() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        const formattedToday = `${yyyy}-${mm}-${dd}`;
+        document.getElementById("date-input").value = formattedToday;
+      }
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-      setDateToday();
-    });
+      document.addEventListener("DOMContentLoaded", (event) => {
+        setDateToday();
+      });
 
-    // 作成ボタンのクリックイベント
-    document.getElementById('sendFirebase').addEventListener('click', async () => {
-      try {
-        // userUIDの取得完了を待つ
-        const uid = await getUserUID;
-        const prefectures = document.getElementById('area-select').value;
-        const venue = document.getElementById('venue-select').value;
-        const date = document.getElementById('date-input').value;
-        const title = document.getElementById('title-input').value;
-        const artist = document.getElementById('artist-input').value;
+      // 作成ボタンのクリックイベント
+      document
+        .getElementById("sendFirebase")
+        .addEventListener("click", async () => {
+          try {
+            // userUIDの取得完了を待つ
+            const uid = await getUserUID;
+            const prefectures = document.getElementById("area-select").value;
+            const venue = document.getElementById("venue-select").value;
+            const date = document.getElementById("date-input").value;
+            const title = document.getElementById("title-input").value;
+            const artist = document.getElementById("artist-input").value;
 
-        // 入力チェック
-        if (!prefectures || !venue || !date || !title || !artist) {
-          alert("全ての項目を入力してください");
-          return;
-        }
+            // 入力チェック
+            if (!prefectures || !venue || !date || !title || !artist) {
+              alert("全ての項目を入力してください");
+              return;
+            }
 
-        const querySnapshot = await getDocs(collection(db, uid));
-        let maxDocNumber = 0;
+            const querySnapshot = await getDocs(collection(db, uid));
+            let maxDocNumber = 0;
 
-        querySnapshot.forEach(doc => {
-          const docId = doc.id;
-          const docNumber = parseInt(docId.replace(uid, ''));
-          if (!isNaN(docNumber) && docNumber > maxDocNumber) {
-            maxDocNumber = docNumber;
+            querySnapshot.forEach((doc) => {
+              const docId = doc.id;
+              const docNumber = parseInt(docId.replace(uid, ""));
+              if (!isNaN(docNumber) && docNumber > maxDocNumber) {
+                maxDocNumber = docNumber;
+              }
+            });
+
+            const newDocNumber = maxDocNumber + 1;
+            const docName = `${newDocNumber}`;
+
+            await setDoc(doc(db, uid, docName), {
+              prefectures: prefectures,
+              venue: venue,
+              Date: date,
+              title: title,
+              artist: artist,
+              publicity: false,
+            });
+
+            alert("データが送信されました");
+            window.location.href = `plan.html?docName=${docName}`;
+          } catch (e) {
+            console.error("Error adding document: ", e);
+            alert("エラーが発生しました");
           }
         });
 
-        const newDocNumber = maxDocNumber + 1;
-        const docName = `${newDocNumber}`;
+      // home.htmlへの遷移にuserUIDを含める
+      document.querySelectorAll("#backtoHome").forEach((element) => {
+        element.addEventListener("click", async () => {
+          const uid = await getUserUID; // userUIDの取得完了を待つ
+          window.location.href = `./home.html?${uid}`;
+        });
+      });
 
-        await setDoc(doc(db, uid, docName), {
-          prefectures: prefectures,
-          venue: venue,
-          Date: date,
-          title: title,
-          artist: artist,
-          publicity: false
+      let map;
+      let marker;
+      let selectedPlace = null;
+
+      function initMap() {
+        const input = document.getElementById("search-input");
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+          types: ["establishment"],
+          componentRestrictions: { country: "jp" },
         });
 
-        alert('データが送信されました');
-        window.location.href = `plan.html?docName=${docName}`;
-      } catch (e) {
-        console.error("Error adding document: ", e);
-        alert('エラーが発生しました');
-      }
-    });
+        autocomplete.addListener("place_changed", function () {
+          selectedPlace = autocomplete.getPlace();
 
-    // home.htmlへの遷移にuserUIDを含める
-    document.querySelectorAll('#backtoHome').forEach(element => {
-      element.addEventListener('click', async () => {
-        const uid = await getUserUID; // userUIDの取得完了を待つ
-        window.location.href = `./home.html?${uid}`;
+          if (!selectedPlace.geometry || !selectedPlace.geometry.location) {
+            alert("場所が見つかりませんでした。");
+            selectedPlace = null;
+            return;
+          }
+
+          // 選択した地名を表示
+          input.value = selectedPlace.name;
+          input.classList.add("selected");
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        setDateToday();
+        initMap();
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
