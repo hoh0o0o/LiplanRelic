@@ -177,6 +177,44 @@
         setDateToday();
       });
 
+      var create = document.getElementById("sendFirebase");
+      create.addEventListener("click", async function(e){
+        const userUID = await getUserUID;
+        const venue = document.getElementById("search-input").value;
+        const date = document.getElementById("date-input").value;
+        const title = document.getElementById("title-input").value;
+        const artist = document.getElementById("artist-input").value;
+
+        if(!venue || !date || !title || !artist){
+          alert("全ての項目を入力してください");
+          return;
+        }
+
+        const querySnapshot = await getDocs(collection(db, userUID));
+        let maxDocNumber = 0;
+
+        querySnapshot.forEach((doc) => {
+          const docId = doc.id;
+          const docNumber = parseInt(docId.replace(userUID, ""));
+          if (!isNaN(docNumber) && docNumber > maxDocNumber) {
+            maxDocNumber = docNumber;
+          }
+        });
+
+        const newDocNumber = maxDocNumber + 1;
+        const docName = `${newDocNumber}`;
+
+        await setDoc(doc(db, userUID, docName), {
+          venue: venue,
+          Date: date,
+          title: title,
+          artist: artist
+        });
+
+        window.location.href = `plan.html?${docName}`;
+      });
+
+      /*
       // 作成ボタンのクリックイベント
       document
         .getElementById("sendFirebase")
@@ -189,6 +227,7 @@
             const date = document.getElementById("date-input").value;
             const title = document.getElementById("title-input").value;
             const artist = document.getElementById("artist-input").value;
+            alert("artist");
 
             // 入力チェック
             if (!prefectures || !venue || !date || !title || !artist) {
@@ -220,12 +259,12 @@
             });
 
             alert("データが送信されました");
-            window.location.href = `plan.html?docName=${docName}`;
+            window.location.href = `plan.html?${docName}`;
           } catch (e) {
             console.error("Error adding document: ", e);
-            alert("エラーが発生しました");
+            alert("failed to upload data");
           }
-        });
+        });*/
 
       // home.htmlへの遷移にuserUIDを含める
       document.querySelectorAll("#backtoHome").forEach((element) => {
