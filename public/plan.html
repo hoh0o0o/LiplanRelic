@@ -90,23 +90,6 @@
             </div>
           </div>
         </div>
-        <!--<div class="frame-wrapper3">
-          <div class="frame-parent5">
-            <div class="frame-wrapper4" id="plusmark">
-              <button class="rectangle-parent" id="saveButton">
-                <div class="rectangle-div"></div>
-                <b class="b11">追加</b>
-              </button>
-            </div>
-            <div class="frame-wrapper5">
-              <img class="group-icon" loading="lazy" alt="" src="./plan5.png" />
-            </div>
-            <div class="frame-wrapper6">
-              <img class="frame-child1" loading="lazy" alt="" src="./plan2.png" />
-            </div>
-          </div>
-        </div>
-        -->
       </section>
       <section>
         <div class="osusume">
@@ -205,7 +188,7 @@
             console.error("No such document!");
           }
         } catch (e) {
-          console.error("Error loading document:", e);
+          //console.error("Error loading document:", e);
         }
       }
 
@@ -278,33 +261,57 @@
 
       const docName = location.href.split("?")[1];
 
+      var saveButton = document.getElementById("saveButton");
+      if(saveButton){
+        saveButton.addEventListener("click", function(e){
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `map.html?${docName}`;
+          });
+        });
+      }
+
       var list = document.getElementById("list");
       if(list){
         list.addEventListener("click", function(e){
-          window.location.href = `list.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `list.html?${docName}`;
+          });
         });
       }
 
       var ticket = document.getElementById("ticket");
       if(ticket){
         ticket.addEventListener("click", function(e){
-          window.location.href = `ticket.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `ticket.html?${docName}`;
+          });
         });
       }
 
       var setlist = document.getElementById("setlist");
       if(setlist){
         setlist.addEventListener("click", function(e){
-          window.location.href = `setlist.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `setlist.html?${docName}`;
+          });
         });
       }
 
       var toHome = document.getElementById("toHome");
       if(toHome){
         toHome.addEventListener("click", function(e){
-          onAuthStateChanged(auth, (user) => {
+          onAuthStateChanged(auth, async(user) => {
             const userUID = user.uid;
-            window.location.href = `home.html?${userUID}`;
+            await saveData(userUID, docName);
+            window.location.href = `home.html?${docName}`;
           });
         });
       }

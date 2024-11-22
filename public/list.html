@@ -468,7 +468,7 @@
           alert("No such document.");
         }
       }catch(error){
-        alert("Error loading document.");
+        //alert("Error loading document.");
       }
     }
 
@@ -500,38 +500,6 @@
         await loadData(userUID, docName);
         await loadTodoList(userUID, docName);
       });
-      
-      /*
-      if (docName) {
-        onAuthStateChanged(auth, (user) => {
-          const userUID = user.uid;
-          loadTodoList(userUID, docName);
-
-          try {
-            const docRef = doc(db, userUID, docName);
-            const docSnap = getDoc(docRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
-              console.log('Document data:', data);
-    
-              // データを対応する要素に反映
-              document.getElementById('artist').textContent = data.artist || '不明';
-              document.getElementById('date').textContent = data.Date || '不明';
-              document.getElementById('title').textContent = data.title || '不明';
-              document.getElementById('venue').textContent = data.venue || '不明';
-            } else {
-              console.log("No such document!");
-            }
-          } catch (e) {
-            console.error("Error getting document: ", e);
-          }
-        });
-      }
-
-      onAuthStateChanged(auth, (user) => {
-        const userUID = user.uid;
-        loadImage(userUID, docName);
-      })*/
   
     var container = document.getElementById("container");
     if (container) {

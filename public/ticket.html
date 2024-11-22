@@ -25,14 +25,8 @@
           <div class="frame-wrapper">
             <div class="frame-group">
               <div class="container">
-                <img
-                  class="icon"
-                  loading="lazy"
-                  alt=""
-                  src="./noimage.png"
-                  id="thumbnailImage"
-                />
-                <input type="file" id="imageInput" style="display: none" />
+                <img class="icon" loading="lazy" alt="" src="./noimage.png" id="noImage" />
+                <input type="file" id="imageInput" style="display:none;">
               </div>
               <div class="glyphssmallmap-wrapper">
                 <img
@@ -84,37 +78,19 @@
               </b>
             </div>
             <div class="rectangle-parent">
-              <textarea
-                class="ticket-detail"
-                id="textareaField"
-                placeholder="(例) 1ゲート
+              <div class="frame-inner"></div>
+              <textarea class="ticket-detail" id="textareaField" 
+              placeholder="(例) 1ゲート
         Aブロック 1列 1番席
               
-        整理番号　123番　　など"
-              ></textarea>
+        整理番号　123番　　など"></textarea>
             </div>
-            <img
-              id="storedImage"
-              class="ticketImage"
-              src="#"
-              alt="Uploaded Image"
-              style="display: none"
-            />
+            <img id="storedImage" class="ticketImage" src="#" alt="Uploaded Image" style="display:none;">
           </div>
           <div class="frame-wrapper1">
             <label for="form-image">画像を追加</label>
-            <input
-              type="file"
-              class="storeImage"
-              id="form-image"
-              style="display: none"
-            />
-            <img
-              class="group-icon"
-              alt=""
-              src="./ticket-3.svg"
-              id="storeImageTrigger"
-            />
+            <input type="file" class="storeImage" id="form-image" style="display:none;">
+            <img class="group-icon" alt="" src="./ticket-3.svg" id="storeImageTrigger"/>
           </div>
         </div>
       </section>
@@ -136,22 +112,24 @@
             </div>
           </div>
           <div class="tour-name">
-            <b class="b9">
-              <span class="txt">
-                <span>発券開始日時 </span>
-                <span class="span1">を記入しておこう！</span>
-                <div class="date-time">
+            <div class="parent1">
+              <b class="b9">
+                <span class="txt">
+                  <span>発券開始日時 </span>
+                  <span class="span1">を記入しておこう！</span>
+                  <div class="date-time">
                   <input
                     type="datetime-local"
                     id="date-time"
-                    value="2024-07-01T19:30"
-                  />
-                </div>
-              </span>
-            </b>
+                    value="2024-07-01T19:30"/>
+                  </div>
+                </span>
+              </b>
+            </div>
           </div>
         </div>
       </section>
+      <section class="section1"></section>
     </div>
 
     <script type="module">
@@ -160,17 +138,17 @@
         getFirestore,
         doc,
         getDoc,
-        updateDoc,
+        updateDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getAuth,
-        onAuthStateChanged,
+        onAuthStateChanged
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
       import {
         getStorage,
         ref,
         uploadBytes,
-        getDownloadURL,
+        getDownloadURL
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
@@ -180,129 +158,153 @@
         storageBucket: "liplan-836a1.appspot.com",
         messagingSenderId: "545673347741",
         appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-        measurementId: "G-TKF08JYKTT",
+        measurementId: "G-TKF08JYKTT"
       };
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
       const storage = getStorage(app);
       const auth = getAuth(app);
-      let userUID;
 
       onAuthStateChanged(auth, (user) => {
-        if (user) {
-          userUID = user.uid;
-        } else {
+        if(!user){
           window.location.href = "./login.html";
         }
       });
 
-      async function loadImage(docName) {
-        const thumbnailRef = ref(
-          storage,
-          `${userUID}/${docName}/thumbnail.png`
-        );
-        const ticketImageRef = ref(
-          storage,
-          `${userUID}/${docName}/ticketImage.png`
-        );
+      async function loadImage(userUID, docName) {
+        const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
         try {
-          const thumbnailURL = await getDownloadURL(thumbnailRef);
-          document.getElementById("thumbnailImage").src = thumbnailURL;
+          const downloadURL = await getDownloadURL(storageRef);
+          document.getElementById("noImage").src = downloadURL;
         } catch (error) {
-          console.error("サムネイルの取得に失敗しました:", error);
+          alert("failed to download a thumbnail image...");
         }
 
-        try {
-          const ticketImageURL = await getDownloadURL(ticketImageRef);
-          document.getElementById("storedImage").src = ticketImageURL;
-          document.getElementById("storedImage").style.display = "block";
-        } catch (error) {
-          console.error("チケット画像の取得に失敗しました:", error);
+        const storageTicketRef = ref(storage, `${userUID}/${docName}/ticketImage.png`);
+        try{
+          const downloadURL = await getDownloadURL(storageTicketRef);
+          const storedImageElement = document.getElementById('storedImage');
+          storedImageElement.src = downloadURL;
+          storedImageElement.style.display = 'block';
+          console.log('Ticket image successfully loaded:', downloadURL);
+        }catch(error){
+          alert("failed to download a ticet image...");
         }
       }
 
-      async function saveData(docName) {
-        const ticketDetail = document.getElementById("textareaField").value;
-
+      async function loadData(userUID, docName){
+        const docRef = doc(db, userUID, docName);
         try {
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            console.log("Document data:", data);
+
+            // データをDOMに反映
+            document.getElementById("artist").textContent = data.artist || "不明";
+            document.getElementById("date").textContent = data.Date || "不明";
+            document.getElementById("title").textContent = data.title || "不明";
+            document.getElementById("venue").textContent = data.venue || "不明";
+
+            // スケジュールデータの処理
+            const hourArray = (data.hour || "").split("**/kugiri\\**");
+            const planArray = (data.plan || "").split("**/kugiri\\**");
+            const memoArray = (data.memo || "").split("**/kugiri\\**");
+
+            const div1 = document.querySelector(".div1");
+            hourArray.forEach((hour, index) => {
+              const newDiv1 = index === 0 ? div1 : div1.cloneNode(true);
+              if (index > 0) div1.parentNode.appendChild(newDiv1);
+
+              newDiv1.querySelector(".b6").value = hour;
+              newDiv1.querySelector(".b8").value = planArray[index] || "";
+              newDiv1.querySelector(".input").value = memoArray[index] || "";
+            });
+          } else {
+            console.error("No such document!");
+          }
+        } catch (e) {
+          //console.error("Error loading document:", e);
+        }
+      }
+
+      async function loadTicket(userUID, docName) {
+        try{
+          const docRef = doc(db, userUID, docName);
+          const docSnap = await getDoc(docRef);
+          if(docSnap.exists()){
+            const data = docSnap.data();
+            const ticketInfo = data.ticket;
+            const ticketTime = data.ticketTime;
+            const textareaField = document.getElementById("textareaField");
+            const dateTime = document.getElementById("date-time");
+            textareaField.value = ticketInfo;
+            dateTime.value = data.ticketTime;
+          }
+        }catch(error){
+          alert("faield to download ticketInfo");
+        }
+      }
+
+      async function saveData(userUID, docName) {
+        const ticketDetail = document.getElementById('textareaField').value;
+        const ticketTime = document.getElementById("date-time").value;
+        try{
           const docRef = doc(db, userUID, docName);
           await updateDoc(docRef, {
             ticket: ticketDetail,
+            ticketTime: ticketTime
           });
-          console.log("データが保存されました");
-        } catch (e) {
-          console.error("Error updating document: ", e);
-          alert("エラーが発生しました");
+        }catch(error){
+          //alert("エラー発生；；"); 
         }
       }
 
-      document.addEventListener("DOMContentLoaded", async () => {
+      document.addEventListener('DOMContentLoaded', async () => {
         const docName = location.href.split("?")[1];
-        if (docName) {
-          try {
-            const docRef = doc(db, userUID, docName);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
-              console.log("Document data:", data);
 
-              // データを対応する要素に反映
-              document.getElementById("artist").textContent =
-                data.artist || "不明";
-              document.getElementById("date").textContent = data.Date || "不明";
-              document.getElementById("title").textContent =
-                data.title || "不明";
-              document.getElementById("venue").textContent =
-                data.venue || "不明";
+        onAuthStateChanged(auth, async(user) => {
+          const userUID = user.uid;
+          await loadImage(userUID, docName);
+          await loadData(userUID, docName);
+          await loadTicket(userUID, docName);
 
-              // チケット詳細を反映
-              document.getElementById("textareaField").value =
-                data.ticket || "";
-            } else {
-              console.log("No such document!");
-            }
-          } catch (e) {
-            console.error("Error getting document: ", e);
+          var list = document.getElementById("list");
+          if(list){
+            list.addEventListener("click", async function(e){
+              await saveData(userUID, docName);
+              window.location.href = `list.html?${docName}`;
+            });
           }
-        }
 
-        await loadImage(docName);
+          var plan = document.getElementById("plan");
+          if(plan){
+            plan.addEventListener("click", async function(e){
+              await saveData(userUID, docName);
+              window.location.href = `plan.html?${docName}`;
+            });
+          }
 
-        async function handleNavigation(e, url) {
-          e.preventDefault();
-          await saveData(docName);
-          window.location.href = `${url}?${docName}`;
-        }
+          var setlist = document.getElementById("setlist");
+          if(setlist){
+            setlist.addEventListener("click", async function(e){
+              await saveData(userUID, docName);
+              window.location.href = `setlist.html?${docName}`;
+            });
+          }
 
-        var list = document.getElementById("list");
-        if (list) {
-          list.addEventListener("click", function (e) {
-            handleNavigation(e, "./list.html");
-          });
-        }
-
-        var plan = document.getElementById("plan");
-        if (plan) {
-          plan.addEventListener("click", function (e) {
-            handleNavigation(e, "./plan.html");
-          });
-        }
-
-        var setlist = document.getElementById("setlist");
-        if (setlist) {
-          setlist.addEventListener("click", function (e) {
-            handleNavigation(e, "./setlist.html");
-          });
-        }
-
-        var toHome = document.getElementById("toHome");
-        if (toHome) {
-          toHome.addEventListener("click", async function (e) {
-            await saveData(docName);
-            window.location.href = `./home.html?${userUID}`;
-          });
-        }
+          var toHome = document.getElementById("toHome");
+          if(toHome){
+            toHome.addEventListener("click", async function(e){
+              onAuthStateChanged(auth, async(user) => {
+                const userUID = user.uid;
+                await saveData(userUID, docName);
+                window.location.href = `home.html?${userUID}`;
+              });
+            });
+          }
+        });
 
         var container = document.getElementById("container");
         if (container) {
@@ -312,71 +314,68 @@
         }
 
         // 写真追加部分
-        var thumbnailImage = document.getElementById("thumbnailImage");
-        var imageInput = document.getElementById("imageInput");
-
-        thumbnailImage.addEventListener("click", function () {
+        var noImage = document.getElementById('noImage');
+        var imageInput = document.getElementById('imageInput');
+        
+        noImage.addEventListener('click', function () {
           imageInput.click();
         });
 
-        imageInput.addEventListener("change", async function (event) {
+        imageInput.addEventListener('change', async function (event) {
           const file = event.target.files[0];
           if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
-              thumbnailImage.src = e.target.result;
+              noImage.src = e.target.result;
             };
             reader.readAsDataURL(file);
 
             // Firebase Storageに画像をアップロード
-            const storageRef = ref(
-              storage,
-              `${userUID}/${docName}/thumbnail.png`
-            );
+            const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
             try {
               await uploadBytes(storageRef, file);
-              console.log("画像がアップロードされました");
+              console.log('画像がアップロードされました');
 
               // アップロードされた画像のURLを取得して表示
               const downloadURL = await getDownloadURL(storageRef);
-              thumbnailImage.src = downloadURL;
-              console.log("ダウンロードURL:", downloadURL);
+              noImage.src = downloadURL;
+              console.log('ダウンロードURL:', downloadURL);
+
             } catch (error) {
-              console.error("画像のアップロードに失敗しました:", error);
+              console.error('画像のアップロードに失敗しました:', error);
             }
           }
         });
 
         // storeImageクラスを持つ要素の変更イベント
-        var storeImageInput = document.querySelector(".storeImage");
-        var storeImageTrigger = document.getElementById("storeImageTrigger");
-
-        storeImageTrigger.addEventListener("click", function () {
+        var storeImageInput = document.querySelector('.storeImage');
+        var storeImageTrigger = document.getElementById('storeImageTrigger');
+        
+        storeImageTrigger.addEventListener('click', function () {
           storeImageInput.click();
         });
 
-        storeImageInput.addEventListener("change", async function (event) {
+        storeImageInput.addEventListener('change', async function (event) {
           const file = event.target.files[0];
           if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
-              document.getElementById("storedImage").src = e.target.result;
-              document.getElementById("storedImage").style.display = "block";
-              document.querySelector(".frame-wrapper1").classList.add("hidden");
+              document.getElementById('storedImage').src = e.target.result;
+              document.getElementById('storedImage').style.display = 'block';
             };
             reader.readAsDataURL(file);
 
             // Firebase Storageに画像をアップロード
-            const storageRef = ref(
-              storage,
-              `${userUID}/${docName}/ticketImage.png`
-            );
-            try {
-              await uploadBytes(storageRef, file);
-              console.log("画像がアップロードされました");
-            } catch (error) {
-              console.error("画像のアップロードに失敗しました:", error);
-            }
+            onAuthStateChanged(auth, async(user) => {
+              const userUID = user.uid;
+              const storageRef = ref(storage, `${userUID}/${docName}/ticketImage.png`);
+              try {
+                await uploadBytes(storageRef, file);
+                //alert('画像がアップロードされました');
+              } catch (error) {
+                //alert('画像のアップロードに失敗しました:', error);
+              }
+            });
           }
         });
       });
