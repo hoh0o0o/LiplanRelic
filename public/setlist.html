@@ -235,7 +235,7 @@
       }
     });
 
-    async function loadImage(docName) {
+    async function loadImage(userUID, docName) {
       const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
       try {
         const downloadURL = await getDownloadURL(storageRef);
@@ -245,7 +245,7 @@
       }
     }
 
-    async function saveData(docName) {
+    async function saveData(userUID, docName) {
       const inputs = document.querySelectorAll('.input');
       const mcs = document.querySelectorAll('.mc');
       const b1s = document.querySelectorAll('.b1');
@@ -267,7 +267,7 @@
       }
     }
 
-    async function loadData(docName) {
+    async function loadData(userUID, docName) {
       try {
         const docRef = doc(db, userUID, docName);
         const docSnap = await getDoc(docRef);
@@ -360,8 +360,11 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const docName = location.href.split("?")[1];
       if (docName) {
-        await loadData(docName);
-        await loadImage(docName);
+        onAuthStateChanged(auth, async(user) => {
+          const userUID = user.uid;
+          await loadData(userUID, docName);
+          await loadImage(userUID, docName);
+        });
       }
 
       var container = document.getElementById("container");
@@ -374,31 +377,44 @@
       var list = document.getElementById("list");
       if (list) {
         list.addEventListener("click", async function (e) {
-          await saveData(docName);
-          window.location.href = `./list.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `./list.html?${docName}`;
+          });
         });
       }
 
       var plan = document.getElementById("plan");
       if (plan) {
         plan.addEventListener("click", async function (e) {
-          await saveData(docName);
-          window.location.href = `./plan.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `./plan.html?${docName}`;
+          });
         });
       }
 
       var ticket = document.getElementById("ticket");
       if (ticket) {
         ticket.addEventListener("click", async function (e) {
-          await saveData(docName);
-          window.location.href = `./ticket.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `./ticket.html?${docName}`;
+          });
         });
       }
 
       var toHome = document.getElementById("toHome");
       if (toHome) {
         toHome.addEventListener("click", function (e) {
-          window.location.href = `./home.html?${docName}`;
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            await saveData(userUID, docName);
+            window.location.href = `./list.html?${userUID}`;
+          });
         });
       }
 
@@ -438,19 +454,22 @@
 
           // Firebase Storageに画像をアップロード
           const docName = location.href.split("?")[1];
-          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-          try {
-            await uploadBytes(storageRef, file);
-            console.log('画像がアップロードされました');
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+            try {
+              await uploadBytes(storageRef, file);
+              console.log('画像がアップロードされました');
 
-            // アップロードされた画像のURLを取得して表示
-            const downloadURL = await getDownloadURL(storageRef);
-            noImage.src = downloadURL;
-            console.log('ダウンロードURL:', downloadURL);
+              // アップロードされた画像のURLを取得して表示
+              const downloadURL = await getDownloadURL(storageRef);
+              noImage.src = downloadURL;
+              console.log('ダウンロードURL:', downloadURL);
 
-          } catch (error) {
-            console.error('画像のアップロードに失敗しました:', error);
-          }
+            } catch (error) {
+              console.error('画像のアップロードに失敗しました:', error);
+            }
+          });
         }
       });
 
@@ -475,14 +494,17 @@
       var div1 = document.querySelector(".div1");
       if (div1) {
         div1.addEventListener("click", async function (e) {
-          const docRef = doc(db, userUID, docName);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            const artist = data.artist;
-            const date = data.Date;
-            await countMatchingProjects(artist, date);
-          }
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            const docRef = doc(db, userUID, docName);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              const artist = data.artist;
+              const date = data.Date;
+              await countMatchingProjects(artist, date);
+            }
+          });
         });
       }
 
@@ -497,14 +519,17 @@
       submitButton.addEventListener("click", async function () {
         const message = document.getElementById("messageInput").value;
         try {
-          const docRef = doc(db, userUID, docName);
-          await updateDoc(docRef, {
-            message: message,
-            publicity: true
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            const docRef = doc(db, userUID, docName);
+            await updateDoc(docRef, {
+              message: message,
+              publicity: true
+            });
+            console.log('メッセージが保存されました');
+            alert('メッセージが保存されました');
+            popup.style.display = "none";
           });
-          console.log('メッセージが保存されました');
-          alert('メッセージが保存されました');
-          popup.style.display = "none";
         } catch (e) {
           console.error("Error updating document: ", e);
           alert('メッセージの保存に失敗しました');
@@ -514,3 +539,4 @@
   </script>
 </body>
 </html>
+ 
