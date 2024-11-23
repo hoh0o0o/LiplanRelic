@@ -111,6 +111,10 @@
         </div>
       </section>
     </div>
+    <img class="three-dots" src="./three-dots.svg" alt="Menu" />
+    <div class="dropdown-menu" id="dropdownMenu">
+      <button class="dropdown-button">×このライブ記録を削除</button>
+    </div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -257,6 +261,20 @@
             console.error("画像のアップロードに失敗しました:", error);
           }
         }
+
+        const threeDots = document.querySelector('.three-dots');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        threeDots.addEventListener('click', (event) => {
+          event.stopPropagation();
+          dropdownMenu.style.display = 'block';
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = 'none';
+          }
+        });
       });
 
       const docName = location.href.split("?")[1];

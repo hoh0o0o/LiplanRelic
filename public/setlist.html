@@ -1,298 +1,322 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
 
-  <!--<link rel="stylesheet" href="./global.css" />-->
-  <link rel="stylesheet" href="./setlist.css" />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
-  />
-</head>
-<body>
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span class="close-btn">&times;</span>
-      <h3 class="h21">コメントを入力しよう！</h3>
-      <textarea class="syosai" placeholder="ライメモ詳細を入力" wrp="soft" id="messageInput"></textarea>
-      <div class="submit-button">
-        <h3 class="h22">完了</h3>
+    <!--<link rel="stylesheet" href="./global.css" />-->
+    <link rel="stylesheet" href="./setlist.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+    />
+  </head>
+  <body>
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close-btn">&times;</span>
+        <h3 class="h21">コメントを入力しよう！</h3>
+        <textarea
+          class="syosai"
+          placeholder="ライメモ詳細を入力"
+          wrp="soft"
+          id="messageInput"
+        ></textarea>
+        <div class="submit-button">
+          <h3 class="h22">完了</h3>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="setlist">
-    <section class="section">
-      <div class="child"></div>
-      <div class="page-content">
-        <div class="div" id="container">
-          <img class="item" loading="lazy" alt="" src="./setlist-arrow.png" />
-          <a class="next-live" id="toHome">Next Live</a>
-        </div>
-      </div>
-      <div class="main-content">
-        <div class="live-details">
-          <div class="details-container">
-            <div class="wrapper">
-              <img class="icon" loading="lazy" alt="" src="./noimage.png" id="noImage" />
-              <input type="file" id="imageInput" style="display:none;">
-            </div>
-            <div class="nav-items">
-              <img
-                class="glyphssmallmap-icon"
-                loading="lazy"
-                alt=""
-                src="./setlist-glyphssmallmap.png"
-              />
-            </div>
-            <div class="tour-info-wrapper">
-              <div class="tour-info">
-                <b class="b" id="date"></b>
-                <a class="sekaino-owari-2024-container">
-                  <p class="sekaino-owari" id="artist"></p>
-                  <p class="p" id="title"></p>
-                </a>
-                <b class="k" id="venue"></b>
-              </div>
-            </div>
+    <div class="setlist">
+      <section class="section">
+        <div class="child"></div>
+        <div class="page-content">
+          <div class="div" id="container">
+            <img class="item" loading="lazy" alt="" src="./setlist-arrow.png" />
+            <a class="next-live" id="toHome">Next Live</a>
           </div>
         </div>
-        <div class="navigation-tabs">
-          <h3 class="h3" id="list">リスト</h3>
-          <h3 class="h31" id="plan">予定</h3>
-          <h3 class="h32" id="ticket">チケット</h3>
-          <h3 class="h33">セットリスト</h3>
-        </div>
-      </div>
-    </section>
-    <section class="encore-items-parent">
-      <div class="encore-items">
-        <div class="content-elements" id="content-elements">
-          <div class="normal">
-            <div class="m-c-icon">
-              <b class="setlist-placeholder">
-                <p class="p1">1</p>
-              </b>
-            </div>
-            <div class="list1">
-              <div class="rectangle-parent">
-                <div class="frame-child"></div>
-                <input class="input" placeholder="曲を追加" type="text" />
-                <div class="m-c-action">
-                  <img class="icon1" alt="" src="./setlist-bar.png" />
-                </div>
-              </div>
-              <input class="b1" placeholder="メモ" type="text" />
-            </div>
-          </div>
-          <div class="mc-normal">
-            <div class="encore-m-c-icon">
-              <img
-                class="icon2"
-                loading="lazy"
-                alt=""
-                src="./setlist-mc.png"
-              />
-            </div>
-            <div class="list2">
-              <div class="rectangle-container">
-                <div class="frame-inner"></div>
-                <input class="mc" placeholder="MC１" type="text" />
-                <div class="encore-details">
-                  <img class="icon3" alt="" src="./setlist-bar.png" />
-                </div>
-              </div>
-              <input class="b2" placeholder="メモ" type="text" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <b class="encore">アンコール</b>
-      <div class="encore-items1">
-        <div class="content-elements1" id="content-elements1">
-          <div class="normal1">
-            <div class="m-c-icon1">
-              <b class="setlist-placeholder1">
-                <p class="p2">1</p>
-              </b>
-            </div>
-            <div class="list3">
-              <div class="rectangle-parent1">
-                <div class="frame-child1"></div>
-                <input class="input1" placeholder="曲を追加" type="text" />
-                <div class="m-c-action1">
-                  <img class="icon4" alt="" src="./setlist-bar.png" />
-                </div>
-              </div>
-              <input class="b3" placeholder="メモ" type="text" />
-            </div>
-          </div>
-          <div class="mc-normal1">
-            <div class="encore-m-c-icon1">
-              <img
-                class="icon5"
-                loading="lazy"
-                alt=""
-                src="./setlist-mc.png"
-              />
-            </div>
-            <div class="list4">
-              <div class="rectangle-container1">
-                <div class="frame-inner1"></div>
-                <input class="mc1" placeholder="MC１" type="text" />
-                <div class="encore-details1">
-                  <img class="icon6" alt="" src="./setlist-bar.png" />
-                </div>
-              </div>
-              <input class="b4" placeholder="メモ" type="text" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="footer">
-      <div class="footer-content">
-        <div class="action-buttons">
-          <div class="parent">
-            <div class="div1">
-              <div class="inner"></div>
-              <img
-                class="group-icon"
-                loading="lazy"
-                alt=""
-                src="./setlist1.svg"
-              />
-              <div class="sharing-label">
-                <h3 class="h34">参考</h3>
-              </div>
-            </div>
-            <div class="frame" id="toPublic">  <!--ここ押したらちょっとした画面が出るようにする。それで、送信したらpublicityをtrueになるように設定する-->
-              <div class="div2">
-                <div class="child1"></div>
+        <div class="main-content">
+          <div class="live-details">
+            <div class="details-container">
+              <div class="wrapper">
                 <img
-                  class="iconoutlineupload"
+                  class="icon"
                   loading="lazy"
                   alt=""
-                  src="./setlist2.svg"
+                  src="./noimage.png"
+                  id="noImage"
                 />
-                <div class="upload-label">
-                  <h3 class="h35">共有</h3>
+                <input type="file" id="imageInput" style="display: none" />
+              </div>
+              <div class="nav-items">
+                <img
+                  class="glyphssmallmap-icon"
+                  loading="lazy"
+                  alt=""
+                  src="./setlist-glyphssmallmap.png"
+                />
+              </div>
+              <div class="tour-info-wrapper">
+                <div class="tour-info">
+                  <b class="b" id="date"></b>
+                  <a class="sekaino-owari-2024-container">
+                    <p class="sekaino-owari" id="artist"></p>
+                    <p class="p" id="title"></p>
+                  </a>
+                  <b class="k" id="venue"></b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="navigation-tabs">
+            <h3 class="h3" id="list">リスト</h3>
+            <h3 class="h31" id="plan">予定</h3>
+            <h3 class="h32" id="ticket">チケット</h3>
+            <h3 class="h33">セットリスト</h3>
+          </div>
+        </div>
+      </section>
+      <section class="encore-items-parent">
+        <div class="encore-items">
+          <div class="content-elements" id="content-elements">
+            <div class="normal">
+              <div class="m-c-icon">
+                <b class="setlist-placeholder">
+                  <p class="p1">1</p>
+                </b>
+              </div>
+              <div class="list1">
+                <div class="rectangle-parent">
+                  <div class="frame-child"></div>
+                  <input class="input" placeholder="曲を追加" type="text" />
+                  <div class="m-c-action">
+                    <img class="icon1" alt="" src="./setlist-bar.png" />
+                  </div>
+                </div>
+                <input class="b1" placeholder="メモ" type="text" />
+              </div>
+            </div>
+            <div class="mc-normal">
+              <div class="encore-m-c-icon">
+                <img
+                  class="icon2"
+                  loading="lazy"
+                  alt=""
+                  src="./setlist-mc.png"
+                />
+              </div>
+              <div class="list2">
+                <div class="rectangle-container">
+                  <div class="frame-inner"></div>
+                  <input class="mc" placeholder="MC１" type="text" />
+                  <div class="encore-details">
+                    <img class="icon3" alt="" src="./setlist-bar.png" />
+                  </div>
+                </div>
+                <input class="b2" placeholder="メモ" type="text" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <b class="encore">アンコール</b>
+        <div class="encore-items1">
+          <div class="content-elements1" id="content-elements1">
+            <div class="normal1">
+              <div class="m-c-icon1">
+                <b class="setlist-placeholder1">
+                  <p class="p2">1</p>
+                </b>
+              </div>
+              <div class="list3">
+                <div class="rectangle-parent1">
+                  <div class="frame-child1"></div>
+                  <input class="input1" placeholder="曲を追加" type="text" />
+                  <div class="m-c-action1">
+                    <img class="icon4" alt="" src="./setlist-bar.png" />
+                  </div>
+                </div>
+                <input class="b3" placeholder="メモ" type="text" />
+              </div>
+            </div>
+            <div class="mc-normal1">
+              <div class="encore-m-c-icon1">
+                <img
+                  class="icon5"
+                  loading="lazy"
+                  alt=""
+                  src="./setlist-mc.png"
+                />
+              </div>
+              <div class="list4">
+                <div class="rectangle-container1">
+                  <div class="frame-inner1"></div>
+                  <input class="mc1" placeholder="MC１" type="text" />
+                  <div class="encore-details1">
+                    <img class="icon6" alt="" src="./setlist-bar.png" />
+                  </div>
+                </div>
+                <input class="b4" placeholder="メモ" type="text" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="footer">
+        <div class="footer-content">
+          <div class="action-buttons">
+            <div class="parent">
+              <div class="div1">
+                <div class="inner"></div>
+                <img
+                  class="group-icon"
+                  loading="lazy"
+                  alt=""
+                  src="./setlist1.svg"
+                />
+                <div class="sharing-label">
+                  <h3 class="h34">参考</h3>
+                </div>
+              </div>
+              <div class="frame" id="toPublic">
+                <!--ここ押したらちょっとした画面が出るようにする。それで、送信したらpublicityをtrueになるように設定する-->
+                <div class="div2">
+                  <div class="child1"></div>
+                  <img
+                    class="iconoutlineupload"
+                    loading="lazy"
+                    alt=""
+                    src="./setlist2.svg"
+                  />
+                  <div class="upload-label">
+                    <h3 class="h35">共有</h3>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      updateDoc,
-      collection, 
-      query,
-      where,
-      getDocs
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import {
-      getAuth,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import {
-      getStorage,
-      ref,
-      uploadBytes,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+    <img class="three-dots" src="./three-dots.svg" alt="Menu" />
+    <div class="dropdown-menu" id="dropdownMenu">
+      <button class="dropdown-button">×このライブ記録を削除</button>
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-      authDomain: "liplan-836a1.firebaseapp.com",
-      projectId: "liplan-836a1",
-      storageBucket: "liplan-836a1.appspot.com",
-      messagingSenderId: "545673347741",
-      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-      measurementId: "G-TKF08JYKTT"
-    };
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+        collection,
+        query,
+        where,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    const auth = getAuth(app);
-    let userUID;
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+        authDomain: "liplan-836a1.firebaseapp.com",
+        projectId: "liplan-836a1",
+        storageBucket: "liplan-836a1.appspot.com",
+        messagingSenderId: "545673347741",
+        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+        measurementId: "G-TKF08JYKTT",
+      };
 
-    onAuthStateChanged(auth, (user) => {
-      if(user){
-        userUID = user.uid;
-      }else{
-        window.location.href = "./login.html";
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
+      let userUID;
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userUID = user.uid;
+        } else {
+          window.location.href = "./login.html";
+        }
+      });
+
+      async function loadImage(userUID, docName) {
+        const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+        try {
+          const downloadURL = await getDownloadURL(storageRef);
+          document.getElementById("noImage").src = downloadURL;
+        } catch (error) {
+          console.error("画像の取得に失敗しました:", error);
+        }
       }
-    });
 
-    async function loadImage(userUID, docName) {
-      const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-      try {
-        const downloadURL = await getDownloadURL(storageRef);
-        document.getElementById('noImage').src = downloadURL;
-      } catch (error) {
-        console.error('画像の取得に失敗しました:', error);
+      async function saveData(userUID, docName) {
+        const inputs = document.querySelectorAll(".input");
+        const mcs = document.querySelectorAll(".mc");
+        const b1s = document.querySelectorAll(".b1");
+        const inputData = Array.from(inputs)
+          .map((input) => input.value)
+          .join("**/kugiri\\**");
+        const mcData = Array.from(mcs)
+          .map((mc) => mc.value)
+          .join("**/kugiri\\**");
+        const b1Data = Array.from(b1s)
+          .map((b1) => b1.value)
+          .join("**/kugiri\\**");
+
+        try {
+          const docRef = doc(db, userUID, docName);
+          await updateDoc(docRef, {
+            MusicName: inputData,
+            MC: mcData,
+            setlistMemo: b1Data,
+          });
+          console.log("データが保存されました");
+        } catch (e) {
+          console.error("Error updating document: ", e);
+          alert("エラーが発生しました");
+        }
       }
-    }
 
-    async function saveData(userUID, docName) {
-      const inputs = document.querySelectorAll('.input');
-      const mcs = document.querySelectorAll('.mc');
-      const b1s = document.querySelectorAll('.b1');
-      const inputData = Array.from(inputs).map(input => input.value).join('**/kugiri\\**');
-      const mcData = Array.from(mcs).map(mc => mc.value).join('**/kugiri\\**');
-      const b1Data = Array.from(b1s).map(b1 => b1.value).join('**/kugiri\\**');
+      async function loadData(userUID, docName) {
+        try {
+          const docRef = doc(db, userUID, docName);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            console.log("Document data:", data);
 
-      try {
-        const docRef = doc(db, userUID, docName);
-        await updateDoc(docRef, {
-          MusicName: inputData,
-          MC: mcData,
-          setlistMemo: b1Data
-        });
-        console.log('データが保存されました');
-      } catch (e) {
-        console.error("Error updating document: ", e);
-        alert('エラーが発生しました');
-      }
-    }
+            // データを対応する要素に反映
+            document.getElementById("artist").textContent =
+              data.artist || "不明";
+            document.getElementById("date").textContent = data.Date || "不明";
+            document.getElementById("title").textContent = data.title || "不明";
+            document.getElementById("venue").textContent = data.venue || "不明";
 
-    async function loadData(userUID, docName) {
-      try {
-        const docRef = doc(db, userUID, docName);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          console.log('Document data:', data);
+            const musicArray = (data.MusicName || "").split("**/kugiri\\**");
+            const mcArray = (data.MC || "").split("**/kugiri\\**");
+            const b1Array = (data.setlistMemo || "").split("**/kugiri\\**");
+            const contentElements = document.getElementById("content-elements");
 
-          // データを対応する要素に反映
-          document.getElementById('artist').textContent = data.artist || '不明';
-          document.getElementById('date').textContent = data.Date || '不明';
-          document.getElementById('title').textContent = data.title || '不明';
-          document.getElementById('venue').textContent = data.venue || '不明';
+            // 初期のnormalクラス要素をクリア
+            contentElements.innerHTML = "";
 
-          const musicArray = (data.MusicName || '').split('**/kugiri\\**');
-          const mcArray = (data.MC || '').split('**/kugiri\\**');
-          const b1Array = (data.setlistMemo || '').split('**/kugiri\\**');
-          const contentElements = document.getElementById('content-elements');
-
-          // 初期のnormalクラス要素をクリア
-          contentElements.innerHTML = '';
-
-          // MusicArrayの要素数だけnormalクラスを作成
-          musicArray.forEach((music, index) => {
-            const b1 = b1Array[index] || ''; // b1Arrayから対応する値を取得、ない場合は空文字
-            const normalTemplate = `
+            // MusicArrayの要素数だけnormalクラスを作成
+            musicArray.forEach((music, index) => {
+              const b1 = b1Array[index] || ""; // b1Arrayから対応する値を取得、ない場合は空文字
+              const normalTemplate = `
               <div class="normal">
                 <div class="m-c-icon">
                   <b class="setlist-placeholder">
@@ -311,12 +335,12 @@
                 </div>
               </div>
             `;
-            contentElements.insertAdjacentHTML('beforeend', normalTemplate);
-          });
+              contentElements.insertAdjacentHTML("beforeend", normalTemplate);
+            });
 
-          // MCの要素数だけmc-normalクラスを複製し、MCのデータを格納
-          mcArray.forEach((mc, index) => {
-            const mcNormalTemplate = `
+            // MCの要素数だけmc-normalクラスを複製し、MCのデータを格納
+            mcArray.forEach((mc, index) => {
+              const mcNormalTemplate = `
               <div class="mc-normal">
                 <div class="encore-m-c-icon">
                   <img class="icon2" loading="lazy" alt="" src="./setlist-mc.png" />
@@ -324,7 +348,9 @@
                 <div class="list2">
                   <div class="rectangle-container">
                     <div class="frame-inner"></div>
-                    <input class="mc" placeholder="MC${index + 1}" type="text" value="${mc}" />
+                    <input class="mc" placeholder="MC${
+                      index + 1
+                    }" type="text" value="${mc}" />
                     <div class="encore-details">
                       <img class="icon3" alt="" src="./setlist-bar.png" />
                     </div>
@@ -333,210 +359,233 @@
                 </div>
               </div>
             `;
-            contentElements.insertAdjacentHTML('beforeend', mcNormalTemplate);
-          });
-
-        } else {
-          console.log("No such document!");
-        }
-      } catch (e) {
-        console.error("Error getting document: ", e);
-      }
-    }
-
-    async function countMatchingProjects(artist, date) {
-      const q = query(collection(db, userUID), where("publicity", "==", true), where("artist", "==", artist), where("Date", "==", date));
-      try {
-        const querySnapshot = await getDocs(q);
-        const docNames = querySnapshot.docs.map(doc => doc.id);
-        //alert(`一致するプロジェクトの名前: ${docNames.join(', ')}`);
-        const docName = location.href.split("?")[1];
-        window.location.href = `./limemo.html?${docName}`;
-      } catch (error) {
-        console.error("Error getting documents: ", error);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      const docName = location.href.split("?")[1];
-      if (docName) {
-        onAuthStateChanged(auth, async(user) => {
-          const userUID = user.uid;
-          await loadData(userUID, docName);
-          await loadImage(userUID, docName);
-        });
-      }
-
-      var container = document.getElementById("container");
-      if (container) {
-        container.addEventListener("click", function (e) {
-          // Please sync "企画書用に編集1" to the project
-        });
-      }
-
-      var list = document.getElementById("list");
-      if (list) {
-        list.addEventListener("click", async function (e) {
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            await saveData(userUID, docName);
-            window.location.href = `./list.html?${docName}`;
-          });
-        });
-      }
-
-      var plan = document.getElementById("plan");
-      if (plan) {
-        plan.addEventListener("click", async function (e) {
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            await saveData(userUID, docName);
-            window.location.href = `./plan.html?${docName}`;
-          });
-        });
-      }
-
-      var ticket = document.getElementById("ticket");
-      if (ticket) {
-        ticket.addEventListener("click", async function (e) {
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            await saveData(userUID, docName);
-            window.location.href = `./ticket.html?${docName}`;
-          });
-        });
-      }
-
-      var toHome = document.getElementById("toHome");
-      if (toHome) {
-        toHome.addEventListener("click", function (e) {
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            await saveData(userUID, docName);
-            window.location.href = `./list.html?${userUID}`;
-          });
-        });
-      }
-
-      // エンターキーを押したときにnormalクラスを複製する
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          const activeElement = document.activeElement;
-          if (activeElement.classList.contains('input')) {
-            e.preventDefault();
-            const normal = activeElement.closest('.normal');
-            const newNormal = normal.cloneNode(true);
-            document.getElementById('content-elements').appendChild(newNormal);
-          } else if (activeElement.classList.contains('mc')) {
-            e.preventDefault();
-            const mcNormal = activeElement.closest('.mc-normal');
-            const newMcNormal = mcNormal.cloneNode(true);
-            document.getElementById('content-elements').appendChild(newMcNormal);
+              contentElements.insertAdjacentHTML("beforeend", mcNormalTemplate);
+            });
+          } else {
+            console.log("No such document!");
           }
+        } catch (e) {
+          console.error("Error getting document: ", e);
         }
-      });
-
-      var noImage = document.getElementById('noImage');
-      var imageInput = document.getElementById('imageInput');
-
-      noImage.addEventListener('click', function () {
-        imageInput.click();
-      });
-
-      imageInput.addEventListener('change', async function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            noImage.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-
-          // Firebase Storageに画像をアップロード
-          const docName = location.href.split("?")[1];
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-            try {
-              await uploadBytes(storageRef, file);
-              console.log('画像がアップロードされました');
-
-              // アップロードされた画像のURLを取得して表示
-              const downloadURL = await getDownloadURL(storageRef);
-              noImage.src = downloadURL;
-              console.log('ダウンロードURL:', downloadURL);
-
-            } catch (error) {
-              console.error('画像のアップロードに失敗しました:', error);
-            }
-          });
-        }
-      });
-
-      // ポップアップウィンドウの表示・非表示
-      const popup = document.getElementById("popup");
-      const closeBtn = document.querySelector(".close-btn");
-
-      document.querySelector(".div2").addEventListener("click", function () {
-        popup.style.display = "block";
-      });
-
-      closeBtn.addEventListener("click", function () {
-        popup.style.display = "none";
-      });
-
-      window.addEventListener("click", function (event) {
-        if (event.target === popup) {
-          popup.style.display = "none";
-        }
-      });
-
-      var div1 = document.querySelector(".div1");
-      if (div1) {
-        div1.addEventListener("click", async function (e) {
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            const docRef = doc(db, userUID, docName);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
-              const artist = data.artist;
-              const date = data.Date;
-              await countMatchingProjects(artist, date);
-            }
-          });
-        });
       }
 
-      var toPublic = document.getElementById("toPublic");
-      if (toPublic) {
-        toPublic.addEventListener("click", function () {
+      async function countMatchingProjects(artist, date) {
+        const q = query(
+          collection(db, userUID),
+          where("publicity", "==", true),
+          where("artist", "==", artist),
+          where("Date", "==", date)
+        );
+        try {
+          const querySnapshot = await getDocs(q);
+          const docNames = querySnapshot.docs.map((doc) => doc.id);
+          //alert(`一致するプロジェクトの名前: ${docNames.join(', ')}`);
+          const docName = location.href.split("?")[1];
+          window.location.href = `./limemo.html?${docName}`;
+        } catch (error) {
+          console.error("Error getting documents: ", error);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const docName = location.href.split("?")[1];
+        if (docName) {
+          onAuthStateChanged(auth, async (user) => {
+            const userUID = user.uid;
+            await loadData(userUID, docName);
+            await loadImage(userUID, docName);
+          });
+        }
+
+        var container = document.getElementById("container");
+        if (container) {
+          container.addEventListener("click", function (e) {
+            // Please sync "企画書用に編集1" to the project
+          });
+        }
+
+        var list = document.getElementById("list");
+        if (list) {
+          list.addEventListener("click", async function (e) {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              await saveData(userUID, docName);
+              window.location.href = `./list.html?${docName}`;
+            });
+          });
+        }
+
+        var plan = document.getElementById("plan");
+        if (plan) {
+          plan.addEventListener("click", async function (e) {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              await saveData(userUID, docName);
+              window.location.href = `./plan.html?${docName}`;
+            });
+          });
+        }
+
+        var ticket = document.getElementById("ticket");
+        if (ticket) {
+          ticket.addEventListener("click", async function (e) {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              await saveData(userUID, docName);
+              window.location.href = `./ticket.html?${docName}`;
+            });
+          });
+        }
+
+        var toHome = document.getElementById("toHome");
+        if (toHome) {
+          toHome.addEventListener("click", function (e) {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              await saveData(userUID, docName);
+              window.location.href = `./list.html?${userUID}`;
+            });
+          });
+        }
+
+        // エンターキーを押したときにnormalクラスを複製する
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            const activeElement = document.activeElement;
+            if (activeElement.classList.contains("input")) {
+              e.preventDefault();
+              const normal = activeElement.closest(".normal");
+              const newNormal = normal.cloneNode(true);
+              document
+                .getElementById("content-elements")
+                .appendChild(newNormal);
+            } else if (activeElement.classList.contains("mc")) {
+              e.preventDefault();
+              const mcNormal = activeElement.closest(".mc-normal");
+              const newMcNormal = mcNormal.cloneNode(true);
+              document
+                .getElementById("content-elements")
+                .appendChild(newMcNormal);
+            }
+          }
+        });
+
+        var noImage = document.getElementById("noImage");
+        var imageInput = document.getElementById("imageInput");
+
+        noImage.addEventListener("click", function () {
+          imageInput.click();
+        });
+
+        imageInput.addEventListener("change", async function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              noImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Firebase Storageに画像をアップロード
+            const docName = location.href.split("?")[1];
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              const storageRef = ref(
+                storage,
+                `${userUID}/${docName}/thumbnail.png`
+              );
+              try {
+                await uploadBytes(storageRef, file);
+                console.log("画像がアップロードされました");
+
+                // アップロードされた画像のURLを取得して表示
+                const downloadURL = await getDownloadURL(storageRef);
+                noImage.src = downloadURL;
+                console.log("ダウンロードURL:", downloadURL);
+              } catch (error) {
+                console.error("画像のアップロードに失敗しました:", error);
+              }
+            });
+          }
+        });
+
+        // ポップアップウィンドウの表示・非表示
+        const popup = document.getElementById("popup");
+        const closeBtn = document.querySelector(".close-btn");
+
+        document.querySelector(".div2").addEventListener("click", function () {
           popup.style.display = "block";
         });
-      }
 
-      var submitButton = document.querySelector(".submit-button");
-      submitButton.addEventListener("click", async function () {
-        const message = document.getElementById("messageInput").value;
-        try {
-          onAuthStateChanged(auth, async(user) => {
-            const userUID = user.uid;
-            const docRef = doc(db, userUID, docName);
-            await updateDoc(docRef, {
-              message: message,
-              publicity: true
-            });
-            console.log('メッセージが保存されました');
-            alert('メッセージが保存されました');
+        closeBtn.addEventListener("click", function () {
+          popup.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+          if (event.target === popup) {
             popup.style.display = "none";
+          }
+        });
+
+        var div1 = document.querySelector(".div1");
+        if (div1) {
+          div1.addEventListener("click", async function (e) {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              const docRef = doc(db, userUID, docName);
+              const docSnap = await getDoc(docRef);
+              if (docSnap.exists()) {
+                const data = docSnap.data();
+                const artist = data.artist;
+                const date = data.Date;
+                await countMatchingProjects(artist, date);
+              }
+            });
           });
-        } catch (e) {
-          console.error("Error updating document: ", e);
-          alert('メッセージの保存に失敗しました');
         }
+
+        var toPublic = document.getElementById("toPublic");
+        if (toPublic) {
+          toPublic.addEventListener("click", function () {
+            popup.style.display = "block";
+          });
+        }
+
+        var submitButton = document.querySelector(".submit-button");
+        submitButton.addEventListener("click", async function () {
+          const message = document.getElementById("messageInput").value;
+          try {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
+              const docRef = doc(db, userUID, docName);
+              await updateDoc(docRef, {
+                message: message,
+                publicity: true,
+              });
+              console.log("メッセージが保存されました");
+              alert("メッセージが保存されました");
+              popup.style.display = "none";
+            });
+          } catch (e) {
+            console.error("Error updating document: ", e);
+            alert("メッセージの保存に失敗しました");
+          }
+        });
+
+        const threeDots = document.querySelector(".three-dots");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+        threeDots.addEventListener("click", (event) => {
+          event.stopPropagation();
+          dropdownMenu.style.display = "block";
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = "none";
+          }
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
- 

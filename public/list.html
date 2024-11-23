@@ -1,462 +1,515 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, width=device-width" />
-  <link rel="stylesheet" href="./list.css" />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
-  />
-</head>
-<body>
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span class="close-btn">&times;</span>
-      <h3 class="h21">コメントを入力しよう！</h3>
-      <textarea class="syosai" placeholder="ライメモ詳細を入力" wrp="soft" id="messageInput"></textarea>
-      <div class="submit-button">
-        <h3 class="h22">完了</h3>
-      </div>
-    </div>
-  </div>
-  <div class="list">
-    <section class="section">
-      <div class="child"></div>
-      <div class="page-content">
-        <div class="div" id="container">
-          <img class="item" loading="lazy" alt="" src="./setlist-arrow.png" />
-          <a class="next-live" id="toHome">Next Live</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link rel="stylesheet" href="./list.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+    />
+  </head>
+  <body>
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close-btn">&times;</span>
+        <h3 class="h21">コメントを入力しよう！</h3>
+        <textarea
+          class="syosai"
+          placeholder="ライメモ詳細を入力"
+          wrp="soft"
+          id="messageInput"
+        ></textarea>
+        <div class="submit-button">
+          <h3 class="h22">完了</h3>
         </div>
       </div>
-      <div class="main-content">
-        <div class="live-details">
-          <div class="details-container">
-            <div class="wrapper">
-              <img class="icon" loading="lazy" alt="" src="./noimage.png" id="noImage"/>
-              <input type="file" id="imageInput" style="display:none;">
+    </div>
+    <div class="list">
+      <section class="section">
+        <div class="child"></div>
+        <div class="page-content">
+          <div class="div" id="container">
+            <img class="item" loading="lazy" alt="" src="./setlist-arrow.png" />
+            <a class="next-live" id="toHome">Next Live</a>
+          </div>
+        </div>
+        <div class="main-content">
+          <div class="live-details">
+            <div class="details-container">
+              <div class="wrapper">
+                <img
+                  class="icon"
+                  loading="lazy"
+                  alt=""
+                  src="./noimage.png"
+                  id="noImage"
+                />
+                <input type="file" id="imageInput" style="display: none" />
+              </div>
+              <div class="nav-items">
+                <img
+                  class="glyphssmallmap-icon"
+                  loading="lazy"
+                  alt=""
+                  src="./setlist-glyphssmallmap.png"
+                />
+              </div>
+              <div class="tour-info-wrapper">
+                <div class="tour-info">
+                  <b class="b" id="date"></b>
+                  <a class="sekaino-owari-2024-container">
+                    <p class="sekaino-owari" id="artist"></p>
+                    <p class="p" id="title"></p>
+                  </a>
+                  <b class="k" id="venue"></b>
+                </div>
+              </div>
             </div>
-            <div class="nav-items">
-              <img
-                class="glyphssmallmap-icon"
-                loading="lazy"
-                alt=""
-                src="./setlist-glyphssmallmap.png"
-              />
+          </div>
+          <div class="navigation-tabs">
+            <h3 class="h3">リスト</h3>
+            <h3 class="h31" id="plan">予定</h3>
+            <h3 class="h32" id="ticket">チケット</h3>
+            <h3 class="h33" id="setlist">セットリスト</h3>
+          </div>
+        </div>
+      </section>
+      <section class="list-inner">
+        <div class="rectangle-parent">
+          <div class="frame-inner"></div>
+          <h2 class="to-do">To Do リスト</h2>
+          <div class="iconoutlinepencil-wrapper">
+            <img
+              class="iconoutlinepencil"
+              loading="lazy"
+              alt=""
+              src="./list2.svg"
+            />
+          </div>
+        </div>
+      </section>
+      <section class="list-inner">
+        <div class="rectangle-parent">
+          <div class="frame-inner"></div>
+          <h2 class="to-do">To Do リスト</h2>
+          <div class="iconoutlinepencil-wrapper">
+            <img
+              class="iconoutlinepencil"
+              loading="lazy"
+              alt=""
+              src="./list2.svg"
+            />
+          </div>
+        </div>
+      </section>
+      <section class="list-child">
+        <div class="frame-parent">
+          <div class="frame-wrapper">
+            <div class="task-background-parent">
+              <input class="task-background" type="text" id="textInput" />
+              <div class="div1">
+                <div class="rectangle-div"></div>
+                <button id="moveButton" class="group-icon">
+                  <svg
+                    width="18"
+                    height="14"
+                    viewBox="0 0 18 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 4.5L6.20419 9.03065"
+                      stroke="white"
+                      stroke-width="4"
+                    />
+                    <line
+                      x1="16.3952"
+                      y1="1.43295"
+                      x2="5.92647"
+                      y2="11.6261"
+                      stroke="white"
+                      stroke-width="4"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div class="tour-info-wrapper">
-              <div class="tour-info">
-                <b class="b" id="date"></b>
-                <a class="sekaino-owari-2024-container">
-                  <p class="sekaino-owari" id="artist"></p>
-                  <p class="p" id="title"></p>
-                </a>
-                <b class="k" id="venue"></b>
+          </div>
+          <div class="line-parent">
+            <div class="line-div"></div>
+            <div class="frame-container">
+              <div class="frame-div"></div>
+              <div class="task-item-one-parent">
+                <div class="task-item-one"></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="navigation-tabs">
-          <h3 class="h3">リスト</h3>
-          <h3 class="h31" id="plan">予定</h3>
-          <h3 class="h32" id="ticket">チケット</h3>
-          <h3 class="h33" id="setlist">セットリスト</h3>
-        </div>
-      </div>
-    </section>
-    <section class="list-inner">
-      <div class="rectangle-parent">
-        <div class="frame-inner"></div>
-        <h2 class="to-do">To Do リスト</h2>
-        <div class="iconoutlinepencil-wrapper">
-          <img
-            class="iconoutlinepencil"
-            loading="lazy"
-            alt=""
-            src="./list2.svg"
-          />
-        </div>
-      </div>
-    </section>
-    <section class="list-inner">
-      <div class="rectangle-parent">
-        <div class="frame-inner"></div>
-        <h2 class="to-do">To Do リスト</h2>
-        <div class="iconoutlinepencil-wrapper">
-          <img
-            class="iconoutlinepencil"
-            loading="lazy"
-            alt=""
-            src="./list2.svg"
-          />
-        </div>
-      </div>
-    </section>
-    <section class="list-child">
-      <div class="frame-parent">
-        <div class="frame-wrapper">
-          <div class="task-background-parent">
-            <input class="task-background" type="text" id="textInput" />
-            <div class="div1">
-              <div class="rectangle-div"></div>
-              <button
-                id="moveButton"
-                class="group-icon"
-              >
-              <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 4.5L6.20419 9.03065" stroke="white" stroke-width="4"/>
-                <line x1="16.3952" y1="1.43295" x2="5.92647" y2="11.6261" stroke="white" stroke-width="4"/>
-              </svg>
-              </button>
-            </div>
+      </section>
+      <section class="frame-section">
+        <div class="b5" id="container1"></div>
+        <div class="frame-wrapper1">
+          <div class="frame-parent2">
+            <div class="ellipse-group"></div>
           </div>
         </div>
-        <div class="line-parent">
-          <div class="line-div"></div>
-          <div class="frame-container">
-            <div class="frame-div"></div>
-            <div class="task-item-one-parent">
-              <div class="task-item-one"></div>
-            </div>
+        <div class="task-repeat-three">
+          <div class="task-content-repeat">
+            <b class="b6"></b>
           </div>
         </div>
-      </div>
-    </section>
-    <section class="frame-section">
-      <div class="b5" id="container1"></div>
-      <div class="frame-wrapper1">
-        <div class="frame-parent2">
-          <div class="ellipse-group"></div>
-        </div>
-      </div>
-      <div class="task-repeat-three">
-        <div class="task-content-repeat">
-          <b class="b6"></b>
-        </div>
-      </div>
-      <div class="task-repeat-three1">
-        <div class="frame">
-          <b class="b7"></b>
-        </div>
-      </div>
-      <div class="task-repeat-three2">
-        <div class="wrapper1">
-          <b class="b8"></b>
-        </div>
-      </div>
-    </section>
-  </div>
-  <section class="footer">
-    <div class="parent">
-      <div class="task-background-container">
-        <div class="inner"></div>
-        <img class="move-button-icon" loading="lazy" alt="" src="./setlist1.svg" />
-        <div class="sharing-label">
-          <h3 class="h34">参考</h3>
-        </div>
-      </div>
-      <div class="todo-frame-inner" id="toPublic">
-        <div class="destination-container">
-          <div class="child1"></div>
-          <img class="todo-icon" loading="lazy" alt="" src="./setlist2.svg" />
-          <div class="upload-label">
-            <h3 class="h35">共有</h3>
+        <div class="task-repeat-three1">
+          <div class="frame">
+            <b class="b7"></b>
           </div>
         </div>
-      </div>
+        <div class="task-repeat-three2">
+          <div class="wrapper1">
+            <b class="b8"></b>
+          </div>
+        </div>
+      </section>
     </div>
-  </section> 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      updateDoc
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import {
-      getAuth,
-       onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import {
-      getStorage,
-      ref,
-      uploadBytes,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-  
-    const firebaseConfig = {
-      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-      authDomain: "liplan-836a1.firebaseapp.com",
-      projectId: "liplan-836a1",
-      storageBucket: "liplan-836a1.appspot.com",
-      messagingSenderId: "545673347741",
-      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-      measurementId: "G-TKF08JYKTT"
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    const auth = getAuth(app);
+    <img class="three-dots" src="./three-dots.svg" alt="Menu" />
+    <div class="dropdown-menu" id="dropdownMenu">
+      <button class="dropdown-button">×このライブ記録を削除</button>
+    </div>
+    <section class="footer">
+      <div class="parent">
+        <div class="task-background-container">
+          <div class="inner"></div>
+          <img
+            class="move-button-icon"
+            loading="lazy"
+            alt=""
+            src="./setlist1.svg"
+          />
+          <div class="sharing-label">
+            <h3 class="h34">参考</h3>
+          </div>
+        </div>
+        <div class="todo-frame-inner" id="toPublic">
+          <div class="destination-container">
+            <div class="child1"></div>
+            <img class="todo-icon" loading="lazy" alt="" src="./setlist2.svg" />
+            <div class="upload-label">
+              <h3 class="h35">共有</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
-    onAuthStateChanged(auth, (user) => {
-      if(!user){
-        window.location.href = "./login.html";
-      }
-    }); 
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+        authDomain: "liplan-836a1.firebaseapp.com",
+        projectId: "liplan-836a1",
+        storageBucket: "liplan-836a1.appspot.com",
+        messagingSenderId: "545673347741",
+        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+        measurementId: "G-TKF08JYKTT",
+      };
 
-    const noImage = document.getElementById("noImage");
-    const imageInput = document.getElementById("imageInput");
-
-    noImage.addEventListener("click", () => {
-      imageInput.click();
-    });
-
-    imageInput.addEventListener("change", async (event) => {
-      const file = event.target.files[0];
-      if(file){
-        onAuthStateChanged(auth, async (user) => {
-          const userUID = user.uid;
-          await uploadImage(userUID, docName, file);
-        });
-      }
-    });
-
-    async function uploadImage(userUID, docName, file){
-      const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-      try{
-        await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(storageRef);
-        document.getElementById("noimage").src = downloadURL;
-        alert("画像アップロード成功!");
-      }catch(error){
-        alert("画像アップロードに失敗しました");
-      }
-    }
-
-    async function saveTodoList() {
-      const docName = location.href.split("?")[1];
-      const container = document.getElementById("container1");
-      const destinations = container.querySelectorAll(".destination");
-      const todoList = Array.from(destinations).map(destination => destination.textContent).join('**/kugiri\\**');
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
 
       onAuthStateChanged(auth, (user) => {
-        const userUID = user.uid;
-        try {
-          const docRef = doc(db, userUID, docName);
-          updateDoc(docRef, {
-            todoList: todoList
-          });
-          console.log('todoListが保存されました');
-        } catch (e) {
-          console.error("Error updating document: ", e);
-          alert('エラーが発生しました');
+        if (!user) {
+          window.location.href = "./login.html";
         }
       });
-    }
-  
-    function moveText() {
-      const textInput = document.getElementById("textInput");
-      const container = document.getElementById("container1");
 
-      if (textInput.value) {
-        const destination = document.createElement("div");
-        destination.className = "destination";
-        
-        const circle = document.createElement("div");
-        circle.className = "circle";
-        
-        let isOriginalColor = true;
-        circle.addEventListener("click", function() {
-          if (isOriginalColor) {
-            circle.style.backgroundColor = "#f09680";
-          } else {
-            circle.style.backgroundColor = "white";
-          }
-          isOriginalColor = !isOriginalColor;
-        });
+      const noImage = document.getElementById("noImage");
+      const imageInput = document.getElementById("imageInput");
 
-        const textNode = document.createTextNode(textInput.value);
-        destination.appendChild(circle);
-        destination.appendChild(textNode);
-        
-        // ここで高さを調整
-        setTimeout(function() {
-          if (destination.scrollHeight > destination.clientHeight) {
-            destination.classList.add("double-height");
-          }
-        }, 0);
-        
-        container.appendChild(destination);
-        textInput.value = "";
-        document.getElementById("moveButton").disabled = true;
+      noImage.addEventListener("click", () => {
+        imageInput.click();
+      });
 
-        // 最初のdestinationを非表示にする
-        const firstDestination = container.querySelector(".destination");
-        if (firstDestination) {
-          firstDestination.classList.add("hidden");
-        }
-
-        // FirestoreにtodoListを保存
-        saveTodoList();
-      }
-    }
-
-    document.getElementById("moveButton").addEventListener("click", moveText);
-    document.getElementById("textInput").addEventListener("keyup", function(event) {
-      if (event.key === "Enter") {
-        moveText();
-        // スクロール位置をリセット
-        window.scrollTo(0, 0);
-      }
-      document.getElementById("moveButton").disabled = textInput.value.trim() === "";
-    });
-  
-    document.getElementById("textInput").addEventListener("input", function() {
-      document.getElementById("moveButton").disabled = this.value.trim() === "";
-    });
-
-    async function loadTodoList(userUID, docName) {
-      try {
-        const docRef = doc(db, userUID, docName);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          const todoListString = data.todoList || '';
-          const todoList = todoListString.split('**/kugiri\\**');
-
-          const container = document.getElementById("container1");
-          todoList.forEach(text => {
-            const destination = document.createElement("div");
-            destination.className = "destination";
-            
-            const circle = document.createElement("div");
-            circle.className = "circle";
-            
-            let isOriginalColor = true;
-            circle.addEventListener("click", function() {
-              if (isOriginalColor) {
-                circle.style.backgroundColor = "#f09680";
-              } else {
-                circle.style.backgroundColor = "white";
-              }
-              isOriginalColor = !isOriginalColor;
-            });
-
-            const textNode = document.createTextNode(text);
-            destination.appendChild(circle);
-            destination.appendChild(textNode);
-
-            setTimeout(function() {
-              if (destination.scrollHeight > destination.clientHeight) {
-                destination.classList.add("double-height");
-              }
-            }, 0);
-      
-            container.appendChild(destination);
+      imageInput.addEventListener("change", async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          onAuthStateChanged(auth, async (user) => {
+            const userUID = user.uid;
+            await uploadImage(userUID, docName, file);
           });
+        }
+      });
+
+      async function uploadImage(userUID, docName, file) {
+        const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+        try {
+          await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(storageRef);
+          document.getElementById("noimage").src = downloadURL;
+          alert("画像アップロード成功!");
+        } catch (error) {
+          alert("画像アップロードに失敗しました");
+        }
+      }
+
+      async function saveTodoList() {
+        const docName = location.href.split("?")[1];
+        const container = document.getElementById("container1");
+        const destinations = container.querySelectorAll(".destination");
+        const todoList = Array.from(destinations)
+          .map((destination) => destination.textContent)
+          .join("**/kugiri\\**");
+
+        onAuthStateChanged(auth, (user) => {
+          const userUID = user.uid;
+          try {
+            const docRef = doc(db, userUID, docName);
+            updateDoc(docRef, {
+              todoList: todoList,
+            });
+            console.log("todoListが保存されました");
+          } catch (e) {
+            console.error("Error updating document: ", e);
+            alert("エラーが発生しました");
+          }
+        });
+      }
+
+      function moveText() {
+        const textInput = document.getElementById("textInput");
+        const container = document.getElementById("container1");
+
+        if (textInput.value) {
+          const destination = document.createElement("div");
+          destination.className = "destination";
+
+          const circle = document.createElement("div");
+          circle.className = "circle";
+
+          let isOriginalColor = true;
+          circle.addEventListener("click", function () {
+            if (isOriginalColor) {
+              circle.style.backgroundColor = "#f09680";
+            } else {
+              circle.style.backgroundColor = "white";
+            }
+            isOriginalColor = !isOriginalColor;
+          });
+
+          const textNode = document.createTextNode(textInput.value);
+          destination.appendChild(circle);
+          destination.appendChild(textNode);
+
+          // ここで高さを調整
+          setTimeout(function () {
+            if (destination.scrollHeight > destination.clientHeight) {
+              destination.classList.add("double-height");
+            }
+          }, 0);
+
+          container.appendChild(destination);
+          textInput.value = "";
+          document.getElementById("moveButton").disabled = true;
 
           // 最初のdestinationを非表示にする
           const firstDestination = container.querySelector(".destination");
           if (firstDestination) {
             firstDestination.classList.add("hidden");
           }
-        } else {
-          console.log("No such document!");
+
+          // FirestoreにtodoListを保存
+          saveTodoList();
         }
-      } catch (e) {
-        console.error("Error getting document: ", e);
       }
-    }
 
-    function adjustListHeight() {
-      const list = document.querySelector('.list');
-      const footer = document.querySelector('.footer');
-      const lastDestination = document.querySelector('.list-child .destination:last-of-type');
+      document.getElementById("moveButton").addEventListener("click", moveText);
+      document
+        .getElementById("textInput")
+        .addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            moveText();
+            // スクロール位置をリセット
+            window.scrollTo(0, 0);
+          }
+          document.getElementById("moveButton").disabled =
+            textInput.value.trim() === "";
+        });
 
-      if (lastDestination) {
-        const lastDestinationRect = lastDestination.getBoundingClientRect();
-        const listRect = list.getBoundingClientRect();
-        const footerHeight = footer.offsetHeight;
+      document
+        .getElementById("textInput")
+        .addEventListener("input", function () {
+          document.getElementById("moveButton").disabled =
+            this.value.trim() === "";
+        });
 
-        // リストの高さを調整
-        if (lastDestinationRect.bottom > listRect.bottom) {
-          list.style.minHeight = `${lastDestinationRect.bottom - listRect.top}px`;
-        }
-
-        // フッターの位置を調整
-        footer.style.position = 'absolute';
-        footer.style.bottom = '0';
-        footer.style.width = '100%';
-      }
-    }
-
-    // ポップアップウィンドウの表示・非表示
-    const popup = document.getElementById("popup");
-    const closeBtn = document.querySelector(".close-btn");
-
-    document.querySelector(".destination-container").addEventListener("click", function () {
-      popup.style.display = "block";
-    });
-
-    closeBtn.addEventListener("click", function () {
-      popup.style.display = "none";
-    });
-
-    // 完了ボタンのクリックイベントを追加
-    document.querySelector(".submit-button").addEventListener("click", async function () {
-      const messageInput = document.getElementById("messageInput").value;
-      const docName = location.href.split("?")[1];
-
-      onAuthStateChanged(auth, (user) => {
-        const userUID = user.uid;
+      async function loadTodoList(userUID, docName) {
         try {
           const docRef = doc(db, userUID, docName);
-          updateDoc(docRef, {
-            ListMemo: messageInput,
-            publicity_l: true  // publicity_lフィールドをtrueに更新
-          });
-          console.log('ListMemoが保存され、publicity_lがtrueに設定されました');
-          popup.style.display = "none"; // ポップアップを閉じる
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            const todoListString = data.todoList || "";
+            const todoList = todoListString.split("**/kugiri\\**");
+
+            const container = document.getElementById("container1");
+            todoList.forEach((text) => {
+              const destination = document.createElement("div");
+              destination.className = "destination";
+
+              const circle = document.createElement("div");
+              circle.className = "circle";
+
+              let isOriginalColor = true;
+              circle.addEventListener("click", function () {
+                if (isOriginalColor) {
+                  circle.style.backgroundColor = "#f09680";
+                } else {
+                  circle.style.backgroundColor = "white";
+                }
+                isOriginalColor = !isOriginalColor;
+              });
+
+              const textNode = document.createTextNode(text);
+              destination.appendChild(circle);
+              destination.appendChild(textNode);
+
+              setTimeout(function () {
+                if (destination.scrollHeight > destination.clientHeight) {
+                  destination.classList.add("double-height");
+                }
+              }, 0);
+
+              container.appendChild(destination);
+            });
+
+            // 最初のdestinationを非表示にする
+            const firstDestination = container.querySelector(".destination");
+            if (firstDestination) {
+              firstDestination.classList.add("hidden");
+            }
+          } else {
+            console.log("No such document!");
+          }
         } catch (e) {
-          console.error("Error updating document: ", e);
-          alert('エラーが発生しました');
+          console.error("Error getting document: ", e);
         }
-      });  
-    });
-
-    window.addEventListener('load', adjustListHeight);
-    window.addEventListener('resize', adjustListHeight);
-
-    async function loadImage(userUID, docName) {
-      const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-      try {
-        const downloadURL = await getDownloadURL(storageRef);
-        document.getElementById('noImage').src = downloadURL;
-      } catch (error) {
-        console.error('サムネイルの取得に失敗しました:', error);
       }
-    }
 
-    async function loadData(userUID, docName){
-      const docRef = doc(db, userUID, docName);
-      try{
-        const docSnap = await getDoc(docRef);
-        if(docSnap){
-          const data = docSnap.data();
+      function adjustListHeight() {
+        const list = document.querySelector(".list");
+        const footer = document.querySelector(".footer");
+        const lastDestination = document.querySelector(
+          ".list-child .destination:last-of-type"
+        );
 
-          document.getElementById("artist").textContent = data.artist || "不明";
-          document.getElementById("date").textContent = data.Date || "不明";
-          document.getElementById("title").textContent = data.title || "不明";
-          document.getElementById("venue").textContent = data.venue || "不明";
+        if (lastDestination) {
+          const lastDestinationRect = lastDestination.getBoundingClientRect();
+          const listRect = list.getBoundingClientRect();
+          const footerHeight = footer.offsetHeight;
 
-          const hourArray = (data.hour || "").split("**/kugiri\\**");
-          const planArray = (data.plan || "").split("**/kugiri\\**");
-          const memoArray = (data.memo || "").split("**/kugiri\\**");
+          // リストの高さを調整
+          if (lastDestinationRect.bottom > listRect.bottom) {
+            list.style.minHeight = `${
+              lastDestinationRect.bottom - listRect.top
+            }px`;
+          }
 
-          const div1 = document.querySelector(".div");
-          hourArray.forEach((hour, index) => {
+          // フッターの位置を調整
+          footer.style.position = "absolute";
+          footer.style.bottom = "0";
+          footer.style.width = "100%";
+        }
+      }
+
+      // ポップアップウィンドウの表示・非表示
+      const popup = document.getElementById("popup");
+      const closeBtn = document.querySelector(".close-btn");
+
+      document
+        .querySelector(".destination-container")
+        .addEventListener("click", function () {
+          popup.style.display = "block";
+        });
+
+      closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+      });
+
+      // 完了ボタンのクリックイベントを追加
+      document
+        .querySelector(".submit-button")
+        .addEventListener("click", async function () {
+          const messageInput = document.getElementById("messageInput").value;
+          const docName = location.href.split("?")[1];
+
+          onAuthStateChanged(auth, (user) => {
+            const userUID = user.uid;
+            try {
+              const docRef = doc(db, userUID, docName);
+              updateDoc(docRef, {
+                ListMemo: messageInput,
+                publicity_l: true, // publicity_lフィールドをtrueに更新
+              });
+              console.log(
+                "ListMemoが保存され、publicity_lがtrueに設定されました"
+              );
+              popup.style.display = "none"; // ポップアップを閉じる
+            } catch (e) {
+              console.error("Error updating document: ", e);
+              alert("エラーが発生しました");
+            }
+          });
+        });
+
+      window.addEventListener("load", adjustListHeight);
+      window.addEventListener("resize", adjustListHeight);
+
+      async function loadImage(userUID, docName) {
+        const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+        try {
+          const downloadURL = await getDownloadURL(storageRef);
+          document.getElementById("noImage").src = downloadURL;
+        } catch (error) {
+          console.error("サムネイルの取得に失敗しました:", error);
+        }
+      }
+
+      async function loadData(userUID, docName) {
+        const docRef = doc(db, userUID, docName);
+        try {
+          const docSnap = await getDoc(docRef);
+          if (docSnap) {
+            const data = docSnap.data();
+
+            document.getElementById("artist").textContent =
+              data.artist || "不明";
+            document.getElementById("date").textContent = data.Date || "不明";
+            document.getElementById("title").textContent = data.title || "不明";
+            document.getElementById("venue").textContent = data.venue || "不明";
+
+            const hourArray = (data.hour || "").split("**/kugiri\\**");
+            const planArray = (data.plan || "").split("**/kugiri\\**");
+            const memoArray = (data.memo || "").split("**/kugiri\\**");
+
+            const div1 = document.querySelector(".div");
+            hourArray.forEach((hour, index) => {
               const newDiv1 = index === 0 ? div1 : div1.cloneNode(true);
               if (index > 0) div1.parentNode.appendChild(newDiv1);
 
@@ -464,16 +517,16 @@
               newDiv1.querySelector(".b8").value = planArray[index] || "";
               newDiv1.querySelector(".input").value = memoArray[index] || "";
             });
-        }else{
-          alert("No such document.");
+          } else {
+            alert("No such document.");
+          }
+        } catch (error) {
+          //alert("Error loading document.");
         }
-      }catch(error){
-        //alert("Error loading document.");
       }
-    }
 
-    async function saveData(userUID, docName){
-      const hours = Array.from(document.querySelectorAll(".b6")).map(
+      async function saveData(userUID, docName) {
+        const hours = Array.from(document.querySelectorAll(".b6")).map(
           (input) => input.value
         );
         const plans = Array.from(document.querySelectorAll(".b8")).map(
@@ -487,95 +540,116 @@
         await updateDoc(docRef, {
           hour: hours.join("**/kugiri\\**"),
           plan: plans.join("**/kugiri\\**"),
-          memo: memos.join("**/kugiri\\**")
+          memo: memos.join("**/kugiri\\**"),
         });
         alert("データが保存されました");
-    }
-  
-    document.addEventListener('DOMContentLoaded', async () => {
-      const docName = location.href.split("?")[1];
-      onAuthStateChanged(auth, async(user) => {
-        const userUID = user.uid;
-        await loadImage(userUID, docName);
-        await loadData(userUID, docName);
-        await loadTodoList(userUID, docName);
-      });
-  
-    var container = document.getElementById("container");
-    if (container) {
-      container.addEventListener("click", function (e) {
-        // Please sync "企画書用に編集1" to the project
-      });
-    }
-  
-    var plan = document.getElementById("plan");
-    if (plan) {
-      plan.addEventListener("click", function (e) {
-        window.location.href = `./plan.html?${docName}`;
-      });
-    }
-  
-    var ticket = document.getElementById("ticket");
-    if (ticket) {
-      ticket.addEventListener("click", function (e) {
-        window.location.href = `./ticket.html?${docName}`;
-      });
-    }
-  
-    var setlist = document.getElementById("setlist");
-    if (setlist) {
-      setlist.addEventListener("click", function (e) {
-        window.location.href = `./setlist.html?${docName}`;
-      });
-    }
+      }
 
-    var toHome = document.getElementById("toHome");
-    if(toHome){
-      toHome.addEventListener("click", function(e){
-        onAuthStateChanged(auth, (user) => {
+      document.addEventListener("DOMContentLoaded", async () => {
+        const docName = location.href.split("?")[1];
+        onAuthStateChanged(auth, async (user) => {
           const userUID = user.uid;
-          window.location.href = `home.html?${userUID}`;
+          await loadImage(userUID, docName);
+          await loadData(userUID, docName);
+          await loadTodoList(userUID, docName);
         });
-      });
-    }
 
-      // sharing-labelをクリックするとlistLimemo.htmlに遷移
-    const sharingLabel = document.querySelector(".sharing-label");
-    if (sharingLabel) {
-      sharingLabel.addEventListener("click", function (e) {
-        const docName = location.href.split("?")[1];
-        window.location.href = `./listLimemo.html?${docName}`;
-      });
-    }
-    });
+        var container = document.getElementById("container");
+        if (container) {
+          container.addEventListener("click", function (e) {
+            // Please sync "企画書用に編集1" to the project
+          });
+        }
 
-    document.getElementById('noImage').addEventListener('click', function() {
-      imageInput.click();
-    });
+        var plan = document.getElementById("plan");
+        if (plan) {
+          plan.addEventListener("click", function (e) {
+            window.location.href = `./plan.html?${docName}`;
+          });
+        }
 
-    document.getElementById('imageInput').addEventListener('change', async function(event) {
-      onAuthStateChanged(auth, (user) => {
-        const userUID = user.uid;
-        const docName = location.href.split("?")[1];
-        const file = event.target.files[0];
+        var ticket = document.getElementById("ticket");
+        if (ticket) {
+          ticket.addEventListener("click", function (e) {
+            window.location.href = `./ticket.html?${docName}`;
+          });
+        }
 
-        if (file) {
-          // Firebase Storageに画像をアップロード
-          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-          try {
-            uploadBytes(storageRef, file);
-            console.log('画像がアップロードされました');
+        var setlist = document.getElementById("setlist");
+        if (setlist) {
+          setlist.addEventListener("click", function (e) {
+            window.location.href = `./setlist.html?${docName}`;
+          });
+        }
 
-            // アップロードされた画像のURLを取得して表示
-            const downloadURL = getDownloadURL(storageRef);
-            document.getElementById('noImage').src = downloadURL;
-            console.log('ダウンロードURL:', downloadURL);
-          } catch (error) {
-            console.error('画像のアップロードに失敗しました:', error);
-          }
+        var toHome = document.getElementById("toHome");
+        if (toHome) {
+          toHome.addEventListener("click", function (e) {
+            onAuthStateChanged(auth, (user) => {
+              const userUID = user.uid;
+              window.location.href = `home.html?${userUID}`;
+            });
+          });
+        }
+
+        // sharing-labelをクリックするとlistLimemo.htmlに遷移
+        const sharingLabel = document.querySelector(".sharing-label");
+        if (sharingLabel) {
+          sharingLabel.addEventListener("click", function (e) {
+            const docName = location.href.split("?")[1];
+            window.location.href = `./listLimemo.html?${docName}`;
+          });
         }
       });
-    });
-  </script>
-</body>
+
+      document.getElementById("noImage").addEventListener("click", function () {
+        imageInput.click();
+      });
+
+      document
+        .getElementById("imageInput")
+        .addEventListener("change", async function (event) {
+          onAuthStateChanged(auth, (user) => {
+            const userUID = user.uid;
+            const docName = location.href.split("?")[1];
+            const file = event.target.files[0];
+
+            if (file) {
+              // Firebase Storageに画像をアップロード
+              const storageRef = ref(
+                storage,
+                `${userUID}/${docName}/thumbnail.png`
+              );
+              try {
+                uploadBytes(storageRef, file);
+                console.log("画像がアップロードされました");
+
+                // アップロードされた画像のURLを取得して表示
+                const downloadURL = getDownloadURL(storageRef);
+                document.getElementById("noImage").src = downloadURL;
+                console.log("ダウンロードURL:", downloadURL);
+              } catch (error) {
+                console.error("画像のアップロードに失敗しました:", error);
+              }
+            }
+          });
+        });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const threeDots = document.querySelector(".three-dots");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+        threeDots.addEventListener("click", (event) => {
+          event.stopPropagation();
+          dropdownMenu.style.display = "block";
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = "none";
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

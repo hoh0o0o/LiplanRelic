@@ -35,7 +35,7 @@
   justify-content: flex-start;
   gap: 5px;
   cursor: pointer;
-  z-index: 3; 
+  z-index: 3;
 }
 .icon {
   align-self: stretch;
@@ -150,7 +150,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22%;;
+  width: 22%;
   line-height: 11px;
   flex-shrink: 0;
   min-width: 90px;
@@ -232,7 +232,7 @@
   flex-shrink: 0;
   position: fixed;
   height: 175px;
-  width: 100vw; 
+  width: 100vw;
   background-color: var(--color-midnightblue);
   text-align: left;
   font-size: var(--font-size-mini);
@@ -325,7 +325,7 @@
   background-color: var(--color-darkslateblue);
   align-items: flex-end;
   padding: var(--padding-6xs) 68px;
-  width:400px;
+  width: 400px;
 }
 .list-inner {
   align-self: stretch;
@@ -452,7 +452,6 @@
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-  
 }
 .task-item-one {
   align-self: stretch;
@@ -767,8 +766,8 @@
   margin: 0;
 }
 .footer {
-  position:absolute;
-  margin-top:20px;
+  position: absolute;
+  margin-top: 20px;
   display: flex;
   box-sizing: border-box;
   align-self: stretch;
@@ -1015,12 +1014,52 @@ body {
   --padding-12xs: 1px;
   --padding-6xs: 7px;
 }
-html{
-  overflow-x:hidden;
+html {
+  overflow-x: hidden;
 }
-.p{
+.p {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.three-dots {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 5;
+  filter: invert(100%);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.dropdown-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-darksalmon);
+  font-weight: bold;
+  font-size: 16px;
+  font-family: var(--font-inter);
+}
+
+.dropdown-button:hover {
+  background-color: #f0f0f0;
 }
