@@ -942,7 +942,7 @@ input[type="file"] {
   background: none;
   text-align: left;
   cursor: pointer;
-  color: var(--color-darksalmon);
+  color: #f09680;
   font-weight: bold;
   font-size: 16px;
   font-family: var(--font-inter);
