@@ -150,14 +150,13 @@
       const db = getFirestore(app);
       let userUID;
 
-      // ユーザーUIDを非同期で取得し、Promiseで管理
       const getUserUID = new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
           if (user) {
             userUID = user.uid;
             resolve(userUID);
           } else {
-            window.location.href = "./login.html"; // 認証されていない場合はログインページへ
+            window.location.href = "./login.html";
             reject("User not logged in");
           }
         });
