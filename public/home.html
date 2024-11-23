@@ -20,7 +20,7 @@
     <div class="div">
       <section class="project-editor">
         <div class="rectangle-parent">
-          <a class="hoh0o" id="userInfo">@_.hoh0o</a>
+          <a class="hoh0o" id="userInfo">@user</a>
           <div class="profile-actions-wrapper">
             <div class="profile-actions">
               <div class="profile-details">
@@ -31,7 +31,7 @@
                   <a class="a">ライメモ公開</a>
                   <div class="wrapper">
                     <b class="b">
-                      <span id="releaseCount">***</span>
+                      <span id="releaseCount">0</span>
                     </b>
                   </div>
                 </div>
@@ -39,7 +39,7 @@
                   <b class="view">ライメモview</b>
                   <div class="empty-button-wrapper">
                     <b class="empty-button">
-                      <span id="viewCount">***</span>
+                      <span id="viewCount">0</span>
                     </b>
                   </div>
                 </div>
@@ -164,7 +164,8 @@
         getDocs,
         doc,
         getDoc,
-        setDoc
+        setDoc,
+        updateDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getStorage,
@@ -274,7 +275,7 @@
             });
 
           document.getElementById("frameContainer").addEventListener("click", function () {
-              window.location.href = `./plan.html?docName=${closestEventDocId}`;
+              window.location.href = `./plan.html?${closestEventDocId}`;
           });
         }
       }
@@ -297,10 +298,10 @@
               clone.style.display = "block";
               clone.querySelector(".time").textContent = data.Date
                 ? formatDate(data.Date)
-                : "不明";
-              clone.querySelector(".h2").textContent = data.venue || "不明";
+                : "データなし";
+              clone.querySelector(".h2").textContent = data.venue || "データなし";
               clone.querySelector(".vaundy p").textContent =
-                data.artist || "不明";
+                data.artist || "データなし";
 
               const itemImage = clone.querySelector(".item");
               try {
@@ -312,7 +313,7 @@
               }
 
               clone.addEventListener("click", function () {
-                window.location.href = `./plan.html?docName=${doc.id}`;
+                window.location.href = `./plan.html?${doc.id}`;
               });
 
               templateParent.insertBefore(
@@ -328,12 +329,11 @@
         onAuthStateChanged(auth, (user) => {
         if(user){
           userUID = user.uid;
-          setDoc(doc(db, userUID, "information"),{
+          updateDoc(doc(db, userUID, "information"),{
             userUID: userUID,
-            test: "temp"
-          },{merge: true});
-        }else{
-          window.location.href = "./login.html";
+            userName: ""
+            
+          });
         }
       });
       };

@@ -311,7 +311,7 @@
           onAuthStateChanged(auth, async(user) => {
             const userUID = user.uid;
             await saveData(userUID, docName);
-            window.location.href = `home.html?${docName}`;
+            window.location.href = `home.html?${userUID}`;
           });
         });
       }
