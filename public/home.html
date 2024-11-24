@@ -192,6 +192,7 @@
       onAuthStateChanged(auth, (user) => {
         if(user){
           userUID = user.uid;
+          saveInformation(userUID);
           fetchDataAndDisplay(userUID);
           fetchInformationData(userUID);
           fetchClosestEvent(userUID);
@@ -228,7 +229,6 @@
 
       async function fetchInformationData(userUID) {
         const infoDocSnap = await getDoc(doc(db, userUID, "information"));
-
         if (infoDocSnap.exists()) {
           const data = infoDocSnap.data();
           document.getElementById("releaseCount").textContent = data.l_release;
@@ -325,18 +325,18 @@
         }
       }
 
-      window.onload = async function () {
-        onAuthStateChanged(auth, (user) => {
-        if(user){
-          userUID = user.uid;
-          updateDoc(doc(db, userUID, "information"),{
-            userUID: userUID,
-            userName: ""
-            
+      async function saveInformation(userUID){
+        const docRef = doc(db, userUID, "information");
+        const docSnap = await getDoc(docRef);
+        if(!docSnap.exists()){
+          await setDoc(docRef, {
+            l_release: 0,
+            l_view: 0,
+            userID: "user",
+            userUID: userUID
           });
         }
-      });
-      };
+      }
     </script>
   </body>
 </html>

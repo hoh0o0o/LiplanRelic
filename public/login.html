@@ -38,7 +38,8 @@
       import {
         getFirestore,
         doc,
-        setDoc
+        setDoc,
+        getDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -75,11 +76,10 @@
                 });
             });
 
-          // Check if user is already logged in
-          onAuthStateChanged(auth, (user) => {
+          onAuthStateChanged(auth, async(user) => {
             if (user) {
               const userUID = user.uid;
-              window.location.href = "./home.html?" + userUID;
+              window.location.href = `./home.html?${userUID}`;
             }
           });
         })
