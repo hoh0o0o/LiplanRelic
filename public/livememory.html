@@ -165,8 +165,8 @@
     onAuthStateChanged(auth, (user) => {
       if(user){
         userUID = user.uid;
-        fetchInformationData();
-        fetchClosestPastEvent();
+        fetchInformationData(userUID);
+        fetchClosestPastEvent(userUID);
       }else{
         window.location.href = "./login.html";
       }
@@ -180,23 +180,23 @@
       return `${year}/${month}/${day}`;
     }
 
-    async function fetchInformationData(docName) {
+    async function fetchInformationData(userUID) {
       const infoDocRef = doc(db, userUID, "information");
       const infoDocSnap = await getDoc(infoDocRef);
 
       if (infoDocSnap.exists()) {
         const data = infoDocSnap.data();
         const releaseCount = document.getElementById("releaseCount");
-        releaseCount.textContent = data.l_release || "不明";
+        releaseCount.textContent = data.l_release || 0;
 
         const viewCount = document.getElementById("viewCount");
-        viewCount.textContent = data.l_view || "不明";
+        viewCount.textContent = data.l_view || 0;
       } else {
         console.log("No such document!");
       }
     }
 
-    async function fetchClosestPastEvent() {
+    async function fetchClosestPastEvent(userUID) {
       const querySnapshot = await getDocs(collection(db, userUID));
       const today = new Date().setHours(0, 0, 0, 0);
       let closestEvent = null;

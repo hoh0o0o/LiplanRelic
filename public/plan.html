@@ -176,7 +176,7 @@
             document.getElementById("venue").textContent = data.venue || "不明";
 
             // スケジュールデータの処理
-            const hourArray = (data.hour || "").split("**/kugiri\\**");
+            const hourArray = (data.hour || "9:00").split("**/kugiri\\**");
             const planArray = (data.plan || "").split("**/kugiri\\**");
             const memoArray = (data.memo || "").split("**/kugiri\\**");
 
@@ -226,6 +226,7 @@
             const userUID = user.uid;
             await loadData(userUID, docName);
             await loadImage(userUID, docName);
+            await loadPlan(userUID, docName);
           } else {
             window.location.href = "./login.html";
           }

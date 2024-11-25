@@ -125,16 +125,18 @@
             <div class="period-details-child"></div>
             <b class="b7">発券期間</b>
             <div class="images-1-wrapper">
+              <!--
               <img
                 class="images-1-icon"
                 loading="lazy"
                 alt=""
                 src="./ticket-4.png"
-              />
+              />-->
             </div>
+            <!--
             <div class="wrapper1">
               <b class="b8">通知オフにする</b>
-            </div>
+            </div>-->
           </div>
           <div class="tour-name">
             <div class="parent1">
@@ -207,7 +209,7 @@
           const downloadURL = await getDownloadURL(storageRef);
           document.getElementById("noImage").src = downloadURL;
         } catch (error) {
-          alert("failed to download a thumbnail image...");
+          //alert("failed to download a thumbnail image...");
         }
 
         const storageTicketRef = ref(
@@ -221,7 +223,7 @@
           storedImageElement.style.display = "block";
           console.log("Ticket image successfully loaded:", downloadURL);
         } catch (error) {
-          alert("failed to download a ticet image...");
+          //alert("failed to download a ticet image...");
         }
       }
 
@@ -268,8 +270,8 @@
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            const ticketInfo = data.ticket;
-            const ticketTime = data.ticketTime;
+            const ticketInfo = data.ticket || "";
+            const ticketTime = data.ticketTime || "18:00";
             const textareaField = document.getElementById("textareaField");
             const dateTime = document.getElementById("date-time");
             textareaField.value = ticketInfo;
