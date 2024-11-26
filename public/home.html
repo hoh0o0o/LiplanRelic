@@ -123,7 +123,7 @@
       var groupContainer = document.getElementById("groupContainer");
       if (groupContainer) {
         groupContainer.addEventListener("click", function (e) {
-          // Please sync "プロフィール編集" to the project
+          window.location.href = "./profile.html"; // プロフィール編集ページに遷移
         });
       }
 
@@ -156,8 +156,8 @@
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import {
         getAuth,
-        onAuthStateChanged
-      }from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
       import {
         getFirestore,
         collection,
@@ -165,7 +165,7 @@
         doc,
         getDoc,
         setDoc,
-        updateDoc
+        updateDoc,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getStorage,
@@ -190,13 +190,13 @@
       let userUID;
 
       onAuthStateChanged(auth, (user) => {
-        if(user){
+        if (user) {
           userUID = user.uid;
           fetchDataAndDisplay(userUID);
           fetchInformationData(userUID);
           fetchClosestEvent(userUID);
           fetchAndAlertUpcomingEvents(userUID);
-        }else{
+        } else {
           window.location.href = "./login.html";
         }
       });
@@ -209,7 +209,6 @@
         return `${year}/${month}/${day}`;
       }
 
-
       async function fetchDataAndDisplay(userUID) {
         const docRef = doc(db, userUID);
         const docSnap = await getDoc(docRef);
@@ -219,7 +218,9 @@
           artistElement0.textContent = data.artist || "アーティスト名：***";
 
           const artistElement1 = document.getElementById("liveDate");
-          artistElement1.textContent = data.date ? formatDate(data.date) : "日付：***";
+          artistElement1.textContent = data.date
+            ? formatDate(data.date)
+            : "日付：***";
 
           const artistElement2 = document.getElementById("liveTitle");
           artistElement2.textContent = data.title || "タイトル：***";
@@ -261,12 +262,21 @@
         });
 
         if (closestEvent) {
-          document.getElementById("artistName").textContent = closestEvent.data.artist || "***";
-          document.getElementById("liveDate").textContent = closestEvent.data.Date ? formatDate(closestEvent.data.Date) : "***";
-          document.getElementById("liveTitle").textContent = closestEvent.data.title || "***";
+          document.getElementById("artistName").textContent =
+            closestEvent.data.artist || "***";
+          document.getElementById("liveDate").textContent = closestEvent.data
+            .Date
+            ? formatDate(closestEvent.data.Date)
+            : "***";
+          document.getElementById("liveTitle").textContent =
+            closestEvent.data.title || "***";
 
-          const storageRef = ref(storage, `${userUID}/${closestEvent.id}/thumbnail.png`);
-          getDownloadURL(storageRef).then((url) => {
+          const storageRef = ref(
+            storage,
+            `${userUID}/${closestEvent.id}/thumbnail.png`
+          );
+          getDownloadURL(storageRef)
+            .then((url) => {
               const thumbnailImage = document.getElementById("thumbnailImage");
               thumbnailImage.src = url;
             })
@@ -274,9 +284,11 @@
               console.error("Error fetching image: ", error);
             });
 
-          document.getElementById("frameContainer").addEventListener("click", function () {
+          document
+            .getElementById("frameContainer")
+            .addEventListener("click", function () {
               window.location.href = `./plan.html?${closestEventDocId}`;
-          });
+            });
         }
       }
 
@@ -299,13 +311,17 @@
               clone.querySelector(".time").textContent = data.Date
                 ? formatDate(data.Date)
                 : "データなし";
-              clone.querySelector(".h2").textContent = data.venue || "データなし";
+              clone.querySelector(".h2").textContent =
+                data.venue || "データなし";
               clone.querySelector(".vaundy p").textContent =
                 data.artist || "データなし";
 
               const itemImage = clone.querySelector(".item");
               try {
-                const storageRef = ref(storage, `${userUID}/${doc.id}/thumbnail.png`);
+                const storageRef = ref(
+                  storage,
+                  `${userUID}/${doc.id}/thumbnail.png`
+                );
                 const url = await getDownloadURL(storageRef);
                 itemImage.src = url;
               } catch (error) {
@@ -327,15 +343,14 @@
 
       window.onload = async function () {
         onAuthStateChanged(auth, (user) => {
-        if(user){
-          userUID = user.uid;
-          updateDoc(doc(db, userUID, "information"),{
-            userUID: userUID,
-            userName: ""
-            
-          });
-        }
-      });
+          if (user) {
+            userUID = user.uid;
+            updateDoc(doc(db, userUID, "information"), {
+              userUID: userUID,
+              userName: "",
+            });
+          }
+        });
       };
     </script>
   </body>
