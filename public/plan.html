@@ -113,11 +113,12 @@
     </div>
     <img class="three-dots" src="./three-dots.svg" alt="Menu" />
     <div class="dropdown-menu" id="dropdownMenu">
-      <button class="dropdown-button">×このライブ記録を削除</button>
+      <button class="dropdown-button" id="deleteButton">×このライブ記録を削除</button>
     </div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getFirestore,
         doc,
@@ -175,7 +176,7 @@
             document.getElementById("venue").textContent = data.venue || "不明";
 
             // スケジュールデータの処理
-            const hourArray = (data.hour || "").split("**/kugiri\\**");
+            const hourArray = (data.hour || "9:00").split("**/kugiri\\**");
             const planArray = (data.plan || "").split("**/kugiri\\**");
             const memoArray = (data.memo || "").split("**/kugiri\\**");
 
@@ -225,6 +226,7 @@
             const userUID = user.uid;
             await loadData(userUID, docName);
             await loadImage(userUID, docName);
+            await loadPlan(userUID, docName);
           } else {
             window.location.href = "./login.html";
           }
@@ -278,6 +280,19 @@
       });
 
       const docName = location.href.split("?")[1];
+
+      var deleteButton = document.getElementById("deleteButton");
+      if(deleteButton){
+        deleteButton.addEventListener("click", function(e){
+          onAuthStateChanged(auth, async(user) => {
+            const userUID= user.uid;
+            const docRef = doc(db, userUID, docName);
+            await deleteDoc(docRef);
+            alert("正常に削除完了");
+            window.location.href = `home.html?${userUID}`;
+          });
+        })
+      }
 
       var saveButton = document.getElementById("saveButton");
       if(saveButton){

@@ -20,7 +20,7 @@
   <div class="div">
     <section class="project-editor">
       <div class="rectangle-parent">
-        <a class="hoh0o">@_.hoh0o</a>
+        <a class="hoh0o">@user</a>
         <div class="profile-actions-wrapper">
           <div class="profile-actions">
             <div class="profile-details">
@@ -35,7 +35,7 @@
                 <a class="a">ライメモ公開</a>
                 <div class="wrapper">
                   <b class="b">
-                    <span id="releaseCount">***</span>
+                    <span id="releaseCount">0</span>
                 </b>
                 </div>
               </div>
@@ -43,7 +43,7 @@
                 <b class="view">ライメモview</b>
                 <div class="empty-button-wrapper">
                   <b class="empty-button">
-                      <span id="viewCount">***</span>
+                      <span id="viewCount">0</span>
                   </b>
                 </div>
               </div>
@@ -51,9 +51,6 @@
             <div class="rectangle-group" id="groupContainer">
               <div class="frame-item"></div>
               <b class="b1">プロフィール編集</b>
-            </div>
-            <div class="rectangle-container">
-            <b class="b2">自分のライメモを見る</b>
             </div>
           </div>
         </div>
@@ -75,10 +72,10 @@
           <div class="frame-child1"></div>
         </div>
         <b class="b4">
-          <p class="p" id="liveDate">不明</p>
-          <p class="p1" id="liveVenue">不明</p>
+          <p class="p" id="liveDate">データなし</p>
+          <p class="p1" id="liveVenue">データなし</p>
         </b>
-        <h1 class="red-hot-chili" id="artistName">不明</h1>
+        <h1 class="red-hot-chili" id="artistName">データなし</h1>
       </div>
       <div class="rectangle-parent1">
       <b class="live1">これまでのLive</b>
@@ -86,7 +83,7 @@
     </section>
     <section class="parent" id="parentContainer">
       <!--ここを複製する処理をする-->
-      <b class="b5" id="vaundyDate">不明</b>
+      <b class="b5" id="vaundyDate">データなし</b>
       <div class="frame-wrapper1">
         <div class="rectangle-parent2">
           <img
@@ -168,8 +165,8 @@
     onAuthStateChanged(auth, (user) => {
       if(user){
         userUID = user.uid;
-        fetchInformationData();
-        fetchClosestPastEvent();
+        fetchInformationData(userUID);
+        fetchClosestPastEvent(userUID);
       }else{
         window.location.href = "./login.html";
       }
@@ -183,23 +180,23 @@
       return `${year}/${month}/${day}`;
     }
 
-    async function fetchInformationData(docName) {
+    async function fetchInformationData(userUID) {
       const infoDocRef = doc(db, userUID, "information");
       const infoDocSnap = await getDoc(infoDocRef);
 
       if (infoDocSnap.exists()) {
         const data = infoDocSnap.data();
         const releaseCount = document.getElementById("releaseCount");
-        releaseCount.textContent = data.l_release || "不明";
+        releaseCount.textContent = data.l_release || 0;
 
         const viewCount = document.getElementById("viewCount");
-        viewCount.textContent = data.l_view || "不明";
+        viewCount.textContent = data.l_view || 0;
       } else {
         console.log("No such document!");
       }
     }
 
-    async function fetchClosestPastEvent() {
+    async function fetchClosestPastEvent(userUID) {
       const querySnapshot = await getDocs(collection(db, userUID));
       const today = new Date().setHours(0, 0, 0, 0);
       let closestEvent = null;
@@ -233,7 +230,7 @@
             });
 
             parentClone.addEventListener('click', function() {
-              window.location.href = `./plan.html?docName=${doc.id}?` + userUID;
+              window.location.href = `./plan.html?${doc.id}`;
             });
 
             parentContainer.after(parentClone);
@@ -263,7 +260,7 @@
 
         const closestEventContainer = document.getElementById("closestEventContainer");
         closestEventContainer.addEventListener("click", function () {
-          window.location.href = `./plan.html?docName=${closestEventDocId}?` + userUID;
+          window.location.href = `./plan.html?${closestEventDocId}`;
         });
 
       }

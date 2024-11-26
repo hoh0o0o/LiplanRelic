@@ -332,7 +332,7 @@ html {
   display: none;
 }
 .b6 {
-  width: 40px; /*要素の幅*/
+  width: 60px; /*要素の幅*/
   height: auto;
   position: absolute; /*相対位置*/
   letter-spacing: -0.17px; /*文字間隔*/
@@ -342,7 +342,7 @@ html {
   z-index: 3;
   background-color: white; /*背景色*/
   color: #50555c; /*テキストの色*/
-  font-size: 16px; /*テキストサイズ*/
+  font-size: 12px; /*テキストサイズ*/
   font-weight: 500;
 }
 input[type="time"]::-webkit-date-and-time-value {
