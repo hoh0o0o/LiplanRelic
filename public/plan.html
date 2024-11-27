@@ -69,6 +69,9 @@
             <div class="div1">
               <div class="info-details">
                 <input class="b6" type="time" value="18:00" />
+                <button class="add-schedule-button">
+                  <img src="./plus-circle.svg" alt="予定追加" />
+                </button>
               </div>
               <div class="frame-parent4">
                 <div class="frame-wrapper1">
@@ -92,22 +95,76 @@
         </div>
       </section>
       <section>
-        <div class="osusume">
+        <div class="tourokuspot">
           <h2 class="osusumetitle">会場近くのおすすめスポット</h2>
-          <div>
+          <div class="osusumespot-container">
             <div class="osusumespot">
               <img
                 class="osusumegazou"
-                id="place-image"
+                id="place-image1"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name">場所名</div>
+              <div id="place-name1">場所名1</div>
             </div>
-          <button class="rectangle-parent" id="saveButton">
-            <div class="rectangle-div"></div>
-            <b class="b11">目的地追加</b>
-          </button>
+            <div class="osusumespot">
+              <img
+                class="osusumegazou"
+                id="place-image2"
+                src="./noimage.png"
+                alt="選択した場所の画像"
+              />
+              <div id="place-name2">場所名2</div>
+            </div>
+            <div class="osusumespot">
+              <img
+                class="osusumegazou"
+                id="place-image3"
+                src="./noimage.png"
+                alt="選択した場所の画像"
+              />
+              <div id="place-name3">場所名3</div>
+            </div>
+          </div>
+        </div>
+        <div class="osusume">
+          <div class="osusume-header">
+            <h2 class="osusumetitle">登録スポット</h2>
+            <button class="rectangle-parent" id="saveButton">
+              <div class="rectangle-div"></div>
+              <img src="./spotplus.svg" alt="スポット追加アイコン" class="spotplus-icon" />
+              <b class="b11">スポット追加</b>
+            </button>
+          </div>
+          <div class="osusumespot-container">
+            <div class="osusumespot">
+              <img
+                class="osusumegazou"
+                id="place-image1"
+                src="./noimage.png"
+                alt="選択した場所の画像"
+              />
+              <div id="place-name1">場所名1</div>
+            </div>
+            <div class="osusumespot">
+              <img
+                class="osusumegazou"
+                id="place-image2"
+                src="./noimage.png"
+                alt="選択した場所の画像"
+              />
+              <div id="place-name2">場所名2</div>
+            </div>
+            <div class="osusumespot">
+              <img
+                class="osusumegazou"
+                id="place-image3"
+                src="./noimage.png"
+                alt="選択した場所の画像"
+              />
+              <div id="place-name3">場所名3</div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -217,6 +274,18 @@
         console.log("データが保存されました");
       }
 
+      function addSchedule(event) {
+        const div1 = event.currentTarget.closest(".div1");
+        const newDiv1 = div1.cloneNode(true);
+        newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタンを表示する
+        newDiv1.style.marginTop = "0"; // 距離を0に設定
+        newDiv1.style.marginBottom = "0"; // 距離を0に設定
+        div1.querySelectorAll(".add-schedule-button").forEach(button => button.style.display = "none"); // 元のdiv1からすべてのボタンを非表示にする
+        div1.parentNode.appendChild(newDiv1);
+      
+        newDiv1.querySelector(".add-schedule-button").addEventListener("click", addSchedule);
+      }
+      
       document.addEventListener("DOMContentLoaded", () => {
         const docName = location.href.split("?")[1];
 
@@ -263,6 +332,9 @@
             console.error("画像のアップロードに失敗しました:", error);
           }
         }
+
+        const addScheduleButton = document.querySelector(".add-schedule-button");
+        addScheduleButton.addEventListener("click", addSchedule);
 
         const threeDots = document.querySelector('.three-dots');
         const dropdownMenu = document.getElementById('dropdownMenu');

@@ -332,7 +332,7 @@ html {
   display: none;
 }
 .b6 {
-  width: 60px; /*要素の幅*/
+  width: 10vw; /*要素の幅*/
   height: auto;
   position: absolute; /*相対位置*/
   letter-spacing: -0.17px; /*文字間隔*/
@@ -340,9 +340,9 @@ html {
   display: inline-block; /*インラインブロック*/
   min-width: 14px; /*最小幅*/
   z-index: 3;
-  background-color: white; /*背景色*/
+  background-color: var(--color-white); /*背景色を白に設定*/
   color: #50555c; /*テキストの色*/
-  font-size: 12px; /*テキストサイズ*/
+  font-size: 16px; /*テキストサイズ*/
   font-weight: 500;
 }
 input[type="time"]::-webkit-date-and-time-value {
@@ -440,11 +440,11 @@ input[type="time"]::-webkit-date-and-time-value {
   width: 290px;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 0 0 0 var(--padding-xl);
-  box-sizing: border-box;
+  flex-shrink: 0; /* 横幅が長くなっても隙間を保つ */
+  position: absolute; /* 相対位置に変更 */
+  left: calc(15vw - 20px); /* b6の幅に40pxを加えた位置に配置 */
 }
 .frame-wrapper1 {
-  align-self: stretch;
   flex-direction: row;
   justify-content: flex-end;
 }
@@ -453,7 +453,6 @@ input[type="time"]::-webkit-date-and-time-value {
   position: absolute;
   top: 13px;
   left: 37px;
-  width: 317px;
   height: 65px;
   display: flex;
   flex-direction: column;
@@ -462,6 +461,7 @@ input[type="time"]::-webkit-date-and-time-value {
   text-align: left;
   font-size: 10px;
   color: var(--color-dimgray);
+  width: 10vw;
 }
 .div1 {
   align-self: stretch;
@@ -469,7 +469,7 @@ input[type="time"]::-webkit-date-and-time-value {
   position: relative;
   background-color: rgba(127, 102, 160, 0.6);
   font-size: var(--font-size-xs);
-  margin-bottom: 12px;
+  /*margin-bottom: 4px;*/
 }
 .frame-parent2 {
   align-self: stretch;
@@ -477,7 +477,6 @@ input[type="time"]::-webkit-date-and-time-value {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: var(--gap-4xs);
 }
 .frame-parent1 {
   display: flex;
@@ -503,7 +502,7 @@ input[type="time"]::-webkit-date-and-time-value {
 }
 .b11 {
   position: relative;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: -0.17px;
   display: inline-block;
   font-family: var(--font-inter);
@@ -596,26 +595,49 @@ input[type="time"]::-webkit-date-and-time-value {
 }
 
 /*おすすめ*/
-.osusume {
+.osusume,
+.tourokuspot {
   background-color: #ebebeb;
   padding: 10px;
   font-family: var(--font-inter);
   display: flex;
   flex-direction: column; /* 垂直方向に要素を配置 */
-  align-items: center; /* 横方向に中央配置 */
 }
+
+.osusume-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 左揃えに変更 */
+  padding: 0 10px;
+  white-space: nowrap; /* 改行を防ぐ */
+}
+
 .osusumetitle {
   margin: 10px;
+  font-size: 20px;
+  text-align: left; /* 左揃えにする */
+  margin-right: 10px; /* 右にマージンを追加 */
 }
+
+.osusumespot-container {
+  display: flex;
+  flex-direction: row; /* 横方向に要素を配置 */
+  justify-content: space-between; /* 要素を左右に均等に配置 */
+  width: 100%; /* 親要素の幅に合わせる */
+}
+
 .osusumespot {
   display: flex;
   flex-direction: column; /* 垂直方向に要素を配置 */
   align-items: center; /* 横方向に中央配置 */
   justify-content: center; /* 縦方向に中央配置 */
   text-align: center; /* テキストも中央揃えに */
-  margin: 0 auto; /* 外側の中央配置も適用 */
+  margin: 0 10px; /* 左右にマージンを追加 */
+  flex: 1; /* 要素を均等に拡張 */
+  max-width: 33%; /* 最大幅を33%に設定 */
   padding-bottom: 15px;
 }
+
 .osusumegazou {
   width: 100px; /* 任意のサイズ */
   height: 100px; /* 幅と高さを同じにする */
@@ -625,10 +647,14 @@ input[type="time"]::-webkit-date-and-time-value {
 .rectangle-parent {
   cursor: pointer;
   border: 0;
-  padding: 5px 30px;
+  padding: 1px 10px; /* 縦のパディングをさらに狭くする */
   background-color: var(--color-darksalmon);
   border-radius: var(--br-61xl);
   margin-bottom: 10px;
+  display: flex; /* フレックスボックスに変更 */
+  align-items: center; /* 垂直方向に中央揃え */
+  justify-content: center; /* 水平方向に中央揃え */
+  margin: 10px;
 }
 
 .three-dots {
@@ -670,4 +696,30 @@ input[type="time"]::-webkit-date-and-time-value {
 
 .dropdown-button:hover {
   background-color: #f0f0f0;
+}
+
+.add-schedule-button {
+  margin-top: 0;
+  padding: 3px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  display: flex; /* デフォルトで表示 */
+  justify-content: center;
+}
+
+.add-schedule-button img {
+  width: 24px; /* アイコンの幅を設定 */
+  height: 24px; /* アイコンの高さを設定 */
+  padding-top: 35px;
+  padding-left: 5vw;
+}
+
+.spotplus-icon {
+  width: 40px; /* アイコンの幅を少し小さくする */
+  height: 40px; /* アイコンの高さを少し小さくする */
+  margin-right: -2px; /* テキストとの間のスペースをさらに狭くする */
+  vertical-align: middle; /* テキストとアイコンを中央揃え */
+  margin-left: -15px; /* ボタンを左に寄せる */
 }
