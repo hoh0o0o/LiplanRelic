@@ -25,7 +25,7 @@
             <div class="profile-actions">
               <div class="profile-details">
                 <div class="div1">
-                  <img loading="lazy" alt="" src="./livememory_icon.svg" />
+                  <img alt="" id="profileImage" src="./livememory_icon.svg" />
                 </div>
                 <div class="live-memory-actions">
                   <a class="a">ライメモ公開</a>
@@ -190,6 +190,7 @@
         if (user) {
           userUID = user.uid;
           saveInformation(userUID);
+          fetchUserInfo(userUID);
           fetchDataAndDisplay(userUID);
           fetchInformationData(userUID);
           fetchClosestEvent(userUID);
@@ -205,6 +206,20 @@
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         return `${year}/${month}/${day}`;
+      }
+
+      async function fetchUserInfo(userUID){
+        const docRef = doc(db, userUID, "information");
+        const docSnap = await getDoc(docRef);
+        if(docSnap.exists()){
+          const data = docSnap.data();
+          const userID = document.getElementById("userInfo");
+          userID.textContent = "@" + data.userID;
+        }
+
+        const storageRef = ref(storage, `${userUID}/profileImage`);
+        const ImageURL = await getDownloadURL(storageRef);
+        profileImage.src = ImageURL;
       }
 
       async function fetchDataAndDisplay(userUID) {

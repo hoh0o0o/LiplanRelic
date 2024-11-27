@@ -1,31 +1,177 @@
-<!DOCTYPE html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./profile.css" />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-  />
-</head>
-<body>
-  <div class="header">
-    <div class="edit">
-      <a href="home.html">
-        <img class="icon" loading="lazy" alt="" src="./chevron-left.svg" />
-      </a>
-      <span>プロフィール編集</span>
+<html> 
+    <!DOCTYPE html>
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./profile.css" />
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+    />
+    </head>
+    <body>
+    <div class="header">
+        <div class="edit">
+        <a href="home.html">
+            <img class="icon" loading="lazy" alt="" src="./chevron-left.svg" />
+        </a>
+        <span>プロフィール編集</span>
+        </div>
     </div>
-  </div>
-  <div class="image-container">
-    <img class="profile-image" src="./noimage.png" alt="No Image" />
-  </div>
-  <div class="username-container">
-    <span>ユーザーネーム</span>
-  </div>
-  <div class="username-input">
-    <span>@</span>
-    <input type="text" placeholder="ユーザーネームを登録" />
-  </div>
-  <button class="register-button">登録</button>
-</body>
+    <div class="image-container">
+        <img
+          class="profile-image"
+          id="profileImage"
+          src="./livememory_icon.svg"
+          alt="No Image"
+        />
+        <input type="file" id="imageInput" style="display: none" accept="image/*" />
+    </div>
+    <div class="username-container">
+        <span>ユーザーネーム</span>
+    </div>
+    <div class="username-input">
+        <span>@</span>
+        <input id="userNameInput" type="text" placeholder="ユーザーネームを登録" />
+    </div>
+    <button class="register-button" id="registButton">登録</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            updateDoc,
+        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import {
+            getAuth,
+            onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import {
+            getStorage,
+            ref,
+            uploadBytes,
+            getDownloadURL,
+        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+            authDomain: "liplan-836a1.firebaseapp.com",
+            projectId: "liplan-836a1",
+            storageBucket: "liplan-836a1.appspot.com",
+            messagingSenderId: "545673347741",
+            appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+            measurementId: "G-TKF08JYKTT",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, async(user) => {
+            if (user) {
+                const userUID = user.uid;
+                try{
+                    const docRef = doc(db, userUID, "information");
+                    const docSnap = await getDoc(docRef);
+                    if(docSnap){
+                        const data = docSnap.data();
+                        document.getElementById("userNameInput").value = data.userID || "user";
+                    }
+                }catch(error){
+                    alert("miss");
+                }
+
+                try{
+                    const storageRef = ref(storage, `${userUID}/profileImage`);
+                    const ImageURL = await getDownloadURL(storageRef);
+                    profileImage.src = ImageURL;
+                }catch(error){
+                    //alert("miss");
+                }
+            }else{
+                window.location.href = "./login.html";
+            }
+        });
+
+        function validateUserID(userID) {
+            const trimmedID = userID.trim(); // 余分なスペースを削除
+            const isValid = /^[a-zA-Z0-9_]+$/.test(trimmedID);
+            if (!isValid) {
+            return { 
+                valid: false,
+                case: 1
+            };
+            }
+            if (trimmedID.length < 3 || trimmedID.length > 20) {
+            return {
+                valid: false,
+                case: 2
+            };
+            }
+            return {valid: true};
+        }
+
+        var registButton = document.getElementById("registButton");
+        if(registButton){
+            registButton.addEventListener("click", function(){
+                onAuthStateChanged(auth, async(user) => {
+                    const userUID = user.uid;
+                    try{
+                        const newUserID = document.getElementById("userNameInput").value || "user";
+                        const checkvalid = validateUserID(newUserID);
+                        if(checkvalid.valid){
+                            const docRef = doc(db, userUID, "information");
+                            await updateDoc(docRef, {
+                                userID: newUserID
+                            });
+                            //alert(newUserID);
+                        }else{
+                            if(checkvalid.case == 1){
+                                alert("数字、アルファベット、アンダーバーのみ使用可能です");
+                            }else if(checkvalid.case == 2){
+                                alert("3文字以上、20文字以下で入力してください");
+                            }
+                        }
+                            
+                    }catch(error){
+                        alert("failed")
+                    }
+                    window.locatoon.href = window.location.href = `home.html?${userUID}`;                        
+                });
+            });
+        }
+
+        const profileImage = document.getElementById("profileImage");
+        const imageInput = document.getElementById("imageInput");
+        profileImage.addEventListener("click", () => {
+            imageInput.click();
+        });
+
+        // ファイルが選択された場合
+        imageInput.addEventListener("change", async (event) => {
+            const file = event.target.files[0];
+            onAuthStateChanged(auth, async(user) => {
+                const userUID = user.uid;
+                if (file && userUID) {
+                    try {
+                        // Firebase Storage に画像をアップロード
+                        const storageRef = ref(storage, `${userUID}/profileImage`);
+                        await uploadBytes(storageRef, file);
+
+                        // アップロード後の画像URLを取得して表示
+                        const downloadURL = await getDownloadURL(storageRef);
+                        profileImage.src = downloadURL;
+
+                        console.log("画像がアップロードされました:", downloadURL);
+                    } catch (error) {
+                        console.error("画像のアップロードに失敗しました:", error);
+                    }
+                }
+            }); 
+        });
+      </script>
+    </body>
+</html>
