@@ -30,9 +30,9 @@
             <div class="frame-container">
               <div class="frame-group">
                 <div class="wrapper">
-                  <img class="icon" loading="lazy" alt="" src="./limemo1.svg" />
+                  <img class="icon" loading="lazy" id="userImage" alt="" src="./limemo1.svg" />
                 </div>
-                <div class="hsay-29">@hsay_29</div>
+                <div class="hsay-29" id="userID">@hsay_29</div>
               </div>
             </div>
             <div class="sekainoowari-parent">
@@ -81,7 +81,25 @@
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-      import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        doc,
+        getDoc,
+        updateDoc
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import {
+        getStorage,
+        ref,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -95,21 +113,108 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
+
+      onAuthStateChanged(auth, async(user) => {
+        if(user){
+          const userUID = user.uid;
+          const docName = location.href.split("?")[1];
+          const limemoData = await fetchMatchingProjects(userUID, docName);
+
+          const template = document.getElementById("line-parent-template");
+          const lInner = document.querySelector('.l-inner');
+
+          for(const data of limemoData){
+            const matchingUID = data.split("?")[0];
+            const matchingDocName = data.split("?")[1];
+            const matchingDocRef = doc(db, matchingUID, matchingDocName);
+            const matchingDocSnap = await getDoc(matchingDocRef);
+            const matchingData = matchingDocSnap.data();
+            const clone = template.cloneNode(true);
+
+            const userRef = doc(db, matchingUID, "information");
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.data();
+            const userID = userData.userID;
+            const userStorageRef = ref(storage, `${matchingUID}/profileImage`);
+
+            try{
+              const userImageURL = await getDownloadURL(userStorageRef);
+              clone.querySelector("#userImage").src = userImageURL;
+            }catch(error){
+              clone.querySelector("#userImage").src = "./limemo1.svg";
+            }
+
+            clone.style.display = 'flex';
+            clone.querySelector('.sekainoowari').textContent = matchingData.artist;
+            clone.querySelector('.div2').textContent = matchingData.title;
+            clone.querySelector('.b').textContent = matchingData.message;
+            clone.querySelector('.hsay-29').textContent = `@${userID}`;
+
+            clone.addEventListener('click', async () => {
+              const citationMusic = matchingData.MusicName;
+              const citationMC = matchingData.MC;
+              const citationSetlistMemo = matchingData.setlistMemo;
+              const docRef = doc(db, userUID, docName);
+              await updateDoc(docRef, {
+                MusicName: citationMusic,
+                MC: citationMC,
+                setlistMemo: citationSetlistMemo
+              });
+              alert(`${matchingUID}, ${matchingDocName}`);
+            });
+            lInner.appendChild(clone);
+          };
+        }
+      });
 
       function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
       }
 
-      async function fetchMatchingProjects(docName) {
-        const docRef = doc(db, "otoyo", docName);
+      async function fetchMatchingProjects(userUID, docName) {
+        const docRef = doc(db, userUID, docName);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const venue = data.venue;
+          const date = data.Date;
+          const search = date + "?" + venue;
+
+          const setlistRef = collection(db, "setlist");
+          const querySnapshot = await getDocs(setlistRef);
+          const matchingesults = [];
+
+          querySnapshot.forEach((doc) => {
+            const docData = doc.data();
+
+            for (const [fieldName, fieldValue] of Object.entries(docData)) {
+              if (fieldValue === search) {
+                // フィールドの内容が search と一致した場合
+                const matchingData = doc.id + "?" + fieldName;
+                matchingesults.push(matchingData);
+              }
+            }
+          });
+
+          return matchingesults;
+        } else {
+          return [];
+        }
+      }
+
+      /*
+      async function fetchMatchingProjects(userUID, docName) {
+        const docRef = doc(db, userUID, docName);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
           const artist = data.artist;
           const date = data.Date;
 
-          const q = query(collection(db, "otoyo"), where("publicity", "==", true), where("artist", "==", artist), where("Date", "==", date));
+          const q = query(collection(db, userUID), where("publicity", "==", true), where("artist", "==", artist), where("Date", "==", date));
           const querySnapshot = await getDocs(q);
           const docData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -118,17 +223,19 @@
           console.log("No such document!");
           return [];
         }
-      }
+      }*/
 
-      async function updateTargetDoc(targetDocName, musicName, mc, setlistMemo) {
-        const targetDocRef = doc(db, "otoyo", targetDocName);
+      /*
+      async function updateTargetDoc(userUID, targetDocName, musicName, mc, setlistMemo) {
+        const targetDocRef = doc(db, userUID, targetDocName);
         await updateDoc(targetDocRef, {
           MusicName: musicName,
           MC: mc,
           setlistMemo: setlistMemo
         });
-      }
+      }*/
 
+      /*
       document.addEventListener('DOMContentLoaded', async () => {
         const docName = getQueryParam('docName');
 
@@ -150,14 +257,14 @@
             lInner.appendChild(clone);
           });
         }
-
-        var div1 = document.getElementById("div1");
-        if (div1) {
-          div1.addEventListener("click", function () {
-            window.location.href = `./setlist.html?docName=${docName}`;
-          });
-        }
-      });
+      });*/
+      var div1 = document.getElementById("div1");
+      if (div1) {
+        div1.addEventListener("click", function () {
+          const docName = location.href.split("?")[1];
+          window.location.href = `./setlist.html?${docName}`;
+        });
+      }
     </script>
   </body>
 </html>
