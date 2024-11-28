@@ -35,41 +35,41 @@
   </body>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-      import {
-        getFirestore,
-        doc,
-        updateDoc,
-      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      updateDoc,
+      arrayUnion,
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-        authDomain: "liplan-836a1.firebaseapp.com",
-        projectId: "liplan-836a1",
-        storageBucket: "liplan-836a1.appspot.com",
-        messagingSenderId: "545673347741",
-        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-        measurementId: "G-TKF08JYKTT",
-      };
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+      authDomain: "liplan-836a1.firebaseapp.com",
+      projectId: "liplan-836a1",
+      storageBucket: "liplan-836a1.appspot.com",
+      messagingSenderId: "545673347741",
+      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+      measurementId: "G-TKF08JYKTT",
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-      window.saveToFirebase = async function (docName, recommendName) {
-        onAuthStateChanged(auth, async(user) => {
-          const userUID = user.uid;
-          const docRef = doc(db, userUID, docName);
-          await updateDoc(docRef, {
-            reccomendName: recommendName
-          });
-          alert("success");
+    window.saveToFirebase = async function (docName, recommend) {
+      onAuthStateChanged(auth, async (user) => {
+        const userUID = user.uid;
+        const docRef = doc(db, userUID, docName);
+        await updateDoc(docRef, {
+          reccomendName: arrayUnion(recommend),
         });
-      }
+        alert("success");
+      });
+    };
   </script>
-
 
   <script>
     let map;
@@ -77,11 +77,11 @@
     let selectedPlace = null;
 
     function initMap() {
-      const latitude = parseFloat(location.href.split("?")[2]);
-      const longitude = parseFloat(location.href.split("?")[3]);
+      const latitude = 34.2265; // 和歌山大学の緯度
+      const longitude = 135.1675; // 和歌山大学の経度
       // マップの初期表示を設定
       map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: latitude, lng: longitude }, // 和歌山を初期位置に設定
+        center: { lat: latitude, lng: longitude }, // 和歌山大学を初期位置に設定
         zoom: 13,
         mapTypeControl: false, // 地図タイプの選択ボタンを非表示
         zoomControl: false, // 拡大縮小ボタンを非表示
@@ -150,16 +150,16 @@
       }
 
       const name = selectedPlace.name;
-      await saveToFirebase(docName, name);
       const imageUrl =
         selectedPlace.photos && selectedPlace.photos[0]
           ? selectedPlace.photos[0].getUrl({ maxWidth: 400, maxHeight: 300 })
           : "./noimage.png"; // 画像がない場合のデフォルト
 
+      const recommend = { name, imageUrl };
+      await saveToFirebase(docName, recommend);
+
       // 選択された名称と画像をplan.htmlに渡す
-      //window.opener.receivePlaceData(name, imageUrl);
       window.location.href = `plan.html?${docName}?${name}`;
-      //window.close();
     }
 
     async function resetOverlay(event) {
@@ -185,11 +185,11 @@
     }
 
     function goBack() {
-        const docName = location.href.split("?")[1];
-        window.location.href = `plan.html?${docName}`;
-        setTimeout(() => {
-            window.location.reload(true); // ページをリロードしてデータベースからの情報を反映
-        }, 100); // 少し遅延を入れてリロード
+      const docName = location.href.split("?")[1];
+      window.location.href = `plan.html?${docName}`;
+      setTimeout(() => {
+        window.location.reload(true); // ページをリロードしてデータベースからの情報を反映
+      }, 100); // 少し遅延を入れてリロード
     }
   </script>
 </html>

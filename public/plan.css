@@ -613,7 +613,6 @@ input[type="time"]::-webkit-date-and-time-value {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
   margin: 0 10px;
   flex: 1;
@@ -621,7 +620,8 @@ input[type="time"]::-webkit-date-and-time-value {
   padding-bottom: 15px;
 }
 
-.osusumegazou {
+.osusumegazou,
+.tourokugazou {
   width: 100px;
   height: 100px;
   border-radius: 50%;

@@ -101,35 +101,35 @@
             <div class="osusumespot">
               <img
                 class="osusumegazou"
-                id="place-image1"
+                id="osusume-image1"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name1">場所名1</div>
+              <div id="reccomend-name1">場所名1</div>
             </div>
             <div class="osusumespot">
               <img
                 class="osusumegazou"
-                id="place-image2"
+                id="osusume-image2"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name2">場所名2</div>
+              <div id="reccomend-name2">場所名2</div>
             </div>
             <div class="osusumespot">
               <img
                 class="osusumegazou"
-                id="place-image3"
+                id="osusume-image3"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name3">場所名3</div>
+              <div id="reccomend-name3">場所名3</div>
             </div>
           </div>
         </div>
         <div class="osusume">
           <div class="osusume-header">
-            <h2 class="osusumetitle">登録スポット</h2>
+            <h2 class="osusumetitle">Myスポット</h2>
             <button class="rectangle-parent" id="saveButton">
               <div class="rectangle-div"></div>
               <img src="./spotplus.svg" alt="スポット追加アイコン" class="spotplus-icon" />
@@ -139,30 +139,30 @@
           <div class="osusumespot-container">
             <div class="osusumespot">
               <img
-                class="osusumegazou"
+                class="tourokugazou"
                 id="place-image1"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name1">場所名1</div>
+              <div id="place-name1">未登録</div>
             </div>
             <div class="osusumespot">
               <img
-                class="osusumegazou"
+                class="tourokugazou"
                 id="place-image2"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name2">場所名2</div>
+              <div id="place-name2">未登録</div>
             </div>
             <div class="osusumespot">
               <img
-                class="osusumegazou"
+                class="tourokugazou"
                 id="place-image3"
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="place-name3">場所名3</div>
+              <div id="place-name3">未登録</div>
             </div>
           </div>
         </div>
@@ -246,11 +246,28 @@
               newDiv1.querySelector(".b8").value = planArray[index] || "";
               newDiv1.querySelector(".input").value = memoArray[index] || "";
             });
+
+            // おすすめスポットデータの処理
+            const recommendNames = data.reccomendName || [];
+            recommendNames.forEach((recommend, index) => {
+              if (index < 3) {
+                document.getElementById(`place-name${index + 1}`).textContent = recommend.name;
+                document.getElementById(`place-image${index + 1}`).src = recommend.imageUrl || "./noimage.png";
+              }
+            });
+
+            // 登録スポットデータの処理
+            recommendNames.forEach((recommend, index) => {
+              if (index < 3) {
+                document.getElementById(`place-name${index + 1}`).textContent = recommend.name;
+                document.getElementById(`place-image${index + 1}`).src = recommend.imageUrl || "./noimage.png";
+              }
+            });
           } else {
             console.error("No such document!");
           }
         } catch (e) {
-          //console.error("Error loading document:", e);
+          console.error("Error loading document:", e);
         }
       }
 
