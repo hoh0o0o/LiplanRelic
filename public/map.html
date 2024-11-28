@@ -3,7 +3,12 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google Maps Search</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBepJ9Yzi3sHNAl6PG2KPyjfcB8B6WhLhA&libraries=places"></script>
+    <script type="module">
+      import { googleMapsApiKey, firebaseConfig } from "./config.js";
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&libraries=places`;
+      document.head.appendChild(script);
+    </script>
     <link rel="stylesheet" href="map.css" />
     <link
       rel="stylesheet"
@@ -45,16 +50,8 @@
       getAuth,
       onAuthStateChanged,
     } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { firebaseConfig } from "./config.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-      authDomain: "liplan-836a1.firebaseapp.com",
-      projectId: "liplan-836a1",
-      storageBucket: "liplan-836a1.appspot.com",
-      messagingSenderId: "545673347741",
-      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-      measurementId: "G-TKF08JYKTT",
-    };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
