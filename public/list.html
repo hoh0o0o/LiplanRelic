@@ -21,7 +21,7 @@
           id="messageInput"
         ></textarea>
         <div class="submit-button">
-          <h3 class="h22">完了</h3>
+          <h3 class="h22" id="sharing">完了</h3>
         </div>
       </div>
     </div>
@@ -452,6 +452,7 @@
         popup.style.display = "none";
       });
 
+      /*
       // 完了ボタンのクリックイベントを追加
       document
         .querySelector(".submit-button")
@@ -476,7 +477,7 @@
               alert("エラーが発生しました");
             }
           });
-        });
+        });*/
 
       window.addEventListener("load", adjustListHeight);
       window.addEventListener("resize", adjustListHeight);
@@ -588,6 +589,34 @@
             onAuthStateChanged(auth, (user) => {
               const userUID = user.uid;
               window.location.href = `home.html?${userUID}`;
+            });
+          });
+        }
+
+        var sharing =  document.getElementById("sharing");
+        if(sharing){
+          sharing.addEventListener("click", async function(e){
+            onAuthStateChanged(auth, async(user) => {
+              const userUID = user.uid;
+              const docName = location.href.split("?")[1];
+              const sharingComment = document.getElementById("messageInput").value || "メモなし～";
+              const docRef = doc(db, userUID, docName);
+              await updateDoc(docRef, {
+                publicity_list: true,
+                ListMemo: sharingComment
+              });
+              popup.style.display = "none";
+
+              const docSnap = await getDoc(docRef);
+              const data = docSnap.data();
+              const venue = data.venue;
+              const Date = data.Date;
+              const dataForListLimemo = Date + "?" + venue;
+
+              const docRef2 = doc(db, "list", userUID);
+              const updateData = {};
+              updateData[docName] = dataForListLimemo;
+              await updateDoc(docRef2, updateData);
             });
           });
         }
