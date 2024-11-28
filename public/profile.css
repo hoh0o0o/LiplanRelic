@@ -38,6 +38,7 @@ body {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: white; /* 透過画像の背景に白い丸���追加 */
 }
 
 .icon {

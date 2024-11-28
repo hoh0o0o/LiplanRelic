@@ -1,293 +1,303 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
 
-  <link rel="stylesheet" href="./global.css" />
-  <link rel="stylesheet" href="./livememory.css" />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
-  />
-  <style>
-    #parentContainer {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <div class="div">
-    <section class="project-editor">
-      <div class="rectangle-parent">
-        <a class="hoh0o" id="userInfo">@user</a>
-        <div class="profile-actions-wrapper">
-          <div class="profile-actions">
-            <div class="profile-details">
-              <div class="div1">
-                <img
-                  loading="lazy"
-                  alt=""
-                  src="./livememory_icon.svg"
-                  id="profileImage"
-                />
-              </div>
-              <div class="live-memory-actions">
-                <a class="a">ライメモ公開</a>
-                <div class="wrapper">
-                  <b class="b">
-                    <span id="releaseCount">0</span>
-                </b>
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./livememory.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap"
+    />
+    <style>
+      #parentContainer {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="div">
+      <section class="project-editor">
+        <div class="rectangle-parent">
+          <a class="hoh0o" id="userInfo">@user</a>
+          <div class="profile-actions-wrapper">
+            <div class="profile-actions">
+              <div class="profile-details">
+                <div class="div1">
+                  <div class="icon-container">
+                    <img class="icon" alt="" id="profileImage" />
+                  </div>
                 </div>
-              </div>
-              <div class="memory-labels">
-                <b class="view">ライメモview</b>
-                <div class="empty-button-wrapper">
-                  <b class="empty-button">
+                <div class="live-memory-actions">
+                  <a class="a">ライメモ公開</a>
+                  <div class="wrapper">
+                    <b class="b">
+                      <span id="releaseCount">0</span>
+                    </b>
+                  </div>
+                </div>
+                <div class="memory-labels">
+                  <b class="view">ライメモview</b>
+                  <div class="empty-button-wrapper">
+                    <b class="empty-button">
                       <span id="viewCount">0</span>
-                  </b>
+                    </b>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="rectangle-group" id="groupContainer">
-              <div class="frame-item"></div>
-              <b class="b1">プロフィール編集</b>
+              <div class="rectangle-group" id="groupContainer">
+                <div class="frame-item"></div>
+                <b class="b1">プロフィール編集</b>
+              </div>
             </div>
           </div>
+          <div class="frame-parent">
+            <h2 class="next-live" id="NextLiveText">Next Live</h2>
+            <h2 class="live-memory" id="liveMemoryText">Live Memory</h2>
+          </div>
         </div>
-        <div class="frame-parent">
-          <h2 class="next-live" id="NextLiveText">Next Live</h2>
-          <h2 class="live-memory" id="liveMemoryText">Live Memory</h2>
+      </section>
+      <!--ここまでプロフィール-->
+      <section class="frame-section">
+        <div class="rectangle-saikin">
+          <div class="frame-child2"></div>
+          <b class="live1">最近終了したLive</b>
         </div>
-      </div>
-    </section>
-    <!--ここまでプロフィール-->
-    <section class="frame-section">
-      <div class="rectangle-saikin">
-        <div class="frame-child2"></div>
-        <b class="live1">最近終了したLive</b>
-      </div>
-      <div class="frame-parent1" id="closestEventContainer">
-        <div class="frame-div">
-          <img class="group-icon" loading="lazy" alt="" id="RHCImage" />
-          <div class="frame-child1"></div>
+        <div class="frame-parent1" id="closestEventContainer">
+          <div class="frame-div">
+            <img class="group-icon" loading="lazy" alt="" id="RHCImage" />
+            <div class="frame-child1"></div>
+          </div>
+          <b class="b4">
+            <p class="p" id="liveDate">データなし</p>
+            <p class="p1" id="liveVenue">データなし</p>
+          </b>
+          <h1 class="red-hot-chili" id="artistName">データなし</h1>
         </div>
-        <b class="b4">
-          <p class="p" id="liveDate">データなし</p>
-          <p class="p1" id="liveVenue">データなし</p>
-        </b>
-        <h1 class="red-hot-chili" id="artistName">データなし</h1>
-      </div>
-      <div class="rectangle-parent1">
-      <b class="live1">これまでのLive</b>
-      </div>
-    </section>
-    <section class="parent" id="parentContainer">
-      <!--ここを複製する処理をする-->
-      <b class="b5" id="vaundyDate">データなし</b>
-      <div class="frame-wrapper1">
-        <div class="rectangle-parent2">
-          <img
-            class="rectangle-icon"
-            src="./noimage.png"
-            loading="lazy"
-            alt=""
-            id="vaundyImage"
-          />
-          <h1 class="vaundy" id="vaundyName">***</h1>
-          <h2 class="h2" id="vaundyVenue">***</h2>
+        <div class="rectangle-parent1">
+          <b class="live1">これまでのLive</b>
         </div>
-      </div>
-      <div class="memory-inner">
-        <div class="line-parent">
-          <div class="frame-child3"></div>
+      </section>
+      <section class="parent" id="parentContainer">
+        <!--ここを複製する処理をする-->
+        <b class="b5" id="vaundyDate">データなし</b>
+        <div class="frame-wrapper1">
+          <div class="rectangle-parent2">
+            <img
+              class="rectangle-icon"
+              src="./noimage.png"
+              loading="lazy"
+              alt=""
+              id="vaundyImage"
+            />
+            <h1 class="vaundy" id="vaundyName">***</h1>
+            <h2 class="h2" id="vaundyVenue">***</h2>
+          </div>
         </div>
-      </div>
-    </section>
-  </div>
-  <footer class="frame-footer">
-    <div class="frame-child4"></div>
-  </footer>
+        <div class="memory-inner">
+          <div class="line-parent">
+            <div class="frame-child3"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="frame-footer">
+      <div class="frame-child4"></div>
+    </footer>
 
-  <script>
-    var groupContainer = document.getElementById("groupContainer");
-    if (groupContainer) {
-      groupContainer.addEventListener("click", function (e) {
-        // Please sync "Frame" to the project
-      });
-    }
-
-    var NextLiveText = document.getElementById("NextLiveText");
-    if (NextLiveText) {
-      NextLiveText.addEventListener("click", function (e) {
-        const UID = location.href.split("?")[1];
-        window.location.href = "./home.html?" + UID;
-      });
-    }
-  </script>
-
-  <!--firebaseから持ってくるためのjs部分-->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import {
-      getStorage,
-      ref,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
-      authDomain: "liplan-836a1.firebaseapp.com",
-      projectId: "liplan-836a1",
-      storageBucket: "liplan-836a1.appspot.com",
-      messagingSenderId: "545673347741",
-      appId: "1:545673347741:web:55bf80be3076f09abf8a74",
-      measurementId: "G-TKF08JYKTT",
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    const auth = getAuth(app);
-    let closestEventDocId = null;
-    let userUID;
-
-    onAuthStateChanged(auth, (user) => {
-      if(user){
-        userUID = user.uid;
-        fetchUserInfo(userUID);
-        fetchInformationData(userUID);
-        fetchClosestPastEvent(userUID);
-      }else{
-        window.location.href = "./login.html";
-      }
-    });
-
-    function formatDate(dateString) {
-      const date = new Date(dateString);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}/${month}/${day}`;
-    }
-
-    async function fetchUserInfo(userUID){
-      const docRef = doc(db, userUID, "information");
-      const docSnap = await getDoc(docRef);
-      if(docSnap.exists()){
-        const data = docSnap.data();
-        const userID = document.getElementById("userInfo");
-        userID.textContent = "@" + data.userID;
+    <script>
+      var groupContainer = document.getElementById("groupContainer");
+      if (groupContainer) {
+        groupContainer.addEventListener("click", function (e) {
+          // Please sync "Frame" to the project
+        });
       }
 
-      const storageRef = ref(storage, `${userUID}/profileImage`);
-      const ImageURL = await getDownloadURL(storageRef);
-      profileImage.src = ImageURL;
-    }
-
-    async function fetchInformationData(userUID) {
-      const infoDocRef = doc(db, userUID, "information");
-      const infoDocSnap = await getDoc(infoDocRef);
-
-      if (infoDocSnap.exists()) {
-        const data = infoDocSnap.data();
-        const releaseCount = document.getElementById("releaseCount");
-        releaseCount.textContent = data.l_release || 0;
-
-        const viewCount = document.getElementById("viewCount");
-        viewCount.textContent = data.l_view || 0;
-      } else {
-        console.log("No such document!");
+      var NextLiveText = document.getElementById("NextLiveText");
+      if (NextLiveText) {
+        NextLiveText.addEventListener("click", function (e) {
+          const UID = location.href.split("?")[1];
+          window.location.href = "./home.html?" + UID;
+        });
       }
-    }
+    </script>
 
-    async function fetchClosestPastEvent(userUID) {
-      const querySnapshot = await getDocs(collection(db, userUID));
-      const today = new Date().setHours(0, 0, 0, 0);
-      let closestEvent = null;
-      let minDiff = Infinity;
-      const parentContainer = document.getElementById("parentContainer");
+    <!--firebaseから持ってくるためのjs部分-->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getStorage,
+        ref,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
-      querySnapshot.forEach((doc) => {
-        if (doc.id !== "information") {
-          const data = doc.data();
-          const eventDate = new Date(data.Date).setHours(0, 0, 0, 0);
-          const diff = today - eventDate; // 今日より前のイベントを取得
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
+        authDomain: "liplan-836a1.firebaseapp.com",
+        projectId: "liplan-836a1",
+        storageBucket: "liplan-836a1.appspot.com",
+        messagingSenderId: "545673347741",
+        appId: "1:545673347741:web:55bf80be3076f09abf8a74",
+        measurementId: "G-TKF08JYKTT",
+      };
 
-          if (diff > 0 && diff < minDiff) {
-            minDiff = diff;
-            closestEvent = { id: doc.id, data };
-            closestEventDocId = doc.id;
-          }
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
+      let closestEventDocId = null;
+      let userUID;
 
-          // 親要素の複製
-          if (diff > 0) {
-            const parentClone = parentContainer.cloneNode(true);
-            parentClone.id = "";
-            parentClone.style.display = "block";
-            parentClone.querySelector("#vaundyDate").textContent = data.Date ? formatDate(data.Date) : "不明";
-            parentClone.querySelector("#vaundyVenue").textContent = data.venue || "不明";
-            parentClone.querySelector("#vaundyName").textContent = data.artist || "不明";
-
-            const imageRef = ref(storage, `${userUID}/${doc.id}/thumbnail.png`);
-            getDownloadURL(imageRef).then((url) => {
-              parentClone.querySelector("#vaundyImage").src = url;
-            });
-
-            parentClone.addEventListener('click', function() {
-              window.location.href = `./plan.html?${doc.id}`;
-            });
-
-            parentContainer.after(parentClone);
-          }
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userUID = user.uid;
+          fetchUserInfo(userUID);
+          fetchInformationData(userUID);
+          fetchClosestPastEvent(userUID);
+        } else {
+          window.location.href = "./login.html";
         }
       });
 
-      if (closestEvent) {
-        const artistname = document.getElementById("artistName");
-        artistname.textContent = closestEvent.data.artist || "不明";
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}/${month}/${day}`;
+      }
 
-        const livedate = document.getElementById("liveDate");
-        livedate.textContent = closestEvent.data.Date ? formatDate(closestEvent.data.Date) : "不明";
+      async function fetchUserInfo(userUID) {
+        const docRef = doc(db, userUID, "information");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const userID = document.getElementById("userInfo");
+          userID.textContent = "@" + data.userID;
+        }
 
-        const livevenue = document.getElementById("liveVenue");
-        livevenue.textContent = closestEvent.data.venue || "不明";
+        const storageRef = ref(storage, `${userUID}/profileImage`);
+        const ImageURL = await getDownloadURL(storageRef);
+        profileImage.src = ImageURL;
+      }
 
-        const storageRef = ref(storage,`${userUID}/${closestEventDocId}/thumbnail.png`);
-        getDownloadURL(storageRef)
-          .then((url) => {
-            const groupIcon = document.getElementById("RHCImage");
-            groupIcon.src = url;
-          })
-          .catch((error) => {
-            console.error("Error fetching image: ", error);
-          });
+      async function fetchInformationData(userUID) {
+        const infoDocRef = doc(db, userUID, "information");
+        const infoDocSnap = await getDoc(infoDocRef);
 
-        const closestEventContainer = document.getElementById("closestEventContainer");
-        closestEventContainer.addEventListener("click", function () {
-          window.location.href = `./plan.html?${closestEventDocId}`;
+        if (infoDocSnap.exists()) {
+          const data = infoDocSnap.data();
+          const releaseCount = document.getElementById("releaseCount");
+          releaseCount.textContent = data.l_release || 0;
+
+          const viewCount = document.getElementById("viewCount");
+          viewCount.textContent = data.l_view || 0;
+        } else {
+          console.log("No such document!");
+        }
+      }
+
+      async function fetchClosestPastEvent(userUID) {
+        const querySnapshot = await getDocs(collection(db, userUID));
+        const today = new Date().setHours(0, 0, 0, 0);
+        let closestEvent = null;
+        let minDiff = Infinity;
+        const parentContainer = document.getElementById("parentContainer");
+
+        querySnapshot.forEach((doc) => {
+          if (doc.id !== "information") {
+            const data = doc.data();
+            const eventDate = new Date(data.Date).setHours(0, 0, 0, 0);
+            const diff = today - eventDate; // 今日より前のイベントを取得
+
+            if (diff > 0 && diff < minDiff) {
+              minDiff = diff;
+              closestEvent = { id: doc.id, data };
+              closestEventDocId = doc.id;
+            }
+
+            // 親要素の複製
+            if (diff > 0) {
+              const parentClone = parentContainer.cloneNode(true);
+              parentClone.id = "";
+              parentClone.style.display = "block";
+              parentClone.querySelector("#vaundyDate").textContent = data.Date
+                ? formatDate(data.Date)
+                : "不明";
+              parentClone.querySelector("#vaundyVenue").textContent =
+                data.venue || "不明";
+              parentClone.querySelector("#vaundyName").textContent =
+                data.artist || "不明";
+
+              const imageRef = ref(
+                storage,
+                `${userUID}/${doc.id}/thumbnail.png`
+              );
+              getDownloadURL(imageRef).then((url) => {
+                parentClone.querySelector("#vaundyImage").src = url;
+              });
+
+              parentClone.addEventListener("click", function () {
+                window.location.href = `./plan.html?${doc.id}`;
+              });
+
+              parentContainer.after(parentClone);
+            }
+          }
         });
 
-      }
-    }
+        if (closestEvent) {
+          const artistname = document.getElementById("artistName");
+          artistname.textContent = closestEvent.data.artist || "不明";
 
-    var groupContainer = document.getElementById("groupContainer");
-    if (groupContainer) {
-      groupContainer.addEventListener("click", function (e) {
-        window.location.href = "./profile.html"; // プロフィール編集ページに遷移
-      });
-    }
-  </script>
-</body>
+          const livedate = document.getElementById("liveDate");
+          livedate.textContent = closestEvent.data.Date
+            ? formatDate(closestEvent.data.Date)
+            : "不明";
+
+          const livevenue = document.getElementById("liveVenue");
+          livevenue.textContent = closestEvent.data.venue || "不明";
+
+          const storageRef = ref(
+            storage,
+            `${userUID}/${closestEventDocId}/thumbnail.png`
+          );
+          getDownloadURL(storageRef)
+            .then((url) => {
+              const groupIcon = document.getElementById("RHCImage");
+              groupIcon.src = url;
+            })
+            .catch((error) => {
+              console.error("Error fetching image: ", error);
+            });
+
+          const closestEventContainer = document.getElementById(
+            "closestEventContainer"
+          );
+          closestEventContainer.addEventListener("click", function () {
+            window.location.href = `./plan.html?${closestEventDocId}`;
+          });
+        }
+      }
+
+      var groupContainer = document.getElementById("groupContainer");
+      if (groupContainer) {
+        groupContainer.addEventListener("click", function (e) {
+          window.location.href = "./profile.html"; // プロフィール編集ページに遷移
+        });
+      }
+    </script>
+  </body>
 </html>

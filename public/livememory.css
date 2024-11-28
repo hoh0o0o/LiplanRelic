@@ -19,7 +19,7 @@
 }
 .rectangle-parent {
   height: 186px;
-	width: 100vw;
+  width: 100vw;
   background-color: var(--color-midnightblue-100);
   flex-direction: column;
   padding: 47px 0 29px;
@@ -129,11 +129,11 @@
   left: 15vw;
   font-size: inherit;
   letter-spacing: -0.17px;
-  color:#b2b2b2;
+  color: #b2b2b2;
   top: 159px;
 }
 .live-memory {
-  border-bottom: 4px solid #F87676;
+  border-bottom: 4px solid #f87676;
   margin: 0;
   font-size: inherit;
   letter-spacing: -0.17px;
@@ -206,18 +206,18 @@
 }
 .frame-section,
 .rectangle-parent1,
-.rectangle-saikin{
+.rectangle-saikin {
   display: flex;
 }
-.rectangle-parent1{
+.rectangle-parent1 {
   background-color: var(--color-darkslateblue);
   padding: 11px 17px var(--padding-mini);
   z-index: 2;
 }
-.rectangle-saikin{
+.rectangle-saikin {
   background-color: var(--color-darkslateblue);
   padding: 11px 17px var(--padding-mini);
-  z-index: 2;  
+  z-index: 2;
 }
 .frame-section {
   flex-direction: column;
@@ -387,4 +387,20 @@
   color: var(--color-black);
   font-family: var(--font-inter);
   overflow-x: hidden;
+}
+.icon-container {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  object-fit: cover;
 }
