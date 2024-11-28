@@ -47,8 +47,6 @@ html {
   overflow-x: hidden;
 }
 
-/* ここまでglobal.cssの内容 */
-
 .child,
 .item {
   align-self: stretch;
@@ -332,17 +330,17 @@ html {
   display: none;
 }
 .b6 {
-  width: 10vw; /*要素の幅*/
+  width: 10vw;
   height: auto;
-  position: absolute; /*相対位置*/
-  letter-spacing: -0.17px; /*文字間隔*/
-  line-height: 9px; /*テキストの行間*/
-  display: inline-block; /*インラインブロック*/
-  min-width: 14px; /*最小幅*/
+  position: absolute;
+  letter-spacing: -0.17px;
+  line-height: 9px;
+  display: inline-block;
+  min-width: 14px;
   z-index: 3;
-  background-color: var(--color-white); /*背景色を白に設定*/
-  color: #50555c; /*テキストの色*/
-  font-size: 16px; /*テキストサイズ*/
+  background-color: var(--color-white);
+  color: #50555c;
+  font-size: 16px;
   font-weight: 500;
 }
 input[type="time"]::-webkit-date-and-time-value {
@@ -357,27 +355,27 @@ input[type="time"]::-webkit-date-and-time-value {
   box-sizing: border-box;
 }
 .info-details {
-  position: relative; /*親要素に対して絶対位置*/
-  z-index: 2; /*スタッキング順序*/
-  top: 14px; /*要素の上端を親要素の上端からの位置*/
-  left: 10px; /*要素の左端を親要素の左端から10ピクセルの位置*/
+  position: relative;
+  z-index: 2;
+  top: 14px;
+  left: 10px;
   display: flex;
-  flex-direction: row; /*レイアウトを横並びに*/
-  align-items: flex-start; /*子要素を垂直方向に開始位置を揃える上揃え*/
-  justify-content: flex-start; /*子要素を垂直方向に開始位置を揃える左揃え*/
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: var(--padding-9xs) var(--padding-9xs) var(--padding-10xs)
-    　var(--padding-8xs); /*上右下左*/
+    var(--padding-8xs);
 }
 
 .b8 {
-  height: 15px; /*要素の高さ*/
-  position: relative; /*相対位置*/
-  letter-spacing: -0.17px; /*テキストの文字間隔*/
-  line-height: 20px; /*テキストの行間*/
-  display: flex; /*フレックスコンテナ*/
-  align-items: center; /*垂直方向の中央に揃える*/
-  min-width: 20px; /*最小幅*/
-  border: none; /*枠線を取り除く*/
+  height: 15px;
+  position: relative;
+  letter-spacing: -0.17px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  min-width: 20px;
+  border: none;
   font-size: 15px;
   font-weight: 700;
 }
@@ -388,19 +386,6 @@ input[type="time"]::-webkit-date-and-time-value {
   justify-content: flex-start;
   padding: var(--padding-9xs) 0 0;
 }
-/*.b9 {
-  width: 15px;
-  position: relative;
-  font-size: var(--font-size-sm);
-  letter-spacing: -0.17px;
-  display: flex;
-  color: var(--color-darkgray-200);
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transform: rotate(-90deg);
-}*/
 .div2 {
   align-self: stretch;
   flex-direction: row;
@@ -440,9 +425,9 @@ input[type="time"]::-webkit-date-and-time-value {
   width: 290px;
   flex-direction: column;
   justify-content: flex-start;
-  flex-shrink: 0; /* 横幅が長くなっても隙間を保つ */
-  position: absolute; /* 相対位置に変更 */
-  left: calc(15vw - 20px); /* b6の幅に40pxを加えた位置に配置 */
+  flex-shrink: 0;
+  position: absolute;
+  left: calc(15vw - 20px);
 }
 .frame-wrapper1 {
   flex-direction: row;
@@ -469,7 +454,6 @@ input[type="time"]::-webkit-date-and-time-value {
   position: relative;
   background-color: rgba(127, 102, 160, 0.6);
   font-size: var(--font-size-xs);
-  /*margin-bottom: 4px;*/
 }
 .frame-parent2 {
   align-self: stretch;
@@ -594,66 +578,65 @@ input[type="time"]::-webkit-date-and-time-value {
   text-overflow: ellipsis;
 }
 
-/*おすすめ*/
 .osusume,
 .tourokuspot {
   background-color: #ebebeb;
   padding: 10px;
   font-family: var(--font-inter);
   display: flex;
-  flex-direction: column; /* 垂直方向に要素を配置 */
+  flex-direction: column;
 }
 
 .osusume-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 左揃えに変更 */
-  padding: 0 10px;
-  white-space: nowrap; /* 改行を防ぐ */
+  justify-content: flex-start;
+  white-space: nowrap;
 }
 
 .osusumetitle {
   margin: 10px;
   font-size: 20px;
-  text-align: left; /* 左揃えにする */
-  margin-right: 10px; /* 右にマージンを追加 */
+  text-align: left;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .osusumespot-container {
   display: flex;
-  flex-direction: row; /* 横方向に要素を配置 */
-  justify-content: space-between; /* 要素を左右に均等に配置 */
-  width: 100%; /* 親要素の幅に合わせる */
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .osusumespot {
   display: flex;
-  flex-direction: column; /* 垂直方向に要素を配置 */
-  align-items: center; /* 横方向に中央配置 */
-  justify-content: center; /* 縦方向に中央配置 */
-  text-align: center; /* テキストも中央揃えに */
-  margin: 0 10px; /* 左右にマージンを追加 */
-  flex: 1; /* 要素を均等に拡張 */
-  max-width: 33%; /* 最大幅を33%に設定 */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 10px;
+  flex: 1;
+  max-width: 33%;
   padding-bottom: 15px;
 }
 
 .osusumegazou {
-  width: 100px; /* 任意のサイズ */
-  height: 100px; /* 幅と高さを同じにする */
-  border-radius: 50%; /* 画像を丸くする */
-  object-fit: cover; /* 画像の縦横比を保ちながら丸くする */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .rectangle-parent {
   cursor: pointer;
   border: 0;
-  padding: 1px 10px; /* 縦のパディングをさらに狭くする */
+  padding: 1px 10px;
   background-color: var(--color-darksalmon);
   border-radius: var(--br-61xl);
   margin-bottom: 10px;
-  display: flex; /* フレックスボックスに変更 */
-  align-items: center; /* 垂直方向に中央揃え */
-  justify-content: center; /* 水平方向に中央揃え */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 10px;
 }
 
@@ -705,21 +688,21 @@ input[type="time"]::-webkit-date-and-time-value {
   border: none;
   cursor: pointer;
   align-self: center;
-  display: flex; /* デフォルトで表示 */
+  display: flex;
   justify-content: center;
 }
 
 .add-schedule-button img {
-  width: 24px; /* アイコンの幅を設定 */
-  height: 24px; /* アイコンの高さを設定 */
+  width: 24px;
+  height: 24px;
   padding-top: 35px;
   padding-left: 5vw;
 }
 
 .spotplus-icon {
-  width: 40px; /* アイコンの幅を少し小さくする */
-  height: 40px; /* アイコンの高さを少し小さくする */
-  margin-right: -2px; /* テキストとの間のスペースをさらに狭くする */
-  vertical-align: middle; /* テキストとアイコンを中央揃え */
-  margin-left: -15px; /* ボタンを左に寄せる */
+  width: 40px;
+  height: 40px;
+  margin-right: -2px;
+  vertical-align: middle;
+  margin-left: -15px;
 }
