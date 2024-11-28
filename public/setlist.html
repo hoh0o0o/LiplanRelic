@@ -23,7 +23,7 @@
           id="messageInput"
         ></textarea>
         <div class="submit-button">
-          <h3 class="h22">完了</h3>
+          <h3 class="h22" id="sharing">完了</h3>
         </div>
       </div>
     </div>
@@ -216,6 +216,7 @@
         query,
         where,
         getDocs,
+        setDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getAuth,
@@ -443,7 +444,7 @@
             onAuthStateChanged(auth, async (user) => {
               const userUID = user.uid;
               await saveData(userUID, docName);
-              window.location.href = `./list.html?${userUID}`;
+              window.location.href = `./home.html?${userUID}`;
             });
           });
         }
@@ -551,27 +552,6 @@
           });
         }
 
-        var submitButton = document.querySelector(".submit-button");
-        submitButton.addEventListener("click", async function () {
-          const message = document.getElementById("messageInput").value;
-          try {
-            onAuthStateChanged(auth, async (user) => {
-              const userUID = user.uid;
-              const docRef = doc(db, userUID, docName);
-              await updateDoc(docRef, {
-                message: message,
-                publicity: true,
-              });
-              console.log("メッセージが保存されました");
-              alert("メッセージが保存されました");
-              popup.style.display = "none";
-            });
-          } catch (e) {
-            console.error("Error updating document: ", e);
-            alert("メッセージの保存に失敗しました");
-          }
-        });
-
         const threeDots = document.querySelector(".three-dots");
         const dropdownMenu = document.getElementById("dropdownMenu");
 
@@ -586,6 +566,39 @@
           }
         });
       });
+
+      var sharing =  document.getElementById("sharing");
+      if(sharing){
+        sharing.addEventListener("click", async function(e){
+          onAuthStateChanged(auth, async(user) => {
+            const userUID = user.uid;
+            const docName = location.href.split("?")[1];
+            const sharingComment = document.getElementById("messageInput").value || "メモなし～";
+            const docRef = doc(db, userUID, docName);
+            await updateDoc(docRef, {
+              publicity_setlist: true,
+              message: sharingComment
+            });
+            popup.style.display = "none";
+
+            const docSnap = await getDoc(docRef);
+            const data = docSnap.data();
+            const venue = data.venue;
+            const Date = data.Date;
+            const dataForSetlistLimemo = Date + "?" + venue;
+            //alert(dataForSetlistLimemo);
+
+            const docRef2 = doc(db, "setlist", userUID);
+            const docSnap2 = await getDoc(docRef2);
+            if(!docSnap2.exists()){
+              await setDoc(docRef2, {});
+            }
+            const updateData = {};
+            updateData[docName] = dataForSetlistLimemo;
+            await updateDoc(docRef2, updateData);
+          });
+        });
+      }
     </script>
   </body>
 </html>
