@@ -150,15 +150,9 @@
       <section class="frame-section">
         <div class="b5" id="container1"></div>
         <div class="frame-wrapper1">
-          <div class="frame-parent2">
-            <div class="ellipse-group"></div>
-          </div>
+          <div class="frame-parent2"></div>
         </div>
-        <div class="task-repeat-three">
-          <div class="task-content-repeat">
-            <b class="b6"></b>
-          </div>
-        </div>
+        <div class="task-repeat-three"></div>
         <div class="task-repeat-three1">
           <div class="frame">
             <b class="b7"></b>
@@ -593,17 +587,18 @@
           });
         }
 
-        var sharing =  document.getElementById("sharing");
-        if(sharing){
-          sharing.addEventListener("click", async function(e){
-            onAuthStateChanged(auth, async(user) => {
+        var sharing = document.getElementById("sharing");
+        if (sharing) {
+          sharing.addEventListener("click", async function (e) {
+            onAuthStateChanged(auth, async (user) => {
               const userUID = user.uid;
               const docName = location.href.split("?")[1];
-              const sharingComment = document.getElementById("messageInput").value || "メモなし～";
+              const sharingComment =
+                document.getElementById("messageInput").value || "メモなし～";
               const docRef = doc(db, userUID, docName);
               await updateDoc(docRef, {
                 publicity_list: true,
-                ListMemo: sharingComment
+                ListMemo: sharingComment,
               });
               popup.style.display = "none";
 
