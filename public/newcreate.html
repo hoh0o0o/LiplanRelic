@@ -17,23 +17,17 @@
     <div class="lnlive">
       <header class="content">
         <div class="header">
+          <div class="div background-circle">
+            <div class="oval" id="backtoHome"></div>
+            <div class="close-icon" id="backtoHome"></div>
+            <div class="close-icon1" id="backtoHome"></div>
+          </div>
           <div class="header1">
-            <div class="div background-circle">
-              <div class="oval" id="backtoHome"></div>
-              <div class="close-icon" id="backtoHome"></div>
-              <div class="close-icon1" id="backtoHome"></div>
-            </div>
             <div class="new-label">
               <a class="a">新規作成</a>
             </div>
           </div>
         </div>
-        <img
-          class="divider-icon"
-          loading="lazy"
-          alt=""
-          src="./newcreate_divider.svg"
-        />
       </header>
       <div class="wrapper">
         <b class="b">
@@ -48,7 +42,6 @@
             <b class="b6">会場名*</b>
           </div>
           <div class="live-name-input">
-            <b class="b7"></b>
             <input
               class="input2"
               id="search-input"
@@ -60,19 +53,18 @@
           <div class="child"></div>
         </div>
       </div>
-      <div class="artist-label">
-        <div class="create-label-parent">
+      <div class="frame">
+        <div class="div1">
           <div class="create-label">
             <b class="b5">日程*</b>
           </div>
-          <div class="frame-group">
-            <div class="calendar-choose">
-              <b class="b11">
-                <input class="input" type="date" id="date-input" />
-              </b>
-            </div>
-            <div class="frame-child"></div>
+
+          <div class="calendar-choose">
+            <b class="b11">
+              <input class="input" type="date" id="date-input" />
+            </b>
           </div>
+          <div class="child"></div>
         </div>
       </div>
       <div class="frame">
@@ -93,7 +85,7 @@
           <div class="child"></div>
         </div>
       </div>
-      <div class="frame-div">
+      <div class="frame">
         <div class="div2">
           <div class="wrapper1">
             <b class="b8">アーティスト*</b>
@@ -177,14 +169,14 @@
       });
 
       var create = document.getElementById("sendFirebase");
-      create.addEventListener("click", async function(e){
+      create.addEventListener("click", async function (e) {
         const userUID = await getUserUID;
         const venue = document.getElementById("search-input").value;
         const date = document.getElementById("date-input").value;
         const title = document.getElementById("title-input").value;
         const artist = document.getElementById("artist-input").value;
 
-        if(!venue || !date || !title || !artist){
+        if (!venue || !date || !title || !artist) {
           alert("全ての項目を入力してください");
           return;
         }
@@ -207,7 +199,7 @@
           venue: venue,
           Date: date,
           title: title,
-          artist: artist
+          artist: artist,
         });
 
         window.location.href = `plan.html?${docName}`;

@@ -58,14 +58,22 @@
 }
 .header1 {
   flex: 1;
-  justify-content: space-between;
-  gap: var(--gap-xl);
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 .header {
-  width: 245px;
-  justify-content: flex-start;
-  padding: 0 22px;
+  width: 100vw;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  position: relative;
   box-sizing: border-box;
+}
+.div.background-circle {
+  position: absolute;
+  left: 22px;
 }
 .divider-icon {
   align-self: stretch;
@@ -86,6 +94,7 @@
   font-size: var(--font-size-lg);
   color: var(--color-black);
   font-family: var(--font-inter);
+  width: 100vw;
 }
 .span {
   color: var(--color-darksalmon);
@@ -101,10 +110,10 @@
 .wrapper {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 0 44px 0;
+  align-items: center;
+  justify-content: center;
   font-size: 23px;
+  width: 100%;
 }
 .b1,
 .b2 {
@@ -120,6 +129,9 @@
   flex-shrink: 0;
   flex: 1;
   letter-spacing: -0.17px;
+}
+.b11 {
+  padding-bottom: 5px;
 }
 
 .parent,
@@ -242,10 +254,18 @@
 }
 
 .calendar-choose,
-.input,
 .areaselect,
 .venueselect {
   height: 150%; /* 親要素の高さに合わせる */
+  border: none;
+  outline: none;
+  font-size: var(--font-size-base);
+  background-color: transparent;
+  color: var(--color-darkgray);
+  font-weight: bold;
+}
+
+.input {
   border: none;
   outline: none;
   font-size: var(--font-size-base);
@@ -307,16 +327,9 @@
   justify-content: flex-start;
   padding: 0 var(--padding-10xs);
 }
-.b7,
 .icon5 {
   position: relative;
   flex-shrink: 0;
-}
-.b7 {
-  width: 170px;
-  letter-spacing: -0.17px;
-  display: flex;
-  align-items: center;
 }
 .input2::placeholder,
 .input3::placeholder {
@@ -324,7 +337,7 @@
 }
 .input2,
 .input3 {
-  position: absolute; /* 絶対位置指定 */
+  /* 絶対位置指定 */
   left: 31px; /* 左から31pxの位置に配置 */
   vertical-align: middle; /* 垂直方向の位置合わせ */
   font-weight: bold; /* フォントの太さを調整 */
@@ -341,10 +354,9 @@
 }
 .live-name-input {
   align-self: stretch;
-  display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--gap-xl);
   font-size: var(--font-size-base);
 }
@@ -376,7 +388,8 @@
 .frame {
   flex-direction: row;
   padding: 0 var(--padding-12xl);
-  max-width: 100%;
+  width: 100%;
+  justify-content: center;
 }
 .b8 {
   position: relative;
@@ -406,10 +419,9 @@
 }
 .artist-name-input {
   align-self: stretch;
-  display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--gap-xl);
   font-size: var(--font-size-base);
   color: var(--color-gainsboro);
@@ -681,4 +693,3 @@ selected-place-container {
   transform: translate(-50%, -50%);
   z-index: -1; /* 背景として表示するためにz-indexを設定 */
 }
-/* ...existing code... */

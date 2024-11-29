@@ -371,6 +371,8 @@
   font-size: var(--font-size-13xl);
   color: black;
   z-index: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .second-artist-details-child {
   border-top: 1px solid #aaa;
@@ -432,6 +434,8 @@
   letter-spacing: -0.17px;
   z-index: 2;
   padding-top: 35px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .artist-name {
   position: relative;
