@@ -388,8 +388,14 @@
         saveButton.addEventListener("click", function(e){
           onAuthStateChanged(auth, async(user) => {
             const userUID = user.uid;
+            const docRef = doc(db, userUID, docName);
+			      const placeDataSnap = await getDoc(docRef);
+            const placeData = placeDataSnap.data();
+            const latitude = placeData.latitude;
+            const venue = placeData.venue;
+            const longitude = placeData.longitude;
             await saveData(userUID, docName);
-            window.location.href = `map.html?${docName}`;
+            window.location.href = `map.html?${docName}?${latitude}?${longitude}?${venue}`;
           });
         });
       }
