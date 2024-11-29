@@ -53,6 +53,7 @@
 .icon {
   height: 56px;
   width: 56px;
+  border-radius: 50%; /* これを追加 */
 }
 .wrapper {
   display: flex;
@@ -186,7 +187,6 @@
   flex: 1;
   position: relative;
   display: flex;
-  align-items: center;
   z-index: 1;
 }
 .chat-icon-parent,
@@ -196,7 +196,6 @@
   justify-content: flex-start;
 }
 .chat-icon-parent {
-  width: 220px;
   flex-direction: row;
   padding: 0 var(--padding-xl) 0 0;
   box-sizing: border-box;
