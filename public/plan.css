@@ -160,6 +160,8 @@ html {
   font-size: var(--font-size-sm);
   min-width: 93px;
   padding-left: 17px;
+  white-space: nowrap; /* テキストが折り返さないようにする */
+  text-overflow: ellipsis; /* はみ出した部分を省略記号にする */
 }
 .frame-container,
 .parent {
