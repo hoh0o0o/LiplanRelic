@@ -202,7 +202,7 @@
 
     <img class="three-dots" src="./three-dots.svg" alt="Menu" />
     <div class="dropdown-menu" id="dropdownMenu">
-      <button class="dropdown-button">×このライブ記録を削除</button>
+      <button class="dropdown-button" id="deleteButton">×このライブ記録を削除</button>
     </div>
 
     <script type="module">
@@ -227,6 +227,8 @@
         ref,
         uploadBytes,
         getDownloadURL,
+        listAll,
+        deleteObject
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
@@ -402,6 +404,31 @@
         if (container) {
           container.addEventListener("click", function (e) {
             // Please sync "企画書用に編集1" to the project
+          });
+        }
+
+        var deleteButton = document.getElementById("deleteButton");
+        if(deleteButton){
+          deleteButton.addEventListener("click", function(e){
+            onAuthStateChanged(auth, async(user) => {
+              const userUID= user.uid;
+              const docRef = doc(db, userUID, docName);
+              await deleteDoc(docRef);
+
+              const storageRef = ref(storage, `${userUID}/${docName}`);
+              try {
+                const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
+                const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
+                await Promise.all(deletePromises); // 全ファイル削除を待つ
+                console.log("Storageのディレクトリ内のファイルを削除しました");
+              } catch (error) {
+                console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
+                alert("Storageディレクトリの削除中にエラーが発生しました。");
+                return;
+              }
+              alert("正常に削除完了");
+              window.location.href = `home.html?${userUID}`;
+            });
           });
         }
 

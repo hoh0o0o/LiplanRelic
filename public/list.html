@@ -150,9 +150,15 @@
       <section class="frame-section">
         <div class="b5" id="container1"></div>
         <div class="frame-wrapper1">
-          <div class="frame-parent2"></div>
+          <div class="frame-parent2">
+            <div class="ellipse-group"></div>
+          </div>
         </div>
-        <div class="task-repeat-three"></div>
+        <div class="task-repeat-three">
+          <div class="task-content-repeat">
+            <b class="b6"></b>
+          </div>
+        </div>
         <div class="task-repeat-three1">
           <div class="frame">
             <b class="b7"></b>
@@ -167,7 +173,7 @@
     </div>
     <img class="three-dots" src="./three-dots.svg" alt="Menu" />
     <div class="dropdown-menu" id="dropdownMenu">
-      <button class="dropdown-button">×このライブ記録を削除</button>
+      <button class="dropdown-button" id="deleteButton">×このライブ記録を削除</button>
     </div>
     <section class="footer">
       <div class="parent">
@@ -211,7 +217,10 @@
         ref,
         uploadBytes,
         getDownloadURL,
+        listAll,
+        deleteObject
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
 
       const firebaseConfig = {
         apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -446,33 +455,6 @@
         popup.style.display = "none";
       });
 
-      /*
-      // 完了ボタンのクリックイベントを追加
-      document
-        .querySelector(".submit-button")
-        .addEventListener("click", async function () {
-          const messageInput = document.getElementById("messageInput").value;
-          const docName = location.href.split("?")[1];
-
-          onAuthStateChanged(auth, (user) => {
-            const userUID = user.uid;
-            try {
-              const docRef = doc(db, userUID, docName);
-              updateDoc(docRef, {
-                ListMemo: messageInput,
-                publicity_l: true, // publicity_lフィールドをtrueに更新
-              });
-              console.log(
-                "ListMemoが保存され、publicity_lがtrueに設定されました"
-              );
-              popup.style.display = "none"; // ポップアップを閉じる
-            } catch (e) {
-              console.error("Error updating document: ", e);
-              alert("エラーが発生しました");
-            }
-          });
-        });*/
-
       window.addEventListener("load", adjustListHeight);
       window.addEventListener("resize", adjustListHeight);
 
@@ -555,6 +537,31 @@
             // Please sync "企画書用に編集1" to the project
           });
         }
+        
+        var deleteButton = document.getElementById("deleteButton");
+        if(deleteButton){
+          deleteButton.addEventListener("click", function(e){
+            onAuthStateChanged(auth, async(user) => {
+              const userUID= user.uid;
+              const docRef = doc(db, userUID, docName);
+              await deleteDoc(docRef);
+
+              const storageRef = ref(storage, `${userUID}/${docName}`);
+              try {
+                const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
+                const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
+                await Promise.all(deletePromises); // 全ファイル削除を待つ
+                console.log("Storageのディレクトリ内のファイルを削除しました");
+              } catch (error) {
+                console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
+                alert("Storageディレクトリの削除中にエラーが発生しました。");
+                return;
+              }
+              alert("正常に削除完了");
+              window.location.href = `home.html?${userUID}`;
+            });
+          });
+        }
 
         var plan = document.getElementById("plan");
         if (plan) {
@@ -587,18 +594,17 @@
           });
         }
 
-        var sharing = document.getElementById("sharing");
-        if (sharing) {
-          sharing.addEventListener("click", async function (e) {
-            onAuthStateChanged(auth, async (user) => {
+        var sharing =  document.getElementById("sharing");
+        if(sharing){
+          sharing.addEventListener("click", async function(e){
+            onAuthStateChanged(auth, async(user) => {
               const userUID = user.uid;
               const docName = location.href.split("?")[1];
-              const sharingComment =
-                document.getElementById("messageInput").value || "メモなし～";
+              const sharingComment = document.getElementById("messageInput").value || "メモなし～";
               const docRef = doc(db, userUID, docName);
               await updateDoc(docRef, {
                 publicity_list: true,
-                ListMemo: sharingComment,
+                ListMemo: sharingComment
               });
               popup.style.display = "none";
 
@@ -609,6 +615,10 @@
               const dataForListLimemo = Date + "?" + venue;
 
               const docRef2 = doc(db, "list", userUID);
+              const docSnap2 = await getDoc(docRef2);
+              if(!docSnap2.exists()){
+                await setDoc(docRef2, {});
+              }
               const updateData = {};
               updateData[docName] = dataForListLimemo;
               await updateDoc(docRef2, updateData);

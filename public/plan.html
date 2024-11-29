@@ -191,7 +191,9 @@
         getStorage,
         ref,
         uploadBytes,
-        getDownloadURL
+        getDownloadURL,
+        listAll,
+        deleteObject
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
@@ -453,10 +455,22 @@
             const userUID= user.uid;
             const docRef = doc(db, userUID, docName);
             await deleteDoc(docRef);
+
+            const storageRef = ref(storage, `${userUID}/${docName}`);
+            try {
+              const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
+              const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
+              await Promise.all(deletePromises); // 全ファイル削除を待つ
+              console.log("Storageのディレクトリ内のファイルを削除しました");
+            } catch (error) {
+              console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
+              alert("Storageディレクトリの削除中にエラーが発生しました。");
+              return;
+            }
             alert("正常に削除完了");
             window.location.href = `home.html?${userUID}`;
           });
-        })
+        });
       }
 
       var saveButton = document.getElementById("saveButton");

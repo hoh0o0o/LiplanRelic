@@ -161,7 +161,7 @@
     </div>
     <img class="three-dots" src="./three-dots.svg" alt="Menu" />
     <div class="dropdown-menu" id="dropdownMenu">
-      <button class="dropdown-button">×このライブ記録を削除</button>
+      <button class="dropdown-button" id="deleteButton">×このライブ記録を削除</button>
     </div>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -180,7 +180,10 @@
         ref,
         uploadBytes,
         getDownloadURL,
+        listAll,
+        deleteObject
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
 
       const firebaseConfig = {
         apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
@@ -236,8 +239,7 @@
             console.log("Document data:", data);
 
             // データをDOMに反映
-            document.getElementById("artist").textContent =
-              data.artist || "不明";
+            document.getElementById("artist").textContent = data.artist || "不明";
             document.getElementById("date").textContent = data.Date || "不明";
             document.getElementById("title").textContent = data.title || "不明";
             document.getElementById("venue").textContent = data.venue || "不明";
@@ -304,6 +306,31 @@
           await loadImage(userUID, docName);
           await loadData(userUID, docName);
           await loadTicket(userUID, docName);
+
+          var deleteButton = document.getElementById("deleteButton");
+          if(deleteButton){
+            deleteButton.addEventListener("click", function(e){
+              onAuthStateChanged(auth, async(user) => {
+                const userUID= user.uid;
+                const docRef = doc(db, userUID, docName);
+                await deleteDoc(docRef);
+
+                const storageRef = ref(storage, `${userUID}/${docName}`);
+                try {
+                  const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
+                  const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
+                  await Promise.all(deletePromises); // 全ファイル削除を待つ
+                  console.log("Storageのディレクトリ内のファイルを削除しました");
+                } catch (error) {
+                  console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
+                  alert("Storageディレクトリの削除中にエラーが発生しました。");
+                  return;
+                }
+                alert("正常に削除完了");
+                window.location.href = `home.html?${userUID}`;
+              });
+            });
+          }
 
           var list = document.getElementById("list");
           if (list) {
