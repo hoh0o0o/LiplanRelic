@@ -238,13 +238,26 @@
             const memoArray = (data.memo || "").split("**/kugiri\\**");
 
             const div1 = document.querySelector(".div1");
+            div1.querySelector(".add-schedule-button").style.display = "none"; // 最初のdiv1のボタンを非表示
             hourArray.forEach((hour, index) => {
               const newDiv1 = index === 0 ? div1 : div1.cloneNode(true);
-              if (index > 0) div1.parentNode.appendChild(newDiv1);
+              if (index > 0) {
+                newDiv1.querySelector(".add-schedule-button").style.display = "none"; // 複製したdiv1のボタンを非表示
+                div1.parentNode.appendChild(newDiv1);
+              }
 
               newDiv1.querySelector(".b6").value = hour;
               newDiv1.querySelector(".b8").value = planArray[index] || "";
               newDiv1.querySelector(".input").value = memoArray[index] || "";
+            });
+
+            // 最後のdiv1のボタンを表示
+            const allDiv1 = document.querySelectorAll(".div1");
+            allDiv1[allDiv1.length - 1].querySelector(".add-schedule-button").style.display = "block";
+
+            // 複製処理のイベントリスナーを追加
+            document.querySelectorAll(".add-schedule-button").forEach(button => {
+              button.addEventListener("click", addSchedule);
             });
 
             // おすすめスポットデータの処理
@@ -293,16 +306,19 @@
 
       function addSchedule(event) {
         const div1 = event.currentTarget.closest(".div1");
-        const newDiv1 = div1.cloneNode(true);
-        newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタンを表示する
-        newDiv1.style.marginTop = "0"; // 距離を0に設定
-        newDiv1.style.marginBottom = "0"; // 距離を0に設定
-        div1.querySelectorAll(".add-schedule-button").forEach(button => button.style.display = "none"); // 元のdiv1からすべてのボタンを非表示にする
-        div1.parentNode.appendChild(newDiv1);
-      
-        newDiv1.querySelector(".add-schedule-button").addEventListener("click", addSchedule);
+        const allDiv1 = document.querySelectorAll(".div1");
+        if (div1 === allDiv1[allDiv1.length - 1]) {
+          const newDiv1 = div1.cloneNode(true);
+          newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタンを表示する
+          newDiv1.style.marginTop = "0"; // 距離を0に設定
+          newDiv1.style.marginBottom = "0"; // 距離を0に設定
+          div1.querySelectorAll(".add-schedule-button").forEach(button => button.style.display = "none"); // 元のdiv1からすべてのボタンを非表示にする
+          div1.parentNode.appendChild(newDiv1);
+        
+          newDiv1.querySelector(".add-schedule-button").addEventListener("click", addSchedule);
+        }
       }
-      
+
       document.addEventListener("DOMContentLoaded", () => {
         const docName = location.href.split("?")[1];
 
@@ -338,20 +354,10 @@
           }
         });
 
-        async function uploadImage(userUID, docName, file) {
-          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
-          try {
-            await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(storageRef);
-            document.getElementById("noImage").src = downloadURL;
-            console.log("画像がアップロードされました:", downloadURL);
-          } catch (error) {
-            console.error("画像のアップロードに失敗しました:", error);
-          }
-        }
-
-        const addScheduleButton = document.querySelector(".add-schedule-button");
-        addScheduleButton.addEventListener("click", addSchedule);
+        // 複製処理のイベントリスナーを追加
+        document.querySelectorAll(".add-schedule-button").forEach(button => {
+          button.addEventListener("click", addSchedule);
+        });
 
         const threeDots = document.querySelector('.three-dots');
         const dropdownMenu = document.getElementById('dropdownMenu');
