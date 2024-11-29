@@ -45,6 +45,8 @@
       doc,
       updateDoc,
       arrayUnion,
+      getDoc,
+      setDoc
     } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
     import {
       getAuth,
@@ -63,7 +65,7 @@
         await updateDoc(docRef, {
           reccomendName: arrayUnion(recommend),
         });
-        alert("success");
+        //alert("success");
       });
     };
   </script>
@@ -74,8 +76,9 @@
     let selectedPlace = null;
 
     function initMap() {
-      const latitude = 34.2265; // 和歌山大学の緯度
-      const longitude = 135.1675; // 和歌山大学の経度
+	    const latitude = parseFloat(location.href.split("?")[2]);
+      const longitude = parseFloat(location.href.split("?")[3]);
+      const venue = location.href.split("?")[4];
       // マップの初期表示を設定
       map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: latitude, lng: longitude }, // 和歌山大学を初期位置に設定
@@ -137,6 +140,7 @@
 
     async function addPlace() {
       const docName = location.href.split("?")[1];
+      const venue = location.href.split("?")[4];
       if (
         !selectedPlace ||
         !selectedPlace.geometry ||
@@ -155,8 +159,21 @@
       const recommend = { name, imageUrl };
       await saveToFirebase(docName, recommend);
 
+      /*
+      const venueRef = doc(db, "venue", venue);
+      const venueDoc = await getDoc(venueRef);
+      if(!venueDoc.exist()){
+        await setDoc(venueRef, {
+          [name]: imageUrl
+        });
+      }else{
+        await updateDoc(venueRef, {
+          [name]: imageUrl
+        });
+      }*/
+
       // 選択された名称と画像をplan.htmlに渡す
-      window.location.href = `plan.html?${docName}?${name}`;
+      window.location.href = `plan.html?${docName}?${name}?${imageUrl}`;
     }
 
     async function resetOverlay(event) {

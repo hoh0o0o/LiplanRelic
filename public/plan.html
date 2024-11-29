@@ -180,7 +180,8 @@
         getFirestore,
         doc,
         getDoc,
-        updateDoc
+        updateDoc,
+        setDoc
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getAuth,
@@ -319,6 +320,50 @@
         }
       }
 
+      async function loadPlan(venue) {
+        try {
+          const venueDocRef = doc(db, "venue", venue);
+          const venueDocSnap = await getDoc(venueDocRef);
+
+          if (venueDocSnap.exists()) {
+            const venueData = venueDocSnap.data();
+            const fieldNames = Object.keys(venueData);
+
+            if (fieldNames.length > 0) {
+              // ランダムに3つのフィールドを選択
+              const randomFields = [];
+              while (randomFields.length < 3 && fieldNames.length > 0) {
+                const randomIndex = Math.floor(Math.random() * fieldNames.length);
+                randomFields.push(fieldNames[randomIndex]);
+                fieldNames.splice(randomIndex, 1); // 選ばれたフィールド名をリストから削除
+              }
+
+              randomFields.forEach((fieldName, index) => {
+                const recommendElement = document.getElementById(`reccomend-name${index + 1}`);
+                const recommendImage = document.getElementById(`osusume-image${index + 1}`);
+                //alert(venueData[fieldName]);
+                
+                if (recommendElement) {
+                  recommendElement.textContent = fieldName; // フィールド名を格納
+                }
+
+                if (recommendImage) {
+                  const imageURL = venueData[fieldName];
+                  recommendImage.src = imageURL || "./noimage.png"; // 画像を反映、デフォルト画像にフォールバック
+                }
+              });
+            } else {
+              alert("この会場には登録されたフィールドがありません。");
+            }
+          } else {
+            alert("指定された会場のデータが見つかりませんでした。");
+          }
+        } catch (error) {
+          console.error("loadPlanの処理中にエラーが発生しました:", error);
+          alert("データを読み込む際にエラーが発生しました。");
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         const docName = location.href.split("?")[1];
 
@@ -326,9 +371,34 @@
         onAuthStateChanged(auth, async (user) => {
           if (user) {
             const userUID = user.uid;
-            await loadData(userUID, docName);
-            await loadImage(userUID, docName);
-            await loadPlan(userUID, docName);
+            const docName = location.href.split("?")[1];
+            const recommendPlace = decodeURIComponent(location.href.split("?")[2]);
+            //alert(recommendPlace);
+            const imageURL = location.href.split("?")[3] + "?" + location.href.split("?")[4];
+            if (recommendPlace && imageURL) {
+              const venueRef = doc(db, userUID, docName);
+              const venueSnap = await getDoc(venueRef);
+              const venueData = venueSnap.data();
+              const venueName = venueData.venue;
+              const docRef = doc(db,"venue", venueName);
+              await loadData(userUID, docName);
+              await loadImage(userUID, docName);
+              await loadPlan(venueName);
+              try{
+                const recommendSnap = await getDoc(docRef);
+                if(!recommendSnap.exists()){
+                  await setDoc(docRef, {
+                    [recommendPlace]: imageURL
+                  });
+                }else{
+                  await updateDoc(docRef, {
+                    [recommendPlace]: imageURL
+                  })
+                }
+              }catch(error){
+                alert("error!")
+              }
+            }
           } else {
             window.location.href = "./login.html";
           }
