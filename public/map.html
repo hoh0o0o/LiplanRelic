@@ -62,10 +62,14 @@
       onAuthStateChanged(auth, async (user) => {
         const userUID = user.uid;
         const docRef = doc(db, userUID, docName);
-        await updateDoc(docRef, {
-          reccomendName: arrayUnion(recommend),
-        });
-        //alert("success");
+        try{
+          await updateDoc(docRef, {
+            reccomendName: arrayUnion(recommend),
+          });
+          //alert("success");
+        }catch(error){
+          //alert("failed");
+        }
       });
     };
   </script>
