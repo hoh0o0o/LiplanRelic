@@ -62,12 +62,13 @@
       onAuthStateChanged(auth, async (user) => {
         const userUID = user.uid;
         const docRef = doc(db, userUID, docName);
-        try{
+        try {
           await updateDoc(docRef, {
             reccomendName: arrayUnion(recommend),
+            placeName: arrayUnion(recommend), // placeNameにも追加
           });
           //alert("success");
-        }catch(error){
+        } catch (error) {
           //alert("failed");
         }
       });
@@ -163,21 +164,10 @@
       const recommend = { name, imageUrl };
       await saveToFirebase(docName, recommend);
 
-      /*
-      const venueRef = doc(db, "venue", venue);
-      const venueDoc = await getDoc(venueRef);
-      if(!venueDoc.exist()){
-        await setDoc(venueRef, {
-          [name]: imageUrl
-        });
-      }else{
-        await updateDoc(venueRef, {
-          [name]: imageUrl
-        });
-      }*/
-
       // 選択された名称と画像をplan.htmlに渡す
-      window.location.href = `plan.html?${docName}?${name}?${imageUrl}`;
+      window.location.href = `plan.html?${docName}?${encodeURIComponent(
+        name
+      )}?${encodeURIComponent(imageUrl)}`;
     }
 
     async function resetOverlay(event) {

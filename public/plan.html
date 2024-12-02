@@ -267,16 +267,17 @@
             const recommendNames = data.reccomendName || [];
             recommendNames.forEach((recommend, index) => {
               if (index < 3) {
-                document.getElementById(`place-name${index + 1}`).textContent = recommend.name;
-                document.getElementById(`place-image${index + 1}`).src = recommend.imageUrl || "./noimage.png";
+                document.getElementById(`reccomend-name${index + 1}`).textContent = recommend.name;
+                document.getElementById(`osusume-image${index + 1}`).src = recommend.imageUrl || "./noimage.png";
               }
             });
 
             // 登録スポットデータの処理
-            recommendNames.forEach((recommend, index) => {
+            const placeNames = data.placeName || [];
+            placeNames.forEach((place, index) => {
               if (index < 3) {
-                document.getElementById(`place-name${index + 1}`).textContent = recommend.name;
-                document.getElementById(`place-image${index + 1}`).src = recommend.imageUrl || "./noimage.png";
+                document.getElementById(`place-name${index + 1}`).textContent = place.name;
+                document.getElementById(`place-image${index + 1}`).src = place.imageUrl || "./noimage.png";
               }
             });
           } else {
@@ -312,7 +313,7 @@
         const allDiv1 = document.querySelectorAll(".div1");
         if (div1 === allDiv1[allDiv1.length - 1]) {
           const newDiv1 = div1.cloneNode(true);
-          newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタン���表示する
+          newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタンを表示する
           newDiv1.style.marginTop = "0"; // 距離を0に設定
           newDiv1.style.marginBottom = "0"; // 距離を0に設定
           div1.querySelectorAll(".add-schedule-button").forEach(button => button.style.display = "none"); // 元のdiv1からすべてのボタンを非表示にする
@@ -370,50 +371,48 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         const docName = location.href.split("?")[1];
+        const recommendPlace = decodeURIComponent(location.href.split("?")[2]);
+        const imageURL = decodeURIComponent(location.href.split("?")[3]);
 
         // 認証状態の確認とデータ読み込み
         onAuthStateChanged(auth, async (user) => {
           if (user) {
             const userUID = user.uid;
-            const docName = location.href.split("?")[1];
-            const recommendPlace = decodeURIComponent(location.href.split("?")[2]);
-            //alert(recommendPlace);
-            const imageURL = location.href.split("?")[3] + "?" + location.href.split("?")[4];
-            //alert(recommendPlace);
-            //alert(imageURL);
-            //if (recommendPlace && imageURL) {
-              const venueRef = doc(db, userUID, docName);
-              const venueSnap = await getDoc(venueRef);
-              const venueData = venueSnap.data();
-              const venueName = venueData.venue;
-              const docRef = doc(db,"venue", venueName);
-              await loadData(userUID, docName);
-              await loadImage(userUID, docName);
-              await loadPlan(venueName);
-              if(recommendPlace != "undefined" && imageURL != "undefined?undefined"){
-                try{
-                  const recommendSnap = await getDoc(docRef);
-                  if(!recommendSnap.exists()){
-                    await setDoc(docRef, {
-                      [recommendPlace]: imageURL
-                    });
-                  }else{
-                    await updateDoc(docRef, {
-                      [recommendPlace]: imageURL
-                    })
-                  }
-                }catch(error){
-                  alert("error!")
+            const venueRef = doc(db, userUID, docName);
+            const venueSnap = await getDoc(venueRef);
+            const venueData = venueSnap.data();
+            const venueName = venueData.venue;
+            const docRef = doc(db, "venue", venueName);
+
+            await loadData(userUID, docName);
+            await loadImage(userUID, docName);
+            await loadPlan(venueName);
+
+            if (recommendPlace !== "undefined" && imageURL !== "undefined") {
+              try {
+                const recommendSnap = await getDoc(docRef);
+                if (!recommendSnap.exists()) {
+                  await setDoc(docRef, {
+                    [recommendPlace]: imageURL
+                  });
+                } else {
+                  await updateDoc(docRef, {
+                    [recommendPlace]: imageURL
+                  });
                 }
+                // 追加された地名と画像を反映
+                document.getElementById("place-name1").textContent = recommendPlace;
+                document.getElementById("place-image1").src = imageURL;
+              } catch (error) {
+                alert("error!");
               }
-            //}
+            }
           } else {
             window.location.href = "./login.html";
           }
         });
 
         // 画像アップロード処理
-        /*
         const noImage = document.getElementById("noImage");
         const imageInput = document.getElementById("imageInput");
 
@@ -427,37 +426,13 @@
             onAuthStateChanged(auth, async (user) => {
               if (user) {
                 const userUID = user.uid;
-                await uploadImage(userUID, docName, file);
-              }
-            });
-          }
-        });*/
-
-        
-        //document.addEventListener("DOMContentLoaded", () => {
-        const noImage = document.getElementById("noImage");
-        const imageInput = document.getElementById("imageInput");
-
-        // noImageがクリックされたらファイル選択をトリガー
-        noImage.addEventListener("click", () => {
-          imageInput.click();
-        });
-
-        // ファイルが選択されたときの処理
-        imageInput.addEventListener("change", async (event) => {
-          const file = event.target.files[0];
-          if (file) {
-            onAuthStateChanged(auth, async (user) => {
-              if (user) {
-                const userUID = user.uid; // 認証されたユーザーのUIDを取得
-                const docName = location.href.split("?")[1]; // ドキュメント名をURLから取得
+                const docName = location.href.split("?")[1];
                 try {
                   const imageURL = await uploadImage(userUID, docName, file);
                   noImage.src = imageURL;
-                  //alert("画像が正常にアップロードされました！");
                 } catch (error) {
                   console.error("画像のアップロード中にエラーが発生しました:", error);
-                  alert("1.画像のアップロードに失敗しま���た。");
+                  alert("1.画像のアップロードに失敗しました。");
                 }
               } else {
                 alert("認証されていません。ログインしてください。");
@@ -465,7 +440,6 @@
             });
           }
         });
-      //});
 
         // 複製処理のイベントリスナーを追加
         document.querySelectorAll(".add-schedule-button").forEach(button => {
@@ -516,7 +490,7 @@
               const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
               const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
               await Promise.all(deletePromises); // 全ファイル削除を待つ
-              console.log("Storageのディレクトリ内のファイル��削除しました");
+              console.log("Storageのディレクトリ内のファイルを削除しました");
             } catch (error) {
               console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
               alert("Storageディレクトリの削除中にエラーが発生しました。");
@@ -588,6 +562,22 @@
           });
         });
       }
+
+      window.saveToFirebase = async function (docName, recommend) {
+        onAuthStateChanged(auth, async (user) => {
+          const userUID = user.uid;
+          const docRef = doc(db, userUID, docName);
+          try {
+            await updateDoc(docRef, {
+              reccomendName: arrayUnion(recommend),
+              placeName: arrayUnion(recommend) // placeNameにも追加
+            });
+            //alert("success");
+          } catch (error) {
+            //alert("failed");
+          }
+        });
+      };
     </script>
   </body>
 </html>
