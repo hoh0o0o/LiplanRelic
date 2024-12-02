@@ -17,23 +17,17 @@
     <div class="lnlive">
       <header class="content">
         <div class="header">
+          <div class="div background-circle">
+            <div class="oval" id="backtoHome"></div>
+            <div class="close-icon" id="backtoHome"></div>
+            <div class="close-icon1" id="backtoHome"></div>
+          </div>
           <div class="header1">
-            <div class="div background-circle">
-              <div class="oval" id="backtoHome"></div>
-              <div class="close-icon" id="backtoHome"></div>
-              <div class="close-icon1" id="backtoHome"></div>
-            </div>
             <div class="new-label">
               <a class="a">新規作成</a>
             </div>
           </div>
         </div>
-        <img
-          class="divider-icon"
-          loading="lazy"
-          alt=""
-          src="./newcreate_divider.svg"
-        />
       </header>
       <div class="wrapper">
         <b class="b">
@@ -48,7 +42,6 @@
             <b class="b6">会場名*</b>
           </div>
           <div class="live-name-input">
-            <b class="b7"></b>
             <input
               class="input2"
               id="search-input"
@@ -60,19 +53,18 @@
           <div class="child"></div>
         </div>
       </div>
-      <div class="artist-label">
-        <div class="create-label-parent">
+      <div class="frame">
+        <div class="div1">
           <div class="create-label">
             <b class="b5">日程*</b>
           </div>
-          <div class="frame-group">
-            <div class="calendar-choose">
-              <b class="b11">
-                <input class="input" type="date" id="date-input" />
-              </b>
-            </div>
-            <div class="frame-child"></div>
+
+          <div class="calendar-choose">
+            <b class="b11">
+              <input class="input" type="date" id="date-input" />
+            </b>
           </div>
+          <div class="child"></div>
         </div>
       </div>
       <div class="frame">
@@ -93,7 +85,7 @@
           <div class="child"></div>
         </div>
       </div>
-      <div class="frame-div">
+      <div class="frame">
         <div class="div2">
           <div class="wrapper1">
             <b class="b8">アーティスト*</b>
@@ -134,7 +126,7 @@
         getAuth,
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    
+
       const firebaseConfig = {
         apiKey: "AIzaSyDUSf566afvcJhJZ-pr0LvgfhNbrEn49dU",
         authDomain: "liplan-836a1.firebaseapp.com",
@@ -144,13 +136,12 @@
         appId: "1:545673347741:web:55bf80be3076f09abf8a74",
         measurementId: "G-TKF08JYKTT",
       };
-    
+
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       const db = getFirestore(app);
       let userUID;
-      let selectedPlace = null;
-    
+
       const getUserUID = new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
           if (user) {
@@ -162,8 +153,8 @@
           }
         });
       });
-    
-      // 日付を今日の日付に設定
+
+      // 日付を今日の日付に設定する関数
       function setDateToday() {
         const today = new Date();
         const yyyy = today.getFullYear();
@@ -172,12 +163,11 @@
         const formattedToday = `${yyyy}-${mm}-${dd}`;
         document.getElementById("date-input").value = formattedToday;
       }
-    
+
       document.addEventListener("DOMContentLoaded", (event) => {
         setDateToday();
-        initMap();
       });
-    
+
       var create = document.getElementById("sendFirebase");
       create.addEventListener("click", async function (e) {
         const userUID = await getUserUID;
@@ -185,22 +175,15 @@
         const date = document.getElementById("date-input").value;
         const title = document.getElementById("title-input").value;
         const artist = document.getElementById("artist-input").value;
-        const address =
-          selectedPlace && selectedPlace.formatted_address
-            ? selectedPlace.formatted_address
-            : "";
-    
-        if (!venue || !date || !title || !artist || !address) {
+
+        if (!venue || !date || !title || !artist) {
           alert("全ての項目を入力してください");
           return;
         }
-    
-        // 緯度と経度の取得
-        const { latitude, longitude } = await fetchLatLngFromAddress(address);
-    
+
         const querySnapshot = await getDocs(collection(db, userUID));
         let maxDocNumber = 0;
-    
+
         querySnapshot.forEach((doc) => {
           const docId = doc.id;
           const docNumber = parseInt(docId.replace(userUID, ""));
@@ -208,75 +191,110 @@
             maxDocNumber = docNumber;
           }
         });
-    
+
         const newDocNumber = maxDocNumber + 1;
         const docName = `${newDocNumber}`;
-    
+
         await setDoc(doc(db, userUID, docName), {
           venue: venue,
-          address: address,
-          latitude: latitude, // 緯度を保存
-          longitude: longitude, // 経度を保存
           Date: date,
           title: title,
           artist: artist,
-          publicity_list: false,
-          publicity_setlist: false
         });
-    
+
         window.location.href = `plan.html?${docName}`;
       });
-    
-      // Google Maps Geocoding API を使って住所から緯度と経度を取得
-      async function fetchLatLngFromAddress(address) {
-        return new Promise((resolve, reject) => {
-          const geocoder = new google.maps.Geocoder();
-    
-          geocoder.geocode({ address: address }, (results, status) => {
-            if (status === google.maps.GeocoderStatus.OK) {
-              const location = results[0].geometry.location;
-              resolve({
-                latitude: location.lat(),
-                longitude: location.lng(),
-              });
-            } else {
-              console.error("Geocoding API failed:", status);
-              reject(new Error("住所から緯度と経度を取得できませんでした"));
+
+      /*
+      // 作成ボタンのクリックイベント
+      document
+        .getElementById("sendFirebase")
+        .addEventListener("click", async () => {
+          try {
+            // userUIDの取得完了を待つ
+            const uid = await getUserUID;
+            const prefectures = document.getElementById("area-select").value;
+            const venue = document.getElementById("venue-select").value;
+            const date = document.getElementById("date-input").value;
+            const title = document.getElementById("title-input").value;
+            const artist = document.getElementById("artist-input").value;
+            alert("artist");
+
+            // 入力チェック
+            if (!prefectures || !venue || !date || !title || !artist) {
+              alert("全ての項目を入力してください");
+              return;
             }
-          });
+
+            const querySnapshot = await getDocs(collection(db, uid));
+            let maxDocNumber = 0;
+
+            querySnapshot.forEach((doc) => {
+              const docId = doc.id;
+              const docNumber = parseInt(docId.replace(uid, ""));
+              if (!isNaN(docNumber) && docNumber > maxDocNumber) {
+                maxDocNumber = docNumber;
+              }
+            });
+
+            const newDocNumber = maxDocNumber + 1;
+            const docName = `${newDocNumber}`;
+
+            await setDoc(doc(db, uid, docName), {
+              prefectures: prefectures,
+              venue: venue,
+              Date: date,
+              title: title,
+              artist: artist,
+              publicity: false,
+            });
+
+            alert("データが送信されました");
+            window.location.href = `plan.html?${docName}`;
+          } catch (e) {
+            console.error("Error adding document: ", e);
+            alert("failed to upload data");
+          }
+        });*/
+
+      // home.htmlへの遷移にuserUIDを含める
+      document.querySelectorAll("#backtoHome").forEach((element) => {
+        element.addEventListener("click", async () => {
+          const uid = await getUserUID; // userUIDの取得完了を待つ
+          window.location.href = `./home.html?${uid}`;
         });
-      }
-    
+      });
+
+      let map;
+      let marker;
+      let selectedPlace = null;
+
       function initMap() {
         const input = document.getElementById("search-input");
         const autocomplete = new google.maps.places.Autocomplete(input, {
           types: ["establishment"],
           componentRestrictions: { country: "jp" },
         });
-    
+
         autocomplete.addListener("place_changed", function () {
           selectedPlace = autocomplete.getPlace();
-    
+
           if (!selectedPlace.geometry || !selectedPlace.geometry.location) {
             alert("場所が見つかりませんでした。");
             selectedPlace = null;
             return;
           }
-    
+
           // 選択した地名を表示
-          input.value = selectedPlace.name || "";
+          input.value = selectedPlace.name;
           input.classList.add("selected");
-          console.log("選択した住所:", selectedPlace.formatted_address || "住所なし");
         });
       }
-    
-      document.querySelectorAll("#backtoHome").forEach((element) => {
-        element.addEventListener("click", async () => {
-          const uid = await getUserUID;
-          window.location.href = `./home.html?${uid}`;
-        });
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        setDateToday();
+        initMap();
       });
     </script>
-    
   </body>
 </html>
