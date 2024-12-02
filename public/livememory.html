@@ -25,7 +25,7 @@
                   </div>
                 </div>
                 <div class="memory-labels">
-                  <b class="view">現在のライメモ数</b>
+                  <b class="view">ライブ記録数</b>
                   <div class="empty-button-wrapper">
                     <b class="empty-button">
                       <span id="limemoCount">0</span>
@@ -182,7 +182,9 @@
           const data = infoDocSnap.data();
           try {
             const querySnapshot = await getDocs(collection(db, userUID));
-            const documentCount = querySnapshot.docs.filter((doc) => doc.id !== "information").length;
+            const documentCount = querySnapshot.docs.filter(
+              (doc) => doc.id !== "information"
+            ).length;
             document.getElementById("limemoCount").textContent = documentCount;
           } catch (error) {
             console.error("Error fetching document count: ", error);
