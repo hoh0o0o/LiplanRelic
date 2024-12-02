@@ -46,7 +46,7 @@
       updateDoc,
       arrayUnion,
       getDoc,
-      setDoc
+      setDoc,
     } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
     import {
       getAuth,
@@ -76,7 +76,7 @@
     let selectedPlace = null;
 
     function initMap() {
-	    const latitude = parseFloat(location.href.split("?")[2]);
+      const latitude = parseFloat(location.href.split("?")[2]);
       const longitude = parseFloat(location.href.split("?")[3]);
       const venue = location.href.split("?")[4];
       // マップの初期表示を設定
