@@ -263,6 +263,11 @@
         const inputs = document.querySelectorAll(".input");
         const mcs = document.querySelectorAll(".mc");
         const b1s = document.querySelectorAll(".b1");
+        const inputs1 = document.querySelectorAll(".input1");
+        const mcs1 = document.querySelectorAll(".mc1");
+        const b3s = document.querySelectorAll(".b3");
+        const b4s = document.querySelectorAll(".b4");
+
         const inputData = Array.from(inputs)
           .map((input) => input.value)
           .join("**/kugiri\\**");
@@ -272,6 +277,18 @@
         const b1Data = Array.from(b1s)
           .map((b1) => b1.value)
           .join("**/kugiri\\**");
+        const inputData1 = Array.from(inputs1)
+          .map((input) => input.value)
+          .join("**/kugiri\\**");
+        const mcData1 = Array.from(mcs1)
+          .map((mc) => mc.value)
+          .join("**/kugiri\\**");
+        const b3Data = Array.from(b3s)
+          .map((b3) => b3.value)
+          .join("**/kugiri\\**");
+        const b4Data = Array.from(b4s)
+          .map((b4) => b4.value)
+          .join("**/kugiri\\**");
 
         try {
           const docRef = doc(db, userUID, docName);
@@ -279,6 +296,10 @@
             MusicName: inputData,
             MC: mcData,
             setlistMemo: b1Data,
+            MusicName1: inputData1,
+            MC1: mcData1,
+            setlistMemo1: b3Data,
+            encoreMemo: b4Data,
           });
           console.log("データが保存されました");
         } catch (e) {
@@ -305,10 +326,18 @@
             const musicArray = (data.MusicName || "").split("**/kugiri\\**");
             const mcArray = (data.MC || "").split("**/kugiri\\**");
             const b1Array = (data.setlistMemo || "").split("**/kugiri\\**");
+            const musicArray1 = (data.MusicName1 || "").split("**/kugiri\\**");
+            const mcArray1 = (data.MC1 || "").split("**/kugiri\\**");
+            const b3Array = (data.setlistMemo1 || "").split("**/kugiri\\**");
+            const b4Array = (data.encoreMemo || "").split("**/kugiri\\**");
+
             const contentElements = document.getElementById("content-elements");
+            const contentElements1 =
+              document.getElementById("content-elements1");
 
             // 初期のnormalクラス要素をクリア
             contentElements.innerHTML = "";
+            contentElements1.innerHTML = "";
 
             // MusicArrayの要素数だけnormalクラスを作成
             musicArray.forEach((music, index) => {
@@ -355,6 +384,58 @@
               </div>
             `;
               contentElements.insertAdjacentHTML("beforeend", mcNormalTemplate);
+            });
+
+            // MusicArray1の要素数だけnormal1クラスを作成
+            musicArray1.forEach((music, index) => {
+              const b3 = b3Array[index] || ""; // b3Arrayから対応する値を取得、ない場合は空文字
+              const normal1Template = `
+              <div class="normal1">
+                <div class="m-c-icon1">
+                  <b class="setlist-placeholder1">
+                  <img class="icon6" alt="" src="./onpu.svg" />
+                  </b>
+                </div>
+                <div class="list3">
+                  <div class="rectangle-parent1">
+                    <div class="frame-child1"></div>
+                    <input class="input1" placeholder="曲を追加" type="text" value="${music}" />
+                    <div class="m-c-action1">
+                    </div>
+                  </div>
+                  <input class="b3" placeholder="メモ" type="text" value="${b3}" />
+                </div>
+              </div>
+            `;
+              contentElements1.insertAdjacentHTML("beforeend", normal1Template);
+            });
+
+            // MC1の要素数だけmc-normal1クラスを複製し、MC1のデータを格納
+            mcArray1.forEach((mc, index) => {
+              const mcNormal1Template = `
+              <div class="mc-normal1">
+                <div class="encore-m-c-icon1">
+                  <img class="icon5" loading="lazy" alt="" src="./setlist-mc.png" />
+                </div>
+                <div class="list4">
+                  <div class="rectangle-container1">
+                    <div class="frame-inner1"></div>
+                    <input class="mc1" placeholder="MC${
+                      index + 1
+                    }" type="text" value="${mc}" />
+                    <div class="encore-details1">
+                    </div>
+                  </div>
+                  <input class="b4" placeholder="メモ" type="text" value="${
+                    b4Array[index] || ""
+                  }" />
+                </div>
+              </div>
+            `;
+              contentElements1.insertAdjacentHTML(
+                "beforeend",
+                mcNormal1Template
+              );
             });
           } else {
             console.log("No such document!");
