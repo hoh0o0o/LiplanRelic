@@ -329,29 +329,36 @@
 
           if (venueDocSnap.exists()) {
             const venueData = venueDocSnap.data();
-            const fieldNames = Object.keys(venueData);
+            const fieldNames = Object.keys(venueData).filter(
+              (key) => venueData[key] !== undefined && venueData[key] !== null && venueData[key] !== ""
+            );
 
             if (fieldNames.length > 0) {
-              // ランダムに3つのフィールドを選択
-              const randomFields = [];
-              while (randomFields.length < 3 && fieldNames.length > 0) {
-                const randomIndex = Math.floor(Math.random() * fieldNames.length);
-                randomFields.push(fieldNames[randomIndex]);
-                fieldNames.splice(randomIndex, 1); // 選ばれたフィールド名をリストから削除
+              // フィールド数を取得
+              const totalFields = fieldNames.length;
+              const selectedIndices = new Set();
+
+              // ランダムに3つのインデックスを選択
+              while (selectedIndices.size < Math.min(3, totalFields)) {
+                const randomIndex = Math.floor(Math.random() * totalFields);
+                //alert(randomIndex);
+                selectedIndices.add(randomIndex);
               }
 
-              randomFields.forEach((fieldName, index) => {
-                const recommendElement = document.getElementById(`reccomend-name${index + 1}`);
-                const recommendImage = document.getElementById(`osusume-image${index + 1}`);
-                //alert(venueData[fieldName]);
-                
+              // 選択したフィールドをDOMに反映
+              Array.from(selectedIndices).forEach((index, idx) => {
+                const fieldName = fieldNames[index];
+                const fieldValue = venueData[fieldName];
+
+                const recommendElement = document.getElementById(`reccomend-name${idx + 1}`);
+                const recommendImage = document.getElementById(`osusume-image${idx + 1}`);
+
                 if (recommendElement) {
-                  recommendElement.textContent = fieldName; // フィールド名を格納
+                  recommendElement.textContent = fieldName; // フィールド名を設定
                 }
 
                 if (recommendImage) {
-                  const imageURL = venueData[fieldName];
-                  recommendImage.src = imageURL || "./noimage.png"; // 画像を反映、デフォルト画像にフォールバック
+                  recommendImage.src = fieldValue || "./noimage.png"; // 画像を反映、デフォルト画像にフォールバック
                 }
               });
             } else {
