@@ -84,16 +84,14 @@
             <div class="normal">
               <div class="m-c-icon">
                 <b class="setlist-placeholder">
-                  <p class="p1">1</p>
+                  <img class="icon1" alt="" src="./onpu.svg" />
                 </b>
               </div>
               <div class="list1">
                 <div class="rectangle-parent">
                   <div class="frame-child"></div>
                   <input class="input" placeholder="曲を追加" type="text" />
-                  <div class="m-c-action">
-                    <img class="icon1" alt="" src="./setlist-bar.png" />
-                  </div>
+                  <div class="m-c-action"></div>
                 </div>
                 <input class="b1" placeholder="メモ" type="text" />
               </div>
@@ -111,9 +109,7 @@
                 <div class="rectangle-container">
                   <div class="frame-inner"></div>
                   <input class="mc" placeholder="MC１" type="text" />
-                  <div class="encore-details">
-                    <img class="icon3" alt="" src="./setlist-bar.png" />
-                  </div>
+                  <div class="encore-details"></div>
                 </div>
                 <input class="b2" placeholder="メモ" type="text" />
               </div>
@@ -126,16 +122,14 @@
             <div class="normal1">
               <div class="m-c-icon1">
                 <b class="setlist-placeholder1">
-                  <p class="p2">1</p>
+                  <img class="icon6" alt="" src="./onpu.svg" />
                 </b>
               </div>
               <div class="list3">
                 <div class="rectangle-parent1">
                   <div class="frame-child1"></div>
                   <input class="input1" placeholder="曲を追加" type="text" />
-                  <div class="m-c-action1">
-                    <img class="icon4" alt="" src="./setlist-bar.png" />
-                  </div>
+                  <div class="m-c-action1"></div>
                 </div>
                 <input class="b3" placeholder="メモ" type="text" />
               </div>
@@ -153,9 +147,7 @@
                 <div class="rectangle-container1">
                   <div class="frame-inner1"></div>
                   <input class="mc1" placeholder="MC１" type="text" />
-                  <div class="encore-details1">
-                    <img class="icon6" alt="" src="./setlist-bar.png" />
-                  </div>
+                  <div class="encore-details1"></div>
                 </div>
                 <input class="b4" placeholder="メモ" type="text" />
               </div>
@@ -202,7 +194,9 @@
 
     <img class="three-dots" src="./three-dots.svg" alt="Menu" />
     <div class="dropdown-menu" id="dropdownMenu">
-      <button class="dropdown-button" id="deleteButton">×このライブ記録を削除</button>
+      <button class="dropdown-button" id="deleteButton">
+        ×このライブ記録を削除
+      </button>
     </div>
 
     <script type="module">
@@ -216,7 +210,7 @@
         query,
         where,
         getDocs,
-        setDoc
+        setDoc,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getAuth,
@@ -228,7 +222,7 @@
         uploadBytes,
         getDownloadURL,
         listAll,
-        deleteObject
+        deleteObject,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
@@ -323,7 +317,7 @@
               <div class="normal">
                 <div class="m-c-icon">
                   <b class="setlist-placeholder">
-                    <p class="p1">${index + 1}</p>
+                  <img class="icon1" alt="" src="./onpu.svg" />
                   </b>
                 </div>
                 <div class="list1">
@@ -331,7 +325,6 @@
                     <div class="frame-child"></div>
                     <input class="input" placeholder="曲を追加" type="text" value="${music}" />
                     <div class="m-c-action">
-                      <img class="icon1" alt="" src="./setlist-bar.png" />
                     </div>
                   </div>
                   <input class="b1" placeholder="メモ" type="text" value="${b1}" />
@@ -355,7 +348,6 @@
                       index + 1
                     }" type="text" value="${mc}" />
                     <div class="encore-details">
-                      <img class="icon3" alt="" src="./setlist-bar.png" />
                     </div>
                   </div>
                   <input class="b2" placeholder="メモ" type="text" />
@@ -408,21 +400,26 @@
         }
 
         var deleteButton = document.getElementById("deleteButton");
-        if(deleteButton){
-          deleteButton.addEventListener("click", function(e){
-            onAuthStateChanged(auth, async(user) => {
-              const userUID= user.uid;
+        if (deleteButton) {
+          deleteButton.addEventListener("click", function (e) {
+            onAuthStateChanged(auth, async (user) => {
+              const userUID = user.uid;
               const docRef = doc(db, userUID, docName);
               await deleteDoc(docRef);
 
               const storageRef = ref(storage, `${userUID}/${docName}`);
               try {
                 const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
-                const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
+                const deletePromises = listResult.items.map((itemRef) =>
+                  deleteObject(itemRef)
+                ); // 各ファイルを削除
                 await Promise.all(deletePromises); // 全ファイル削除を待つ
                 console.log("Storageのディレクトリ内のファイルを削除しました");
               } catch (error) {
-                console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
+                console.error(
+                  "Storageディレクトリの削除中にエラーが発生しました:",
+                  error
+                );
                 alert("Storageディレクトリの削除中にエラーが発生しました。");
                 return;
               }
@@ -494,6 +491,20 @@
               document
                 .getElementById("content-elements")
                 .appendChild(newMcNormal);
+            } else if (activeElement.classList.contains("input1")) {
+              e.preventDefault();
+              const normal1 = activeElement.closest(".normal1");
+              const newNormal1 = normal1.cloneNode(true);
+              document
+                .getElementById("content-elements1")
+                .appendChild(newNormal1);
+            } else if (activeElement.classList.contains("mc1")) {
+              e.preventDefault();
+              const mcNormal1 = activeElement.closest(".mc-normal1");
+              const newMcNormal1 = mcNormal1.cloneNode(true);
+              document
+                .getElementById("content-elements1")
+                .appendChild(newMcNormal1);
             }
           }
         });
@@ -519,7 +530,10 @@
                   noImage.src = imageURL;
                   //alert("画像が正常にアップロードされました！");
                 } catch (error) {
-                  console.error("画像のアップロード中にエラーが発生しました:", error);
+                  console.error(
+                    "画像のアップロード中にエラーが発生しました:",
+                    error
+                  );
                   alert("1.画像のアップロードに失敗しました。");
                 }
               } else {
@@ -530,14 +544,17 @@
         });
 
         async function uploadImage(userUID, docName, file) {
-          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+          const storageRef = ref(
+            storage,
+            `${userUID}/${docName}/thumbnail.png`
+          );
           try {
             await uploadBytes(storageRef, file);
             const downloadURL = await getDownloadURL(storageRef);
             //document.getElementById("noimage").src = downloadURL;
             //alert(downloadURL);
             //alert("画像アップロード成功!");
-            return downloadURL
+            return downloadURL;
           } catch (error) {
             alert("2.画像アップロードに失敗しました");
           }
@@ -600,17 +617,18 @@
         });
       });
 
-      var sharing =  document.getElementById("sharing");
-      if(sharing){
-        sharing.addEventListener("click", async function(e){
-          onAuthStateChanged(auth, async(user) => {
+      var sharing = document.getElementById("sharing");
+      if (sharing) {
+        sharing.addEventListener("click", async function (e) {
+          onAuthStateChanged(auth, async (user) => {
             const userUID = user.uid;
             const docName = location.href.split("?")[1];
-            const sharingComment = document.getElementById("messageInput").value || "メモなし～";
+            const sharingComment =
+              document.getElementById("messageInput").value || "メモなし～";
             const docRef = doc(db, userUID, docName);
             await updateDoc(docRef, {
               publicity_setlist: true,
-              message: sharingComment
+              message: sharingComment,
             });
             popup.style.display = "none";
 
@@ -623,7 +641,7 @@
 
             const docRef2 = doc(db, "setlist", userUID);
             const docSnap2 = await getDoc(docRef2);
-            if(!docSnap2.exists()){
+            if (!docSnap2.exists()) {
               await setDoc(docRef2, {});
             }
             const updateData = {};
