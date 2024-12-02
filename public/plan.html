@@ -105,7 +105,7 @@
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="reccomend-name1">場所名1</div>
+              <div id="reccomend-name1">なし</div>
             </div>
             <div class="osusumespot">
               <img
@@ -114,7 +114,7 @@
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="reccomend-name2">場所名2</div>
+              <div id="reccomend-name2">なし</div>
             </div>
             <div class="osusumespot">
               <img
@@ -123,7 +123,7 @@
                 src="./noimage.png"
                 alt="選択した場所の画像"
               />
-              <div id="reccomend-name3">場所名3</div>
+              <div id="reccomend-name3">なし</div>
             </div>
           </div>
         </div>
@@ -312,7 +312,7 @@
         const allDiv1 = document.querySelectorAll(".div1");
         if (div1 === allDiv1[allDiv1.length - 1]) {
           const newDiv1 = div1.cloneNode(true);
-          newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタンを表示する
+          newDiv1.querySelector(".add-schedule-button").style.display = "block"; // ボタン���表示する
           newDiv1.style.marginTop = "0"; // 距離を0に設定
           newDiv1.style.marginBottom = "0"; // 距離を0に設定
           div1.querySelectorAll(".add-schedule-button").forEach(button => button.style.display = "none"); // 元のdiv1からすべてのボタンを非表示にする
@@ -333,7 +333,6 @@
               (key) => venueData[key] !== undefined && venueData[key] !== null && venueData[key] !== ""
             );
 
-            alert(fieldNames.length);
             if (fieldNames.length > 0) {
               // フィールド数を取得
               const totalFields = fieldNames.length;
@@ -342,7 +341,6 @@
               // ランダムに3つのインデックスを選択
               while (selectedIndices.size < Math.min(3, totalFields)) {
                 const randomIndex = Math.floor(Math.random() * totalFields);
-                //alert(randomIndex);
                 selectedIndices.add(randomIndex);
               }
 
@@ -362,11 +360,7 @@
                   recommendImage.src = fieldValue || "./noimage.png"; // 画像を反映、デフォルト画像にフォールバック
                 }
               });
-            } else {
-              alert("この会場には登録されたフィールドがありません。");
             }
-          } else {
-            alert("指定された会場のデータが見つかりませんでした。");
           }
         } catch (error) {
           console.error("loadPlanの処理中にエラーが発生しました:", error);
@@ -463,7 +457,7 @@
                   //alert("画像が正常にアップロードされました！");
                 } catch (error) {
                   console.error("画像のアップロード中にエラーが発生しました:", error);
-                  alert("1.画像のアップロードに失敗しました。");
+                  alert("1.画像のアップロードに失敗しま���た。");
                 }
               } else {
                 alert("認証されていません。ログインしてください。");
@@ -522,7 +516,7 @@
               const listResult = await listAll(storageRef); // ディレクトリ内のすべてのファイルを取得
               const deletePromises = listResult.items.map((itemRef) => deleteObject(itemRef)); // 各ファイルを削除
               await Promise.all(deletePromises); // 全ファイル削除を待つ
-              console.log("Storageのディレクトリ内のファイルを削除しました");
+              console.log("Storageのディレクトリ内のファイル��削除しました");
             } catch (error) {
               console.error("Storageディレクトリの削除中にエラーが発生しました:", error);
               alert("Storageディレクトリの削除中にエラーが発生しました。");
