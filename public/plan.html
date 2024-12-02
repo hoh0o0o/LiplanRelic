@@ -333,6 +333,7 @@
               (key) => venueData[key] !== undefined && venueData[key] !== null && venueData[key] !== ""
             );
 
+            alert(fieldNames.length);
             if (fieldNames.length > 0) {
               // フィールド数を取得
               const totalFields = fieldNames.length;
@@ -384,7 +385,9 @@
             const recommendPlace = decodeURIComponent(location.href.split("?")[2]);
             //alert(recommendPlace);
             const imageURL = location.href.split("?")[3] + "?" + location.href.split("?")[4];
-            if (recommendPlace && imageURL) {
+            //alert(recommendPlace);
+            //alert(imageURL);
+            //if (recommendPlace && imageURL) {
               const venueRef = doc(db, userUID, docName);
               const venueSnap = await getDoc(venueRef);
               const venueData = venueSnap.data();
@@ -393,27 +396,30 @@
               await loadData(userUID, docName);
               await loadImage(userUID, docName);
               await loadPlan(venueName);
-              try{
-                const recommendSnap = await getDoc(docRef);
-                if(!recommendSnap.exists()){
-                  await setDoc(docRef, {
-                    [recommendPlace]: imageURL
-                  });
-                }else{
-                  await updateDoc(docRef, {
-                    [recommendPlace]: imageURL
-                  })
+              if(recommendPlace != "undefined" && imageURL != "undefined?undefined"){
+                try{
+                  const recommendSnap = await getDoc(docRef);
+                  if(!recommendSnap.exists()){
+                    await setDoc(docRef, {
+                      [recommendPlace]: imageURL
+                    });
+                  }else{
+                    await updateDoc(docRef, {
+                      [recommendPlace]: imageURL
+                    })
+                  }
+                }catch(error){
+                  alert("error!")
                 }
-              }catch(error){
-                alert("error!")
               }
-            }
+            //}
           } else {
             window.location.href = "./login.html";
           }
         });
 
         // 画像アップロード処理
+        /*
         const noImage = document.getElementById("noImage");
         const imageInput = document.getElementById("imageInput");
 
@@ -431,7 +437,41 @@
               }
             });
           }
+        });*/
+
+        
+        //document.addEventListener("DOMContentLoaded", () => {
+        const noImage = document.getElementById("noImage");
+        const imageInput = document.getElementById("imageInput");
+
+        // noImageがクリックされたらファイル選択をトリガー
+        noImage.addEventListener("click", () => {
+          imageInput.click();
         });
+
+        // ファイルが選択されたときの処理
+        imageInput.addEventListener("change", async (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                const userUID = user.uid; // 認証されたユーザーのUIDを取得
+                const docName = location.href.split("?")[1]; // ドキュメント名をURLから取得
+                try {
+                  const imageURL = await uploadImage(userUID, docName, file);
+                  noImage.src = imageURL;
+                  //alert("画像が正常にアップロードされました！");
+                } catch (error) {
+                  console.error("画像のアップロード中にエラーが発生しました:", error);
+                  alert("1.画像のアップロードに失敗しました。");
+                }
+              } else {
+                alert("認証されていません。ログインしてください。");
+              }
+            });
+          }
+        });
+      //});
 
         // 複製処理のイベントリスナーを追加
         document.querySelectorAll(".add-schedule-button").forEach(button => {
@@ -452,6 +492,20 @@
           }
         });
       });
+
+      async function uploadImage(userUID, docName, file) {
+        const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+        try {
+          await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(storageRef);
+          //document.getElementById("noimage").src = downloadURL;
+          //alert(downloadURL);
+          //alert("画像アップロード成功!");
+          return downloadURL
+        } catch (error) {
+          alert("2.画像アップロードに失敗しました");
+        }
+      }
 
       const docName = location.href.split("?")[1];
 

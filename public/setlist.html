@@ -498,44 +498,50 @@
           }
         });
 
-        var noImage = document.getElementById("noImage");
-        var imageInput = document.getElementById("imageInput");
+        const noImage = document.getElementById("noImage");
+        const imageInput = document.getElementById("imageInput");
 
-        noImage.addEventListener("click", function () {
+        // noImageがクリックされたらファイル選択をトリガー
+        noImage.addEventListener("click", () => {
           imageInput.click();
         });
 
-        imageInput.addEventListener("change", async function (event) {
+        // ファイルが選択されたときの処理
+        imageInput.addEventListener("change", async (event) => {
           const file = event.target.files[0];
           if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              noImage.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-
-            // Firebase Storageに画像をアップロード
-            const docName = location.href.split("?")[1];
             onAuthStateChanged(auth, async (user) => {
-              const userUID = user.uid;
-              const storageRef = ref(
-                storage,
-                `${userUID}/${docName}/thumbnail.png`
-              );
-              try {
-                await uploadBytes(storageRef, file);
-                console.log("画像がアップロードされました");
-
-                // アップロードされた画像のURLを取得して表示
-                const downloadURL = await getDownloadURL(storageRef);
-                noImage.src = downloadURL;
-                console.log("ダウンロードURL:", downloadURL);
-              } catch (error) {
-                console.error("画像のアップロードに失敗しました:", error);
+              if (user) {
+                const userUID = user.uid; // 認証されたユーザーのUIDを取得
+                const docName = location.href.split("?")[1]; // ドキュメント名をURLから取得
+                try {
+                  const imageURL = await uploadImage(userUID, docName, file);
+                  noImage.src = imageURL;
+                  //alert("画像が正常にアップロードされました！");
+                } catch (error) {
+                  console.error("画像のアップロード中にエラーが発生しました:", error);
+                  alert("1.画像のアップロードに失敗しました。");
+                }
+              } else {
+                alert("認証されていません。ログインしてください。");
               }
             });
           }
         });
+
+        async function uploadImage(userUID, docName, file) {
+          const storageRef = ref(storage, `${userUID}/${docName}/thumbnail.png`);
+          try {
+            await uploadBytes(storageRef, file);
+            const downloadURL = await getDownloadURL(storageRef);
+            //document.getElementById("noimage").src = downloadURL;
+            //alert(downloadURL);
+            //alert("画像アップロード成功!");
+            return downloadURL
+          } catch (error) {
+            alert("2.画像アップロードに失敗しました");
+          }
+        }
 
         // ポップアップウィンドウの表示・非表示
         const popup = document.getElementById("popup");
