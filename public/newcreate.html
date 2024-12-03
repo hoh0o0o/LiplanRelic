@@ -141,6 +141,7 @@
       const auth = getAuth(app);
       const db = getFirestore(app);
       let userUID;
+      let selectedPlace = null;
 
       const getUserUID = new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
@@ -166,6 +167,7 @@
 
       document.addEventListener("DOMContentLoaded", (event) => {
         setDateToday();
+        initMap();
       });
 
       var create = document.getElementById("sendFirebase");
@@ -175,11 +177,18 @@
         const date = document.getElementById("date-input").value;
         const title = document.getElementById("title-input").value;
         const artist = document.getElementById("artist-input").value;
+        const address =
+          selectedPlace && selectedPlace.formatted_address
+            ? selectedPlace.formatted_address
+            : "";
 
-        if (!venue || !date || !title || !artist) {
+        if (!venue || !date || !title || !artist || !address) {
           alert("全ての項目を入力してください");
           return;
         }
+
+        // 緯度と経度の取得
+        const { latitude, longitude } = await fetchLatLngFromAddress(address);
 
         const querySnapshot = await getDocs(collection(db, userUID));
         let maxDocNumber = 0;
@@ -197,77 +206,38 @@
 
         await setDoc(doc(db, userUID, docName), {
           venue: venue,
+          address: address,
+          latitude: latitude, // 緯度を保存
+          longitude: longitude, // 経度を保存
           Date: date,
           title: title,
           artist: artist,
+          publicity_list: false,
+          publicity_setlist: false,
         });
 
         window.location.href = `plan.html?${docName}`;
       });
 
-      /*
-      // 作成ボタンのクリックイベント
-      document
-        .getElementById("sendFirebase")
-        .addEventListener("click", async () => {
-          try {
-            // userUIDの取得完了を待つ
-            const uid = await getUserUID;
-            const prefectures = document.getElementById("area-select").value;
-            const venue = document.getElementById("venue-select").value;
-            const date = document.getElementById("date-input").value;
-            const title = document.getElementById("title-input").value;
-            const artist = document.getElementById("artist-input").value;
-            alert("artist");
+      // Google Maps Geocoding API を使って住所から緯度と経度を取得
+      async function fetchLatLngFromAddress(address) {
+        return new Promise((resolve, reject) => {
+          const geocoder = new google.maps.Geocoder();
 
-            // 入力チェック
-            if (!prefectures || !venue || !date || !title || !artist) {
-              alert("全ての項目を入力してください");
-              return;
+          geocoder.geocode({ address: address }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK) {
+              const location = results[0].geometry.location;
+              resolve({
+                latitude: location.lat(),
+                longitude: location.lng(),
+              });
+            } else {
+              console.error("Geocoding API failed:", status);
+              reject(new Error("住所から緯度と経度を取得できませんでした"));
             }
-
-            const querySnapshot = await getDocs(collection(db, uid));
-            let maxDocNumber = 0;
-
-            querySnapshot.forEach((doc) => {
-              const docId = doc.id;
-              const docNumber = parseInt(docId.replace(uid, ""));
-              if (!isNaN(docNumber) && docNumber > maxDocNumber) {
-                maxDocNumber = docNumber;
-              }
-            });
-
-            const newDocNumber = maxDocNumber + 1;
-            const docName = `${newDocNumber}`;
-
-            await setDoc(doc(db, uid, docName), {
-              prefectures: prefectures,
-              venue: venue,
-              Date: date,
-              title: title,
-              artist: artist,
-              publicity: false,
-            });
-
-            alert("データが送信されました");
-            window.location.href = `plan.html?${docName}`;
-          } catch (e) {
-            console.error("Error adding document: ", e);
-            alert("failed to upload data");
-          }
-        });*/
-
-      // home.htmlへの遷移にuserUIDを含める
-      document.querySelectorAll("#backtoHome").forEach((element) => {
-        element.addEventListener("click", async () => {
-          const uid = await getUserUID; // userUIDの取得完了を待つ
-          window.location.href = `./home.html?${uid}`;
+          });
         });
-      });
-
-      let map;
-      let marker;
-      let selectedPlace = null;
+      }
 
       function initMap() {
         const input = document.getElementById("search-input");
@@ -286,14 +256,20 @@
           }
 
           // 選択した地名を表示
-          input.value = selectedPlace.name;
+          input.value = selectedPlace.name || "";
           input.classList.add("selected");
+          console.log(
+            "選択した住所:",
+            selectedPlace.formatted_address || "住所なし"
+          );
         });
       }
 
-      document.addEventListener("DOMContentLoaded", (event) => {
-        setDateToday();
-        initMap();
+      document.querySelectorAll("#backtoHome").forEach((element) => {
+        element.addEventListener("click", async () => {
+          const uid = await getUserUID; // userUIDの取得完了を待つ
+          window.location.href = `./home.html?${uid}`;
+        });
       });
     </script>
   </body>
