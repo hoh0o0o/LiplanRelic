@@ -179,7 +179,8 @@
         doc,
         getDoc,
         updateDoc,
-        setDoc
+        setDoc,
+        arrayUnion
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
       import {
         getAuth,
@@ -371,6 +372,12 @@
                     [recommendPlace]: imageURL
                   });
                 }
+                // placeNameへの格納処理
+                const userDocRef = doc(db, userUID, docName);
+                await updateDoc(userDocRef, {
+                  placeName: arrayUnion({ name: recommendPlace, imageUrl: imageURL })
+                });
+                /*
                 // 追加された地名と画像を反映
                 const placeElements = document.querySelectorAll(".tourokugazou");
                 const nameElements = document.querySelectorAll("[id^='place-name']");
@@ -381,6 +388,7 @@
                     break;
                   }
                 }
+                */
               } catch (error) {
                 alert("error!");
               }

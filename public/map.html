@@ -70,12 +70,14 @@
               await updateDoc(docRef, {
                 placeName: arrayUnion(recommend),
               });
-              await updateDoc(venueRef, {
-                [recommend.name]: recommend.imageUrl,
-              });
+              console.log("placeName updated successfully");
             } else {
               alert("スポットは3つまでしか追加できません。");
             }
+            await updateDoc(venueRef, {
+              [recommend.name]: recommend.imageUrl,
+            });
+            console.log("venue updated successfully");
           } catch (error) {
             console.error("Error updating document:", error);
           }
@@ -107,7 +109,7 @@
       autocomplete.addListener("place_changed", function () {
         selectedPlace = autocomplete.getPlace();
         if (!selectedPlace.geometry || !selectedPlace.geometry.location) {
-          alert("場所が見つかりませんでした。");
+          alert("場所が見��かりませんでした。");
           selectedPlace = null;
           return;
         }
@@ -161,6 +163,7 @@
           ? selectedPlace.photos[0].getUrl({ maxWidth: 400, maxHeight: 300 })
           : "./noimage.png"; // 画像がない場合のデフォルト
       const recommend = { name, imageUrl };
+      console.log("Adding place:", recommend);
       await saveToFirebase(docName, recommend, venue);
       // 選択された名称と画像をplan.htmlに渡す
       window.location.href = `plan.html?${docName}?${encodeURIComponent(
